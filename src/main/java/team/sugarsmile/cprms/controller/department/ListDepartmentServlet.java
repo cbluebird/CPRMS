@@ -1,8 +1,10 @@
 package team.sugarsmile.cprms.controller.department;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import team.sugarsmile.cprms.dto.PaginationDto;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
@@ -22,9 +24,9 @@ public class ListDepartmentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            int page = Integer.parseInt(request.getParameter("pageNum"));
+            int pageNum = Integer.parseInt(request.getParameter("pageNum"));
             int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-            PaginationDto<Department> departmentList = departmentService.findDepartmentList(page, pageSize);
+            PaginationDto<Department> departmentList = departmentService.findDepartmentList(pageNum, pageSize);
             request.setAttribute("list", departmentList);
             request.getRequestDispatcher("/department.jsp").forward(request, response);
         } catch (NumberFormatException e) {
