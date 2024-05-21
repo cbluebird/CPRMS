@@ -1,4 +1,4 @@
-package team.sugarsmile.cprms.controller.department;
+package team.sugarsmile.cprms.controller.admin.department;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -14,8 +14,8 @@ import java.io.IOException;
  * @author XiMo
  */
 
-@WebServlet("/admin/department/update")
-public class UpdateDepartmentServlet extends HttpServlet {
+@WebServlet("/admin/department/add")
+public class AddDepartmentServlet extends HttpServlet {
     private final DepartmentService departmentService = new DepartmentService();
 
     @Override
@@ -26,13 +26,12 @@ public class UpdateDepartmentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
             Department.Type type = Department.Type.getType(Integer.parseInt(request.getParameter("type")));
             String name = request.getParameter("name");
             if (name.isEmpty()){
                 throw new BizException(ErrorCode.PARAM_ERROR.getCode(),"param name is empty");
             }
-            departmentService.updateDepartment(id, type, name);
+            departmentService.addDepartment(type, name);
             response.sendRedirect("/admin/department/list?pageNum=1&pageSize=10");
         } catch (BizException e) {
             request.setAttribute("error", ErrorCode.getByCode(e.getCode()).getMessage());

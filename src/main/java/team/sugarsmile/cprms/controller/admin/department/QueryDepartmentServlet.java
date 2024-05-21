@@ -1,9 +1,8 @@
-package team.sugarsmile.cprms.controller.department;
+package team.sugarsmile.cprms.controller.admin.department;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import team.sugarsmile.cprms.dto.PaginationDto;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Department;

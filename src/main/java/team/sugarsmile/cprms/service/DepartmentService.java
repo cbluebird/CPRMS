@@ -45,7 +45,7 @@ public class DepartmentService {
         departmentDao.delete(id);
     }
 
-    public void updateDepartment(int id, Department.Type type, String name) {
+    public void updateDepartmentNameAndType(int id, Department.Type type, String name) {
         if (departmentDao.findById(id) == null) {
             throw new BizException(ErrorCode.DEPARTMENT_NOT_EXIST.getCode(), "部门编号 " + id + " 不存在");
         }
@@ -53,7 +53,7 @@ public class DepartmentService {
         if (department != null && !department.getId().equals(id)) {
             throw new BizException(ErrorCode.DEPARTMENT_ALREADY_EXIST.getCode(), "部门 " + name + " 已存在");
         }
-        departmentDao.update(Department.builder()
+        departmentDao.updateNameAndType(Department.builder()
                 .id(id)
                 .type(type)
                 .name(name)

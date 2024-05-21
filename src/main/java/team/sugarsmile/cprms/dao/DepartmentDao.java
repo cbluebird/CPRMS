@@ -21,10 +21,12 @@ public class DepartmentDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "INSERT INTO department (type, name) VALUES (?, ?)";
+            String sql = "INSERT INTO department (user_type, name ,pubic ,business) VALUES (?, ? ,?,?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, department.getType().getValue());
             stmt.setString(2, department.getName());
+            stmt.setBoolean(3, false);
+            stmt.setBoolean(4, false);
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
@@ -49,7 +51,7 @@ public class DepartmentDao {
         }
     }
 
-    public void update(Department department) {
+    public void updateNameAndType(Department department) {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
@@ -59,6 +61,24 @@ public class DepartmentDao {
             stmt.setInt(1, department.getType().getValue());
             stmt.setString(2, department.getName());
             stmt.setLong(3, department.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt);
+        }
+    }
+
+    public void updatePermission(Department department) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "UPDATE department SET public = ?, business = ? WHERE id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, department.getType().getValue());
+            stmt.setBoolean(2, department.getPubic());
+            stmt.setBoolean(3, department.getBusiness());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
@@ -82,6 +102,8 @@ public class DepartmentDao {
                         .id(rs.getInt("id"))
                         .type(Department.Type.getType(rs.getInt("type")))
                         .name(rs.getString("name"))
+                        .pubic(rs.getBoolean("pubic"))
+                        .business(rs.getBoolean("business"))
                         .build();
             }
             return null;
@@ -107,6 +129,8 @@ public class DepartmentDao {
                         .id(rs.getInt("id"))
                         .type(Department.Type.getType(rs.getInt("type")))
                         .name(rs.getString("name"))
+                        .pubic(rs.getBoolean("pubic"))
+                        .business(rs.getBoolean("business"))
                         .build();
             }
             return null;
@@ -134,6 +158,8 @@ public class DepartmentDao {
                         .id(rs.getInt("id"))
                         .type(Department.Type.getType(rs.getInt("type")))
                         .name(rs.getString("name"))
+                        .pubic(rs.getBoolean("pubic"))
+                        .business(rs.getBoolean("business"))
                         .build());
             }
             return departmentList;

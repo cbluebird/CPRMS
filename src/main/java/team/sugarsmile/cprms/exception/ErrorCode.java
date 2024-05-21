@@ -10,7 +10,13 @@ public enum ErrorCode {
 
     PARAM_ERROR(20001, "参数有误"),
     DEPARTMENT_ALREADY_EXIST(20101, "部门已存在"),
-    DEPARTMENT_NOT_EXIST(200102, "部门不存在");
+    DEPARTMENT_NOT_EXIST(20102, "部门不存在"),
+
+    ADMIN_ALREADY_EXIST(20201, "管理员已存在"),
+    ADMIN_NOT_EXIST(202012, "管理员不存在"),
+    ADMIN_LOGIN_ERROR(202013, "管理员登录时密码错误");
+
+
 
     private final Integer code;
     private final String message;
