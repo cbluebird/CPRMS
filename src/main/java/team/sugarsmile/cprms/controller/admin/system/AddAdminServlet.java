@@ -4,7 +4,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-@WebServlet("/admin/add")
+@WebServlet("/admin/system/add")
 public class AddAdminServlet extends HttpServlet {
 
 }

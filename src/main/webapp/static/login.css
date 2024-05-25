@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url(./background.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+.title {
+    text-align: center;
+}
+
+.login-form {
+    position: relative;
+    transform: scale(1.1);
+    border: 3px solid rgb(255, 255, 255);
+    border-radius: 20px;
+    padding: 15px 50px;
+    width: 100%;
+    backdrop-filter: blur(10px);
+}
+
+.login-form a {
+    color: wheat
+}
+
+.login-form h1,
+.login-form p,
+.checkbox-text label,
+.input-field ::placeholder {
+    color: black;
+}
+
+.input-field {
+    display: flex;
+    margin-top: 20px;
+}
+
+.input-field input {
+    width: 90%;
+    font-size: 16px;
+    border: transparent;
+    border-bottom: 2.5px solid white;
+    color: white;
+}
+
+.input-field input:focus {
+    outline: none;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="re_password"]{
+    background-color: transparent;
+}
+
+.input-label {
+    margin-right: 50px;
+    line-height: 35px;
+    font-size: 18px;
+    color: beige;
+}
+
+.checkbox-text {
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+.login-form button {
+    height: 50px;
+    width: 100%;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 40px;
+    background-color: skyblue;
+    cursor: pointer;
+}
+
+.button button:hover {
+    background-color: cornflowerblue;
+}
+
+.register {
+    display: flex;
+    justify-content: right;
+    margin-top: 20px;
+}

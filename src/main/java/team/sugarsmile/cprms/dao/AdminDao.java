@@ -3,27 +3,27 @@ package team.sugarsmile.cprms.dao;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.exception.SystemException;
 import team.sugarsmile.cprms.model.Admin;
-import team.sugarsmile.cprms.model.Department;
 import team.sugarsmile.cprms.util.JDBCUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class AdminDao {
     public void insert(Admin admin) {
         Connection conn = null;
         PreparedStatement stmt = null;
+        Date date=new Date(new java.util.Date().getTime());
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "INSERT INTO admin (admin_type, name ,phone ,password,department_id) VALUES (?, ? ,?,?,?)";
+            String sql = "INSERT INTO admin (admin_type, name ,phone ,password,department_id,date,user_name) VALUES (?, ? ,?,?,?,?,?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, admin.getAdminType().getValue());
             stmt.setString(2, admin.getName());
             stmt.setString(3, admin.getPhone());
             stmt.setString(4, admin.getPassword());
             stmt.setInt(5,admin.getDepartmentID());
+            stmt.setDate(6,date);
+            stmt.setString(7,admin.getUserName());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
@@ -50,6 +50,8 @@ public class AdminDao {
                         .phone(rs.getString("phone"))
                         .password(rs.getString("password"))
                         .departmentID(rs.getInt("department_id"))
+                        .date(rs.getDate("date"))
+                        .userName(rs.getString("user_name"))
                         .build();
             }
             return null;
@@ -60,15 +62,15 @@ public class AdminDao {
         }
     }
 
-    public Admin findByPhone(String phone) {
+    public Admin findByUserName(String userName) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM admin WHERE phone = ?";
+            String sql = "SELECT * FROM admin WHERE user_name = ?";
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, phone);
+            stmt.setString(1, userName);
             rs = stmt.executeQuery();
             if (rs.next()) {
                 return Admin.builder()
@@ -78,6 +80,8 @@ public class AdminDao {
                         .phone(rs.getString("phone"))
                         .password(rs.getString("password"))
                         .departmentID(rs.getInt("department_id"))
+                        .userName(rs.getString("user_name"))
+                        .date(rs.getDate("date"))
                         .build();
             }
             return null;
@@ -88,6 +92,96 @@ public class AdminDao {
         }
     }
 
+    public void updatePasswordByID(Integer id,String password){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        Date date=new Date(new java.util.Date().getTime());
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "UPDATE admin SET password = ? ,date=? WHERE id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, password);
+            stmt.setDate(2,date);
+            stmt.setLong(3, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt);
+        }
 
+    }
+
+    public ArrayList<Admin> findByPage(int pageNum, int pageSize) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "SELECT * FROM admin LIMIT ?, ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, (pageNum - 1) * pageSize);
+            stmt.setInt(2, pageSize);
+            rs = stmt.executeQuery();
+            ArrayList<Admin> adminList = new ArrayList<Admin>();
+            while (rs.next()) {
+                adminList.add(Admin.builder()
+                        .id(rs.getInt("id"))
+                        .adminType(Admin.AdminType.getType(rs.getInt("admin_type")))
+                        .name(rs.getString("name"))
+                        .phone(rs.getString("phone"))
+                        .password(rs.getString("password"))
+                        .departmentID(rs.getInt("department_id"))
+                        .userName(rs.getString("user_name"))
+                        .date(rs.getDate("date"))
+                        .build());
+            }
+            return adminList;
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt, rs);
+        }
+    }
+
+    public int count() {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "SELECT COUNT(*) FROM admin";
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt, rs);
+        }
+    }
+
+    public void delete(int id) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "DELETE FROM admin WHERE id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt);
+        }
+    }
+
+    public void updateAdminInfo(){
+
+    }
 
 }

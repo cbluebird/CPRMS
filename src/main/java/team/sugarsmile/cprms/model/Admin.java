@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+import java.sql.Date;
+
 @Data
 @Builder
 public class Admin {
@@ -14,6 +16,8 @@ public class Admin {
     private String password;
     private AdminType adminType;
     private Integer departmentID;
+    private Date date;
+    private String userName;
     @AllArgsConstructor
     @Getter
     public enum AdminType {

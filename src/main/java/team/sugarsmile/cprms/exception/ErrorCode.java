@@ -14,7 +14,9 @@ public enum ErrorCode {
 
     ADMIN_ALREADY_EXIST(20201, "管理员已存在"),
     ADMIN_NOT_EXIST(202012, "管理员不存在"),
-    ADMIN_LOGIN_ERROR(202013, "管理员登录时密码错误");
+    ADMIN_LOGIN_ERROR(202013, "管理员登录时密码错误"),
+    PASSWORD_SHORT(202014, "密码太短"),
+    ADMIN_PASSWORD_OUT_DATE(202015, "密码需要更新"),;
 
 
 

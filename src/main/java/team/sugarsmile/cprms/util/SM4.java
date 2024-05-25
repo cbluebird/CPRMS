@@ -19,7 +19,7 @@ public class SM4 {
     }
     public static void main(String[] args) {
 
-        String content = "hello sm4";
+        String content = "zjut123456";
         String plain = encryptSm4(content);
         String cipher = decryptSm4(plain);
         System.out.println(plain + "\n" + cipher);
