@@ -1,8 +1,10 @@
 package team.sugarsmile.cprms.controller.admin.department;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.service.DepartmentService;
@@ -19,23 +21,26 @@ public class DeleteDepartmentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BizException be = null;
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             departmentService.deleteDepartment(id);
-            response.sendRedirect("/admin/department/list?pageNum=1&pageSize=10");
         } catch (BizException e) {
-            request.setAttribute("error", ErrorCode.getByCode(e.getCode()).getMessage());
-            request.getRequestDispatcher("/department.jsp").forward(request, response);
-            throw e;
+            be = e;
         } catch (NumberFormatException e) {
-            request.setAttribute("error", ErrorCode.PARAM_ERROR.getMessage());
-            request.getRequestDispatcher("/department.jsp").forward(request, response);
-            throw new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
+            be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
+        }
+        if (be != null) {
+            request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
+            response.sendRedirect(request.getContextPath() + "/admin/department/list?pageNum=1&pageSize=10");
+            throw be;
+        } else {
+            response.sendRedirect(request.getContextPath() + "/admin/department/list?pageNum=1&pageSize=10");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        doGet(request, response);
     }
 }

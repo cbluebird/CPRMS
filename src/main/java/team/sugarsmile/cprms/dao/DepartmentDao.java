@@ -21,7 +21,7 @@ public class DepartmentDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "INSERT INTO department (user_type, name ,pubic ,business) VALUES (?, ? ,?,?)";
+            String sql = "INSERT INTO department (type, name, public, business) VALUES (?, ? ,? ,?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, department.getType().getValue());
             stmt.setString(2, department.getName());
@@ -102,7 +102,7 @@ public class DepartmentDao {
                         .id(rs.getInt("id"))
                         .type(Department.Type.getType(rs.getInt("type")))
                         .name(rs.getString("name"))
-                        .pubic(rs.getBoolean("pubic"))
+                        .pubic(rs.getBoolean("public"))
                         .business(rs.getBoolean("business"))
                         .build();
             }
@@ -129,7 +129,7 @@ public class DepartmentDao {
                         .id(rs.getInt("id"))
                         .type(Department.Type.getType(rs.getInt("type")))
                         .name(rs.getString("name"))
-                        .pubic(rs.getBoolean("pubic"))
+                        .pubic(rs.getBoolean("public"))
                         .business(rs.getBoolean("business"))
                         .build();
             }
@@ -158,7 +158,7 @@ public class DepartmentDao {
                         .id(rs.getInt("id"))
                         .type(Department.Type.getType(rs.getInt("type")))
                         .name(rs.getString("name"))
-                        .pubic(rs.getBoolean("pubic"))
+                        .pubic(rs.getBoolean("public"))
                         .business(rs.getBoolean("business"))
                         .build());
             }

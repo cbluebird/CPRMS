@@ -2,6 +2,7 @@ package team.sugarsmile.cprms.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import team.sugarsmile.cprms.exception.BizException;
@@ -28,7 +29,7 @@ public class GlobalExceptionFilter implements Filter {
             log.warn(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage(), e.getCause());
-            ((HttpServletResponse) servletResponse).sendRedirect("500.jsp");
+            ((HttpServletResponse) servletResponse).sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/500.jsp");
         }
     }
 

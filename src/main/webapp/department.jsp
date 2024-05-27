@@ -1,8 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:useBean id="pagination" scope="request"
+             type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Department>"/>
+<fmt:formatNumber var="totalPage" scope="request" type="number"
+                  value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}"
+                  maxFractionDigits="0"/>
 <html>
 <head>
     <title>部门管理页面</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/table.css">
     <%
         String error = (String) session.getAttribute("error");
         if (error != null) {
@@ -13,6 +20,7 @@
         };
     </script>
     <%
+            session.removeAttribute("error");
         }
     %>
 </head>
@@ -32,7 +40,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="department" items="${requestScope.list}">
+            <c:forEach var="department" items="${pagination.list}">
                 <tr>
                     <td>${department.id}</td>
                     <td>
@@ -61,15 +69,13 @@
         </table>
     </div>
     <div class="foot_page">
-        <c:if test="${requestScope.totalPage ne 0}">
-            共&nbsp;${requestScope.total}&nbsp;条&nbsp;${requestScope.pageSize}条/页&nbsp;
-            <c:if test="${requestScope.pageNum gt 1}">
-                <a onclick="loadPreviousPage()">上一页</a>
-            </c:if>
-            ${requestScope.pageNum} / ${requestScope.totalPage}
-            <c:if test="${requestScope.pageNum lt requestScope.totalPage}">
-                <a onclick="loadNextPage()">下一页</a>
-            </c:if>
+        共&nbsp;${pagination.total}&nbsp;条&nbsp;${pagination.pageSize}条/页&nbsp;
+        <c:if test="${pagination.pageNum gt 1}">
+            <a onclick="loadPreviousPage()">上一页</a>
+        </c:if>
+        ${pagination.pageNum} / ${requestScope.totalPage}
+        <c:if test="${requestScope.pageNum lt requestScope.totalPage}">
+            <a onclick="loadNextPage()">下一页</a>
         </c:if>
     </div>
 </div>
@@ -103,12 +109,14 @@
     <h2>修改部门</h2>
     <form action="${pageContext.request.contextPath}/admin/department/update" method="post">
         <input type="hidden" id="updateId" name="id"/>
-        <label for="updateType">部门类型:</label>
-        <select id="updateType" name="type">
-            <option value="1">行政部门</option>
-            <option value="2">直属部门</option>
-            <option value="3">学院</option>
-        </select>
+        <div>
+            <label for="updateType">部门类型:</label>
+            <select id="updateType" name="type">
+                <option value="1">行政部门</option>
+                <option value="2">直属部门</option>
+                <option value="3">学院</option>
+            </select>
+        </div>
         <div>
             <label for="updateName">学院名称:</label>
             <input type="text" id="updateName" name="name"/>
@@ -122,24 +130,25 @@
 </body>
 </html>
 <script>
-    let currentPage = ${requestScope.pageNum};
+    let currPage = ${pagination.pageNum};
+    let totalPage =${requestScope.totalPage};
 
     function loadNextPage() {
-        if (currentPage === ${requestScope.totalPage}) {
+        if (currPage === totalPage) {
             alert("已经是最后一页了");
             return;
         }
-        currentPage++;
-        window.location.href = "${pageContext.request.contextPath}/admin/department/list?pageNum=" + currentPage + "&pageSize=10";
+        currPage++;
+        window.location.href = "${pageContext.request.contextPath}/admin/department/list?pageNum=" + currPage + "&pageSize=10";
     }
 
     function loadPreviousPage() {
-        if (currentPage === 1) {
+        if (currPage === 1) {
             alert("已经是第一页了");
             return;
         }
-        currentPage--;
-        window.location.href = "${pageContext.request.contextPath}/admin/department/list?pageNum=" + currentPage + "&pageSize=10";
+        currPage--;
+        window.location.href = "${pageContext.request.contextPath}/admin/department/list?pageNum=" + currPage + "&pageSize=10";
     }
 
     function updateDepartment(id, type, name) {
@@ -182,56 +191,3 @@
         popup.style.display = 'none';
     }
 </script>
-<style>
-    table {
-        text-align: center;
-    }
-
-    .table {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .head_add {
-        margin-bottom: 5px;
-    }
-
-    .foot_page {
-        text-align: right;
-    }
-
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: none;
-        z-index: 9999;
-    }
-
-    .popup {
-        width: 300px;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 20px;
-        z-index: 10000;
-        text-align: center;
-        display: none;
-    }
-
-    .popup input[type=text], .popup select {
-        width: 200px;
-    }
-
-    .foot_page a {
-        cursor: pointer;
-    }
-</style>

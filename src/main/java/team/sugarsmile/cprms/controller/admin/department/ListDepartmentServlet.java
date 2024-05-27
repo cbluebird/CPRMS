@@ -23,21 +23,27 @@ public class ListDepartmentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BizException be = null;
+        PaginationDto<Department> pagination = null;
         try {
             int pageNum = Integer.parseInt(request.getParameter("pageNum"));
             int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-            PaginationDto<Department> departmentList = departmentService.findDepartmentList(pageNum, pageSize);
-            request.setAttribute("list", departmentList);
-            request.getRequestDispatcher("/department.jsp").forward(request, response);
+            pagination = departmentService.findDepartmentList(pageNum, pageSize);
         } catch (NumberFormatException e) {
-            request.setAttribute("error", ErrorCode.PARAM_ERROR.getMessage());
+            be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
+        }
+        if (be != null) {
+            request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
+            response.sendRedirect(request.getContextPath() + "/department.jsp");
+            throw be;
+        } else {
+            request.setAttribute("pagination", pagination);
             request.getRequestDispatcher("/department.jsp").forward(request, response);
-            throw new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        doGet(request, response);
     }
 }

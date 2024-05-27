@@ -13,10 +13,6 @@ import team.sugarsmile.cprms.model.Department;
 public class DepartmentService {
     private final DepartmentDao departmentDao = new DepartmentDao();
 
-    public Department queryDepartment(int id){
-        return departmentDao.findById(id);
-    }
-
     public PaginationDto<Department> findDepartmentList(int pageNum, int pageSize) {
         pageNum = pageNum <= 0 ? 1 : pageNum;
         pageSize = pageSize <= 0 ? 10 : pageSize;
