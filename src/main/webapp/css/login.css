@@ -1,96 +1,110 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
 body {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: url(../static/background.jpg);
-    background-position: center;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('../static/background.jpg');
     background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-.title {
-    text-align: center;
+.container {
+    display: flex;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.welcome-section {
+    background-image: url('../static/background.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+}
+
+.welcome-section h1 {
+    margin: 0;
+    font-size: 2em;
+    color: #91c7ff;
+}
+
+.login-section {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .login-form {
-    position: relative;
-    transform: scale(1.1);
-    border: 3px solid rgb(255, 255, 255);
-    border-radius: 20px;
-    padding: 15px 50px;
-    width: 100%;
-    backdrop-filter: blur(10px);
+    width: 300px;
 }
 
-.login-form a {
-    color: wheat
+.login-form h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.5em;
 }
 
-.login-form h1,
-.login-form p,
-.checkbox-text label,
-.input-field ::placeholder {
-    color: black;
+.login-form p {
+    margin: 0 0 20px 0;
+    color: #757575;
 }
 
 .input-field {
     display: flex;
-    margin-top: 20px;
+    align-items: center;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.input-field i {
+    padding: 10px;
+    background: #f1f1f1;
+    border-right: 1px solid #ddd;
 }
 
 .input-field input {
-    width: 90%;
-    font-size: 16px;
-    border: transparent;
-    border-bottom: 2.5px solid white;
-    color: white;
-}
-
-.input-field input:focus {
+    width: 100%;
+    padding: 10px;
+    border: none;
     outline: none;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="re_password"]{
-    background-color: transparent;
-}
-
-.input-label {
-    margin-right: 50px;
-    line-height: 35px;
-    font-size: 18px;
-    color: beige;
-}
-
-.checkbox-text {
+.remember-me {
     display: flex;
-    margin-top: 20px;
-    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.remember-me input {
+    margin-right: 5px;
+}
+
+.remember-me label {
+    color: #999;
+    cursor: pointer;
+    font-size: 0.9rem;
 }
 
 .login-form button {
-    height: 50px;
     width: 100%;
-    border: none;
+    padding: 10px;
+    background-color: #3097ff;
     color: white;
-    font-size: 16px;
-    border-radius: 40px;
-    background-color: skyblue;
+    border: none;
+    border-radius: 20px;
     cursor: pointer;
+    font-size: 1em;
+    box-shadow: 0 2px 5px rgba(0, 151, 255, 0.5);
 }
 
-.button button:hover {
-    background-color: cornflowerblue;
-}
-
-.register {
-    display: flex;
-    justify-content: right;
-    margin-top: 20px;
+.login-form button:hover {
+    background-color: #007fff;
 }
