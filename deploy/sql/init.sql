@@ -23,5 +23,5 @@ CREATE TABLE role
 (
     id         BIGINT PRIMARY KEY AUTO_INCREMENT,
     admin_type TINYINT     NOT NULL COMMENT '管理员类型 1:系统管理员 2:学校管理员 3:部门管理员 4:审计管理员',
-    path       VARCHAR(20) NOT NULL COMMENT '规则名称'
+    path       VARCHAR(64) NOT NULL COMMENT '规则名称'
 )

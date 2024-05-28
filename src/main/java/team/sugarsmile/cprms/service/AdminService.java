@@ -20,12 +20,14 @@ public class AdminService {
 
         String pass= SM4.encryptSm4("zjut123456");
 
+
         adminDao.insert(Admin.builder()
                 .adminType(type)
                 .phone(phone)
                 .password(pass)
                 .name(name)
                 .departmentID(departmentID)
+                .userName(userName)
                 .build());
     }
 
@@ -62,7 +64,23 @@ public class AdminService {
         adminDao.updatePasswordByID(id, pass);
     }
 
-    public PaginationDto<Admin> findDepartmentList(int pageNum, int pageSize) {
+    public void updateAdmin(Integer id,Admin.AdminType type,String phone,String name,String userName,Integer departmentID){
+        if(id==0||adminDao.findByID(id)==null){
+            throw new BizException(ErrorCode.ADMIN_NOT_EXIST.getCode(), "用户编号 " + id + " 不存在");
+        }
+
+        adminDao.updateAdminInfo(Admin.builder()
+                .id(id)
+                .adminType(type)
+                .phone(phone)
+                .name(name)
+                .departmentID(departmentID)
+                .userName(userName)
+                .build());
+
+    }
+
+    public PaginationDto<Admin> findAdminList(int pageNum, int pageSize) {
         pageNum = pageNum <= 0 ? 1 : pageNum;
         pageSize = pageSize <= 0 ? 10 : pageSize;
         return PaginationDto.<Admin>builder()
@@ -70,6 +88,18 @@ public class AdminService {
                 .pageSize(pageSize)
                 .total(adminDao.count())
                 .list(adminDao.findByPage(pageNum, pageSize))
+                .build();
+    }
+
+    public PaginationDto<Admin> findAdminListByType(int pageNum, int pageSize, Admin.AdminType type) {
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 10 : pageSize;
+
+        return PaginationDto.<Admin>builder()
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .total(adminDao.countByType(type))
+                .list(adminDao.findByPageAndType(pageNum, pageSize,type))
                 .build();
     }
 

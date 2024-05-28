@@ -1,11 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<jsp:useBean id="pagination" scope="request"
-             type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Department>"/>
-<fmt:formatNumber var="totalPage" scope="request" type="number"
-                  value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}"
-                  maxFractionDigits="0"/>
+<jsp:useBean id="pagination" scope="request" type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Department>"/>
+<fmt:formatNumber var="totalPage" scope="request" type="number" value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}" maxFractionDigits="0"/>
 <html>
 <head>
     <title>部门管理页面</title>
@@ -25,11 +22,13 @@
     %>
 </head>
 <body>
+<div class="sidebar">
+    <a  class="active" href="${pageContext.request.contextPath}/admin/department/list?pageNum=1&pageSize=10">部门管理</a>
+    <a  href="${pageContext.request.contextPath}/admin/departmentAdmin/list?pageNum=1&pageSize=10">部门管理员</a>
+</div>
+<div class="content">
 <div id="departmentTable" class="table">
-    <div class="head_add">
-        <button onclick="showAddPopup()">添加</button>
-    </div>
-    <div>
+    <div class="table-container">
         <table border="1">
             <thead>
             <tr>
@@ -68,20 +67,24 @@
             </tbody>
         </table>
     </div>
-    <div class="foot_page">
-        共&nbsp;${pagination.total}&nbsp;条&nbsp;${pagination.pageSize}条/页&nbsp;
-        <c:if test="${pagination.pageNum gt 1}">
-            <a onclick="loadPreviousPage()">上一页</a>
-        </c:if>
-        ${pagination.pageNum} / ${requestScope.totalPage}
-        <c:if test="${requestScope.pageNum lt requestScope.totalPage}">
-            <a onclick="loadNextPage()">下一页</a>
-        </c:if>
+    <div class="foot">
+        <div class="foot_page">
+            共&nbsp;${pagination.total}&nbsp;条&nbsp;${pagination.pageSize}条/页&nbsp;
+            <c:if test="${pagination.pageNum gt 1}">
+                <a onclick="loadPreviousPage()">上一页</a>
+            </c:if>
+            ${pagination.pageNum} / ${requestScope.totalPage}
+            <c:if test="${pagination.pageNum lt requestScope.totalPage}">
+                <a onclick="loadNextPage()">下一页</a>
+            </c:if>
+        </div>
+        <div class="foot_add">
+            <button onclick="showAddPopup()">添加</button>
+        </div>
     </div>
 </div>
 
-<div id="overlay" class="overlay">
-</div>
+<div id="overlay" class="overlay"></div>
 
 <div id="popup_add" class="popup">
     <h2>添加部门</h2>
@@ -91,7 +94,7 @@
             <select id="addType" name="type">
                 <option value="1">行政部门</option>
                 <option value="2">直属部门</option>
-                <option value="1">学院</option>
+                <option value="3">学院</option>
             </select>
         </div>
         <div>
@@ -118,7 +121,7 @@
             </select>
         </div>
         <div>
-            <label for="updateName">学院名称:</label>
+            <label for="updateName">部门名称:</label>
             <input type="text" id="updateName" name="name"/>
         </div>
         <div>
@@ -127,11 +130,11 @@
         </div>
     </form>
 </div>
-</body>
-</html>
+</div>>
+
 <script>
     let currPage = ${pagination.pageNum};
-    let totalPage =${requestScope.totalPage};
+    let totalPage = ${requestScope.totalPage};
 
     function loadNextPage() {
         if (currPage === totalPage) {
@@ -156,11 +159,11 @@
         document.getElementById("updateType").value = type;
         document.getElementById("updateName").value = name;
 
-        showUpdatePopup()
+        showUpdatePopup();
     }
 
     function deleteDepartment(id) {
-        window.location.href = "${pageContext.request.contextPath}/admin/department/delete?id=" + id
+        window.location.href = "${pageContext.request.contextPath}/admin/department/delete?id=" + id;
     }
 
     function showUpdatePopup() {
@@ -191,3 +194,5 @@
         popup.style.display = 'none';
     }
 </script>
+</body>
+</html>

@@ -27,9 +27,8 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(jakarta.servlet.http.HttpServletRequest req, jakarta.servlet.http.HttpServletResponse resp) throws java.io.IOException, ServletException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        Admin admin= Admin.builder().build();
                 try {
-                    admin = adminService.checkAdminByPassword(username,password);
+                    Admin admin = adminService.checkAdminByPassword(username,password);
 
                     Calendar calendar =new GregorianCalendar();
                     calendar.setTime(admin.getDate());
@@ -49,7 +48,7 @@ public class LoginServlet extends HttpServlet {
                         if (admin.getAdminType() == Admin.AdminType.SYSTEM) {
                             resp.sendRedirect("/system.jsp");
                         } else if (admin.getAdminType() == Admin.AdminType.SCHOOL) {
-                            resp.sendRedirect("/school.jsp");
+                            resp.sendRedirect("/admin/department/list?pageNum=1&pageSize=10");
                         } else if (admin.getAdminType() == Admin.AdminType.DEPARTMENT) {
                             resp.sendRedirect("/admin/department/list?pageNum=1&pageSize=10");
                         } else if (admin.getAdminType() == Admin.AdminType.AUDIT) {

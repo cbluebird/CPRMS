@@ -6,6 +6,9 @@ import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Department;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author XiMo
  */
@@ -22,6 +25,10 @@ public class DepartmentService {
                 .total(departmentDao.count())
                 .list(departmentDao.findByPage(pageNum, pageSize))
                 .build();
+    }
+
+    public ArrayList<Department> getAll() {
+        return departmentDao.getAll();
     }
 
     public void addDepartment(Department.Type type, String name) {

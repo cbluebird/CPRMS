@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 
 @Slf4j
-@WebFilter("/admin/*")
+@WebFilter("/admi/*")
 public class AuthFilter implements Filter {
 
     private final RoleService roleService = new RoleService();
@@ -31,11 +31,10 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
-        Integer id = Integer.parseInt((String) session.getAttribute("user_id"));
-        String uri = request.getRequestURI();
-        System.out.println(uri);
-        System.out.println(id);
         try {
+            Integer id = Integer.parseInt((String) session.getAttribute("user_id"));
+            String uri = request.getRequestURI();
+            System.out.println(id);
             Admin admin = adminService.getAdminByID(id);
             roleService.checkPermission(uri, admin);
         } catch (BizException e) {

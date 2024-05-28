@@ -170,6 +170,34 @@ public class DepartmentDao {
         }
     }
 
+    public ArrayList<Department> getAll() {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "SELECT * FROM department ";
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            ArrayList<Department> departmentList = new ArrayList<Department>();
+            while (rs.next()) {
+                departmentList.add(Department.builder()
+                        .id(rs.getInt("id"))
+                        .type(Department.Type.getType(rs.getInt("type")))
+                        .name(rs.getString("name"))
+                        .pubic(rs.getBoolean("public"))
+                        .business(rs.getBoolean("business"))
+                        .build());
+            }
+            System.out.println(departmentList.size());
+            return departmentList;
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt, rs);
+        }
+    }
+
     public int count() {
         Connection conn = null;
         PreparedStatement stmt = null;
