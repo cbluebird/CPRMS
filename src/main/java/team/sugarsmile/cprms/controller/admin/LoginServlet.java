@@ -45,8 +45,6 @@ public class LoginServlet extends HttpServlet {
 
                     if (admin != null) {
                         req.getSession().setAttribute("admin", admin);
-                        req.setAttribute("type",admin.getAdminType().getValue());
-                        //req.getRequestDispatcher("/homepage.jsp").forward(req, resp);
                         resp.sendRedirect("/homepage.jsp");
                     } else {
                         resp.sendRedirect("/login.jsp");

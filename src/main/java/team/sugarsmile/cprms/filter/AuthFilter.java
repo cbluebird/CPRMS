@@ -23,7 +23,6 @@ public class AuthFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
     }
 
     @Override
@@ -35,15 +34,15 @@ public class AuthFilter implements Filter {
             Admin admin = (Admin) session.getAttribute("admin");
             String uri = request.getRequestURI();
             Admin adminCheck = adminService.getAdminByID(admin.getId());
-            roleService.checkPermission(uri, admin);
+            roleService.checkPermission(uri, adminCheck);
         } catch (BizException e) {
-            response.sendRedirect("/login.jsp?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
+            response.sendRedirect("/login.jsp");
         }
     }
 
     @Override
     public void destroy() {
-        Filter.super.destroy();
+
     }
 }
 

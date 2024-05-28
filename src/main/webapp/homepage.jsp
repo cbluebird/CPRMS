@@ -10,7 +10,6 @@
 <%@ page import="team.sugarsmile.cprms.model.Admin"%>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.time.LocalDate" %>
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -18,7 +17,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/homepage.css">
 </head>
 <body>
-<h1>Welcome to the 管理员系统</h1>
+
 <div class="sidebar">
     <a href="${pageContext.request.contextPath}/homepage.jsp">Home</a>
     <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
@@ -36,14 +35,11 @@
             LocalDate date = LocalDate.now();
             admin = (Admin) session.getAttribute("admin");
         %>
-        <h2>Admin Information</h2>
-        <p><strong>Hello! 管理员</strong> <%= admin != null ? admin.getName() : "Unknown" %></p>
-        <p><strong>今天是:</strong> <%= date.format(formatter) %></p>
+        <h1>Welcome to the 管理员系统</h1>
+        <h2><strong>Hello! 管理员</strong> <%= admin != null ? admin.getName() : "Unknown" %></h2>
+        <h3><strong>今天是:</strong> <%= date.format(formatter) %></h3>
     </div>
 
-    <div class="footer">
-        &copy; 2024 Your Company Name. All rights reserved.
-    </div>
 </div>
 </body>
 </html>

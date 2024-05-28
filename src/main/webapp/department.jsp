@@ -63,10 +63,10 @@
                     </td>
                     <td>${department.name}</td>
                     <td>
-                        <button onclick="updateDepartment('${department.id}','${department.type.value}','${department.name}')">
+                        <button  class="modify" onclick="updateDepartment('${department.id}','${department.type.value}','${department.name}')">
                             修改
                         </button>
-                        <button onclick="deleteDepartment('${department.id}')">删除</button>
+                        <button class="delete" onclick="deleteDepartment('${department.id}')">删除</button>
                     </td>
                 </tr>
             </c:forEach>
