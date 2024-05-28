@@ -6,7 +6,7 @@
 <html>
 <head>
     <title>部门管理页面</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/table.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/table.css">
     <%
         String error = (String) session.getAttribute("error");
         if (error != null) {
@@ -23,8 +23,14 @@
 </head>
 <body>
 <div class="sidebar">
-    <a  class="active" href="${pageContext.request.contextPath}/admin/department/list?pageNum=1&pageSize=10">部门管理</a>
-    <a  href="${pageContext.request.contextPath}/admin/departmentAdmin/list?pageNum=1&pageSize=10">部门管理员</a>
+    <a href="${pageContext.request.contextPath}/homepage.jsp">Home</a>
+    <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
+    <c:if test="${admin.adminType.value eq 2}">
+        <a href="${pageContext.request.contextPath}/admin/department/list?pageNum=1&pageSize=10">部门管理</a>
+    </c:if>
+    <c:if test="${admin.adminType.value eq 2}">
+        <a href="${pageContext.request.contextPath}/admin/departmentAdmin/list?pageNum=1&pageSize=10">部门管理员</a>
+    </c:if>
 </div>
 <div class="content">
 <div id="departmentTable" class="table">

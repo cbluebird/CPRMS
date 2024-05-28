@@ -44,18 +44,10 @@ public class LoginServlet extends HttpServlet {
                     }
 
                     if (admin != null) {
-                        req.getSession().setAttribute("user_id", String.valueOf(admin.getId()));
-                        if (admin.getAdminType() == Admin.AdminType.SYSTEM) {
-                            resp.sendRedirect("/system.jsp");
-                        } else if (admin.getAdminType() == Admin.AdminType.SCHOOL) {
-                            resp.sendRedirect("/admin/department/list?pageNum=1&pageSize=10");
-                        } else if (admin.getAdminType() == Admin.AdminType.DEPARTMENT) {
-                            resp.sendRedirect("/admin/department/list?pageNum=1&pageSize=10");
-                        } else if (admin.getAdminType() == Admin.AdminType.AUDIT) {
-                            resp.sendRedirect("/audit.jsp");
-                        } else {
-                            resp.sendRedirect("/login.jsp");
-                        }
+                        req.getSession().setAttribute("admin", admin);
+                        req.setAttribute("type",admin.getAdminType().getValue());
+                        //req.getRequestDispatcher("/homepage.jsp").forward(req, resp);
+                        resp.sendRedirect("/homepage.jsp");
                     } else {
                         resp.sendRedirect("/login.jsp");
                     }

@@ -32,10 +32,9 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
         try {
-            Integer id = Integer.parseInt((String) session.getAttribute("user_id"));
+            Admin admin = (Admin) session.getAttribute("admin");
             String uri = request.getRequestURI();
-            System.out.println(id);
-            Admin admin = adminService.getAdminByID(id);
+            Admin adminCheck = adminService.getAdminByID(admin.getId());
             roleService.checkPermission(uri, admin);
         } catch (BizException e) {
             response.sendRedirect("/login.jsp?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
