@@ -5,6 +5,7 @@ import team.sugarsmile.cprms.dto.PaginationDto;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
+import team.sugarsmile.cprms.util.SM3;
 import team.sugarsmile.cprms.util.SM4;
 
 import java.sql.Date;
@@ -18,7 +19,7 @@ public class AdminService {
             throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户： " + userName + " 已存在");
         }
 
-        String pass= SM4.encryptSm4("zjut123456");
+        String pass= SM3.encrypt("zjut123456");
 
 
         adminDao.insert(Admin.builder()
@@ -38,13 +39,11 @@ public class AdminService {
             throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户" + userName + "不存在");
         }
 
-        String pass=SM4.decryptSm4(admin.getPassword());
+        String pass=SM3.encrypt(password);
 
-        if(!pass.equals(password)){
+        if(!pass.equals(admin.getPassword())){
             throw new BizException(ErrorCode.ADMIN_LOGIN_ERROR.getCode(), "用户：" + userName + " 密码错误");
         }
-
-        admin.setPassword(pass);
         
         return admin;
     }
@@ -59,7 +58,7 @@ public class AdminService {
             throw new BizException(ErrorCode.PASSWORD_SHORT.getCode(), "用户密码太短");
         }
 
-        String pass=SM4.encryptSm4(password);
+        String pass=SM3.encrypt(password);
 
         adminDao.updatePasswordByID(id, pass);
     }
@@ -77,7 +76,6 @@ public class AdminService {
                 .departmentID(departmentID)
                 .userName(userName)
                 .build());
-
     }
 
     public PaginationDto<Admin> findAdminList(int pageNum, int pageSize) {

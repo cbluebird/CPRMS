@@ -25,8 +25,8 @@ public class DepartmentDao {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, department.getType().getValue());
             stmt.setString(2, department.getName());
-            stmt.setBoolean(3, false);
-            stmt.setBoolean(4, false);
+            stmt.setBoolean(3, department.getSocial());
+            stmt.setBoolean(4, department.getBusiness());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
@@ -56,11 +56,13 @@ public class DepartmentDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "UPDATE department SET type = ?, name = ? WHERE id = ?";
+            String sql = "UPDATE department SET type = ?, name = ? ,public=?,business=? WHERE id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, department.getType().getValue());
             stmt.setString(2, department.getName());
-            stmt.setLong(3, department.getId());
+            stmt.setLong(5, department.getId());
+            stmt.setBoolean(3,department.getSocial());
+            stmt.setBoolean(4,department.getBusiness());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
@@ -69,23 +71,6 @@ public class DepartmentDao {
         }
     }
 
-    public void updatePermission(Department department) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        try {
-            conn = JDBCUtil.getConnection();
-            String sql = "UPDATE department SET public = ?, business = ? WHERE id = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, department.getType().getValue());
-            stmt.setBoolean(2, department.getPubic());
-            stmt.setBoolean(3, department.getBusiness());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
-        } finally {
-            JDBCUtil.close(conn, stmt);
-        }
-    }
 
     public Department findById(int id) {
         Connection conn = null;
@@ -102,7 +87,7 @@ public class DepartmentDao {
                         .id(rs.getInt("id"))
                         .type(Department.Type.getType(rs.getInt("type")))
                         .name(rs.getString("name"))
-                        .pubic(rs.getBoolean("public"))
+                        .social(rs.getBoolean("public"))
                         .business(rs.getBoolean("business"))
                         .build();
             }
@@ -129,7 +114,7 @@ public class DepartmentDao {
                         .id(rs.getInt("id"))
                         .type(Department.Type.getType(rs.getInt("type")))
                         .name(rs.getString("name"))
-                        .pubic(rs.getBoolean("public"))
+                        .social(rs.getBoolean("public"))
                         .business(rs.getBoolean("business"))
                         .build();
             }
@@ -158,7 +143,7 @@ public class DepartmentDao {
                         .id(rs.getInt("id"))
                         .type(Department.Type.getType(rs.getInt("type")))
                         .name(rs.getString("name"))
-                        .pubic(rs.getBoolean("public"))
+                        .social(rs.getBoolean("public"))
                         .business(rs.getBoolean("business"))
                         .build());
             }
@@ -185,7 +170,7 @@ public class DepartmentDao {
                         .id(rs.getInt("id"))
                         .type(Department.Type.getType(rs.getInt("type")))
                         .name(rs.getString("name"))
-                        .pubic(rs.getBoolean("public"))
+                        .social(rs.getBoolean("public"))
                         .business(rs.getBoolean("business"))
                         .build());
             }

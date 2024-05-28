@@ -7,6 +7,7 @@ import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
 import team.sugarsmile.cprms.service.AdminService;
+import team.sugarsmile.cprms.util.SM3;
 
 import java.net.URLEncoder;
 import java.sql.Date;
@@ -37,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 
             Date nowDate = new Date(new java.util.Date().getTime());
 
-            if (admin.getPassword().equals("zjut123456") || outDate.before(nowDate)) {
+            if (admin.getPassword().equals(SM3.encrypt("zjut123456")) || outDate.before(nowDate)) {
                 resp.sendRedirect(req.getContextPath() + "/resetPassword.jsp?id=" + URLEncoder.encode(admin.getId().toString(), "UTF-8"));
                 return;
             }

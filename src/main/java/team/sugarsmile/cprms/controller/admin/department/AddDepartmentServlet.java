@@ -31,10 +31,12 @@ public class AddDepartmentServlet extends HttpServlet {
         try {
             Department.Type type = Department.Type.getType(Integer.parseInt(request.getParameter("type")));
             String name = request.getParameter("name");
+            Boolean social = "true".equals(request.getParameter("social"));
+            Boolean business="true".equals(request.getParameter("business"));
             if (name.isEmpty()) {
                 throw new BizException(ErrorCode.PARAM_ERROR.getCode(), "参数不能为空");
             }
-            departmentService.addDepartment(type, name);
+            departmentService.addDepartment(type, name,social,business);
         } catch (BizException e) {
             be = e;
         } catch (IllegalArgumentException e) {

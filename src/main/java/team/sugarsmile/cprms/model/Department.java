@@ -15,7 +15,7 @@ public class Department {
     Integer id;
     Type type;
     String name;
-    Boolean pubic;
+    Boolean social;
     Boolean business;
 
     @AllArgsConstructor

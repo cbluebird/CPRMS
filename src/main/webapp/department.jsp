@@ -41,6 +41,8 @@
                 <th>部门编号</th>
                 <th>部门类型</th>
                 <th>部门名称</th>
+                <th>查看社会预约权限</th>
+                <th>查看公众预约权限</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -63,7 +65,27 @@
                     </td>
                     <td>${department.name}</td>
                     <td>
-                        <button  class="modify" onclick="updateDepartment('${department.id}','${department.type.value}','${department.name}')">
+                        <c:choose>
+                            <c:when test="${department.social}">
+                                拥有
+                            </c:when>
+                            <c:otherwise>
+                                无
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${department.business}">
+                                拥有
+                            </c:when>
+                            <c:otherwise>
+                                无
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        <button  class="modify" onclick="updateDepartment('${department.id}','${department.type.value}','${department.name}','${department.social}','${department.business}')">
                             修改
                         </button>
                         <button class="delete" onclick="deleteDepartment('${department.id}')">删除</button>
@@ -108,6 +130,14 @@
             <input type="text" id="addName" name="name"/>
         </div>
         <div>
+            <label for="addSocial">查看社会预约权限:</label>
+            <input type="checkbox" id="addSocial" name="social" value="true"/>
+        </div>
+        <div>
+            <label for="addBusiness">查看公务预约权限:</label>
+            <input type="checkbox" id="addBusiness" name="business" value="true"/>
+        </div>
+        <div>
             <button type="submit">提交</button>
             <button type="button" onclick="closeAddPopup()">取消</button>
         </div>
@@ -129,6 +159,14 @@
         <div>
             <label for="updateName">部门名称:</label>
             <input type="text" id="updateName" name="name"/>
+        </div>
+        <div>
+            <label for="updateSocial">查看社会预约权限:</label>
+            <input type="checkbox" id="updateSocial" name="social" value="true"/>
+        </div>
+        <div>
+            <label for="updateBusiness">查看公务预约权限:</label>
+            <input type="checkbox" id="updateBusiness" name="business" value="true"/>
         </div>
         <div>
             <button type="submit">保存</button>
@@ -160,10 +198,12 @@
         window.location.href = "${pageContext.request.contextPath}/admin/department/list?pageNum=" + currPage + "&pageSize=10";
     }
 
-    function updateDepartment(id, type, name) {
+    function updateDepartment(id, type, name, social, business) {
         document.getElementById("updateId").value = id;
         document.getElementById("updateType").value = type;
         document.getElementById("updateName").value = name;
+        document.getElementById("updateSocial").value = social;
+        document.getElementById("updateBusiness").value = business;
 
         showUpdatePopup();
     }
