@@ -21,7 +21,7 @@ public class OfficialAppointment {
     private String unit;
     private Transportation transportation;
     private String licensePlate;
-    private Long departmentId;
+    private Integer departmentId;
     private String receptionist;
     private String reason;
     private Status status;

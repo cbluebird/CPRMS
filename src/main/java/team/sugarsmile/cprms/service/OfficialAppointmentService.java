@@ -4,8 +4,13 @@ import team.sugarsmile.cprms.dao.OfficialAppointmentDao;
 import team.sugarsmile.cprms.dto.PaginationDto;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
+import team.sugarsmile.cprms.exception.SystemException;
 import team.sugarsmile.cprms.model.OfficialAppointment;
+import team.sugarsmile.cprms.util.JDBCUtil;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,4 +55,22 @@ public class OfficialAppointmentService {
                 .list(list)
                 .build();
     }
+
+    public PaginationDto<OfficialAppointment> searchAppointments(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, String receptionist, Integer status, Integer departmentId,int pageNum, int pageSize) {
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 10 : pageSize;
+        int total = officialAppointmentDao.countForSearch(applyDate, appointmentDate, campus, unit, name, idCard,  receptionist, status, departmentId);
+        ArrayList<OfficialAppointment> list = officialAppointmentDao.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, departmentId, pageNum, pageSize);
+        return PaginationDto.<OfficialAppointment>builder()
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .total(total)
+                .list(list)
+                .build();
+    }
+
+    public void approveAppointment(Integer id, OfficialAppointment.Status status) {
+        officialAppointmentDao.approveAppointment(id,status);
+    }
 }
+

@@ -101,6 +101,18 @@ public class AdminService {
                 .build();
     }
 
+    public PaginationDto<Admin> getSystemList(int pageNum, int pageSize) {
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 10 : pageSize;
+
+        return PaginationDto.<Admin>builder()
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .total(adminDao.countAuditAndSchoolAdmin())
+                .list(adminDao.findAuditAndSchoolAdminList(pageNum, pageSize))
+                .build();
+    }
+
     public void deleteAdminByID(int id) {
         if (adminDao.findByID(id) == null) {
             throw new BizException(ErrorCode.DEPARTMENT_NOT_EXIST.getCode(), "管理员编号 " + id + " 不存在");

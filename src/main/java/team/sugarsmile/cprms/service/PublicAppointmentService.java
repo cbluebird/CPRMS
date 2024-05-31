@@ -4,6 +4,7 @@ import team.sugarsmile.cprms.dao.PublicAppointmentDao;
 import team.sugarsmile.cprms.dto.PaginationDto;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
+import team.sugarsmile.cprms.model.OfficialAppointment;
 import team.sugarsmile.cprms.model.PublicAppointment;
 
 import java.util.ArrayList;
@@ -50,4 +51,18 @@ public class PublicAppointmentService {
                 .list(list)
                 .build();
     }
+
+    public PaginationDto<PublicAppointment> searchAppointments(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, int pageNum, int pageSize) {
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        pageSize = pageSize <= 0 ? 10 : pageSize;
+        int total = publicAppointmentDao.countForSearch(applyDate, appointmentDate, campus, unit, name, idCard);
+        ArrayList<PublicAppointment> list = publicAppointmentDao.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, pageNum, pageSize);
+        return PaginationDto.<PublicAppointment>builder()
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .total(total)
+                .list(list)
+                .build();
+    }
+
 }

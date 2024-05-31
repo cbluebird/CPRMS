@@ -37,7 +37,7 @@ CREATE TABLE public_appointment (
     end_time DATE NOT NULL COMMENT '预约进校结束时间',
     unit VARCHAR(20) NOT NULL COMMENT '所在单位',
     transportation TINYINT NOT NULL COMMENT '交通方式 1:步行 2:自驾',
-    license_plate VARCHAR(10) NOT NULL COMMENT '车牌号(自驾填写)'
+    license_plate VARCHAR(10) COMMENT '车牌号(自驾填写)'
 );
 
 CREATE TABLE official_appointment (
@@ -51,7 +51,7 @@ CREATE TABLE official_appointment (
     end_time DATE NOT NULL COMMENT '预约进校结束时间',
     unit VARCHAR(20) NOT NULL COMMENT '所在单位',
     transportation TINYINT NOT NULL COMMENT '交通方式 1:步行 2:自驾',
-    license_plate VARCHAR(10) NOT NULL COMMENT '车牌号(自驾填写)',
+    license_plate VARCHAR(10) COMMENT '车牌号(自驾填写)',
     department_id BIGINT NOT NULL COMMENT '公务访问部门',
     receptionist VARCHAR(20) NOT NULL COMMENT '公务访问接待人',
     reason VARCHAR(200) NOT NULL COMMENT '来访事由',

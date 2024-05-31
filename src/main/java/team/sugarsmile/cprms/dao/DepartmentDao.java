@@ -174,7 +174,6 @@ public class DepartmentDao {
                         .business(rs.getBoolean("business"))
                         .build());
             }
-            System.out.println(departmentList.size());
             return departmentList;
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);

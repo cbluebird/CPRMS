@@ -21,7 +21,7 @@ public class OfficialAppointmentDao {
             stmt.setString(2, appointment.getIdCard());
             stmt.setString(3, appointment.getPhone());
             stmt.setInt(4, appointment.getCampus().getValue());
-            stmt.setTimestamp(5, new Timestamp(appointment.getCreateTime().getTime()));
+            stmt.setTimestamp(5,new Timestamp(System.currentTimeMillis()));
             stmt.setTimestamp(6, new Timestamp(appointment.getStartTime().getTime()));
             stmt.setTimestamp(7, new Timestamp(appointment.getEndTime().getTime()));
             stmt.setString(8, appointment.getUnit());
@@ -62,7 +62,7 @@ public class OfficialAppointmentDao {
                         .unit(rs.getString("unit"))
                         .transportation(OfficialAppointment.Transportation.getType(rs.getInt("transportation")))
                         .licensePlate(rs.getString("license_plate"))
-                        .departmentId(rs.getLong("department_id"))
+                        .departmentId(rs.getInt("department_id"))
                         .receptionist(rs.getString("receptionist"))
                         .reason(rs.getString("reason"))
                         .status(OfficialAppointment.Status.getType(rs.getInt("status")))
@@ -147,7 +147,7 @@ public class OfficialAppointmentDao {
                         .unit(rs.getString("unit"))
                         .transportation(OfficialAppointment.Transportation.getType(rs.getInt("transportation")))
                         .licensePlate(rs.getString("license_plate"))
-                        .departmentId(rs.getLong("department_id"))
+                        .departmentId(rs.getInt("department_id"))
                         .receptionist(rs.getString("receptionist"))
                         .reason(rs.getString("reason"))
                         .status(OfficialAppointment.Status.getType(rs.getInt("status")))
@@ -181,7 +181,7 @@ public class OfficialAppointmentDao {
         }
     }
 
-    public void approveAppointment(long id, OfficialAppointment.Status status) {
+    public void approveAppointment(Integer id, OfficialAppointment.Status status) {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
@@ -198,16 +198,40 @@ public class OfficialAppointmentDao {
         }
     }
 
-    public List<OfficialAppointment> findPendingAppointmentsByStatus(OfficialAppointment.Status status) {
+    public ArrayList<OfficialAppointment> searchAppointments(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, String receptionist, Integer status, Integer departmentId, int pageNum, int pageSize) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        List<OfficialAppointment> appointmentList = new ArrayList<>();
+        ArrayList<OfficialAppointment> appointmentList = new ArrayList<>();
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM official_appointment WHERE status = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, status.getValue());
+            StringBuilder sql = new StringBuilder("SELECT * FROM official_appointment WHERE 1=1");
+            if (applyDate != null && !applyDate.isEmpty()) sql.append(" AND DATE(create_time) = ?");
+            if (appointmentDate != null && !appointmentDate.isEmpty()) sql.append(" AND DATE(start_time) = ?");
+            if (campus != null) sql.append(" AND campus = ?");
+            if (unit != null && !unit.isEmpty()) sql.append(" AND unit LIKE ?");
+            if (name != null && !name.isEmpty()) sql.append(" AND name LIKE ?");
+            if (idCard != null && !idCard.isEmpty()) sql.append(" AND id_card = ?");
+            if (receptionist != null && !receptionist.isEmpty()) sql.append(" AND receptionist LIKE ?");
+            if (status != null) sql.append(" AND status = ?");
+            if (departmentId != null) sql.append(" AND department_id = ?");
+            sql.append(" LIMIT ?, ?");
+
+            stmt = conn.prepareStatement(sql.toString());
+
+            int index = 1;
+            if (applyDate != null && !applyDate.isEmpty()) stmt.setString(index++, applyDate);
+            if (appointmentDate != null && !appointmentDate.isEmpty()) stmt.setString(index++, appointmentDate);
+            if (campus != null) stmt.setInt(index++, campus);
+            if (unit != null && !unit.isEmpty()) stmt.setString(index++, unit );
+            if (name != null && !name.isEmpty()) stmt.setString(index++,  name );
+            if (idCard != null && !idCard.isEmpty()) stmt.setString(index++, idCard);
+            if (receptionist != null && !receptionist.isEmpty()) stmt.setString(index++,  receptionist );
+            if (status != null) stmt.setInt(index++, status);
+            if (departmentId != null) stmt.setLong(index++, departmentId);
+            stmt.setInt(index++, (pageNum - 1) * pageSize);
+            stmt.setInt(index++, pageSize);
+
             rs = stmt.executeQuery();
             while (rs.next()) {
                 appointmentList.add(OfficialAppointment.builder()
@@ -216,23 +240,67 @@ public class OfficialAppointmentDao {
                         .idCard(rs.getString("id_card"))
                         .phone(rs.getString("phone"))
                         .campus(OfficialAppointment.Campus.getType(rs.getInt("campus")))
-                        .createTime(rs.getTimestamp("create_time"))
                         .startTime(rs.getTimestamp("start_time"))
                         .endTime(rs.getTimestamp("end_time"))
+                        .createTime(rs.getTimestamp("create_time"))
                         .unit(rs.getString("unit"))
                         .transportation(OfficialAppointment.Transportation.getType(rs.getInt("transportation")))
                         .licensePlate(rs.getString("license_plate"))
-                        .departmentId(rs.getLong("department_id"))
+                        .departmentId(rs.getInt("department_id"))
                         .receptionist(rs.getString("receptionist"))
                         .reason(rs.getString("reason"))
                         .status(OfficialAppointment.Status.getType(rs.getInt("status")))
                         .build());
             }
-            return appointmentList;
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt, rs);
+        }
+        return appointmentList;
+    }
+
+    public int countForSearch(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, String receptionist, Integer status, Integer departmentId) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = JDBCUtil.getConnection();
+            StringBuilder sql =  new StringBuilder("SELECT COUNT(*) FROM official_appointment where 1=1");
+            if (applyDate != null && !applyDate.isEmpty()) sql.append(" AND DATE(create_time) = ?");
+            if (appointmentDate != null && !appointmentDate.isEmpty()) sql.append(" AND DATE(start_time) = ?");
+            if (campus != null) sql.append(" AND campus = ?");
+            if (unit != null && !unit.isEmpty()) sql.append(" AND unit LIKE ?");
+            if (name != null && !name.isEmpty()) sql.append(" AND name LIKE ?");
+            if (idCard != null && !idCard.isEmpty()) sql.append(" AND id_card = ?");
+            if (receptionist != null && !receptionist.isEmpty()) sql.append(" AND receptionist LIKE ?");
+            if (status != null) sql.append(" AND status = ?");
+            if (departmentId != null) sql.append(" AND department_id = ?");
+
+            stmt = conn.prepareStatement(sql.toString());
+
+            int index = 1;
+            if (applyDate != null && !applyDate.isEmpty()) stmt.setString(index++, applyDate);
+            if (appointmentDate != null && !appointmentDate.isEmpty()) stmt.setString(index++, appointmentDate);
+            if (campus != null) stmt.setInt(index++, campus);
+            if (unit != null && !unit.isEmpty()) stmt.setString(index++,  unit );
+            if (name != null && !name.isEmpty()) stmt.setString(index++,  name );
+            if (idCard != null && !idCard.isEmpty()) stmt.setString(index++, idCard);
+            if (receptionist != null && !receptionist.isEmpty()) stmt.setString(index++,  receptionist);
+            if (status != null) stmt.setInt(index++, status);
+            if (departmentId != null) stmt.setInt(index++, departmentId);
+
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
         } finally {
             JDBCUtil.close(conn, stmt, rs);
         }
     }
+
+
 }

@@ -30,16 +30,8 @@
     %>
 </head>
 <body>
-<div class="sidebar">
-    <a href="${pageContext.request.contextPath}/homepage.jsp">Home</a>
-    <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
-    <c:if test="${admin.adminType.value eq 2}">
-        <a href="${pageContext.request.contextPath}/admin/department/list?pageNum=1&pageSize=10">部门管理</a>
-    </c:if>
-    <c:if test="${admin.adminType.value eq 2}">
-        <a href="${pageContext.request.contextPath}/admin/departmentAdmin/list?pageNum=1&pageSize=10">部门管理员</a>
-    </c:if>
-</div>
+<jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
+<jsp:include page="sidebar.jsp" />
 <div class="content">
     <div id="departmentTable" class="table">
         <div class="table-container">
