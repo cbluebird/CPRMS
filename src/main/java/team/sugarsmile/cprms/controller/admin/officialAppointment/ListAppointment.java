@@ -16,20 +16,21 @@ import java.util.List;
 
 @WebServlet("/admin/appointment/official/list")
 public class ListAppointment extends HttpServlet {
-    private final OfficialAppointmentService officialAppointmentService=new OfficialAppointmentService();
+    private final OfficialAppointmentService officialAppointmentService = new OfficialAppointmentService();
     private final DepartmentService departmentService = new DepartmentService();
+
     @Override
     protected void doGet(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException, ServletException {
         BizException be = null;
         PaginationDto<OfficialAppointment> pagination = null;
-        HashMap<Integer,Department> departmentMap=new HashMap<Integer, Department>() ;
+        HashMap<Integer, Department> departmentMap = new HashMap<Integer, Department>();
         try {
             int pageNum = Integer.parseInt(request.getParameter("pageNum"));
             int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-            pagination = officialAppointmentService.findOfficialAppointmentList(pageNum,pageSize);
-            List<Department> d= departmentService.getAll();
-            for(Department department:d){
-                departmentMap.put(department.getId(),department);
+            pagination = officialAppointmentService.findOfficialAppointmentList(pageNum, pageSize);
+            List<Department> d = departmentService.getAll();
+            for (Department department : d) {
+                departmentMap.put(department.getId(), department);
             }
         } catch (NumberFormatException e) {
             be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
@@ -40,8 +41,8 @@ public class ListAppointment extends HttpServlet {
             throw be;
         } else {
             request.setAttribute("pagination", pagination);
-            request.setAttribute("departmentMap",departmentMap);
-            request.getRequestDispatcher(request.getContextPath()+"/officialAppointment.jsp").forward(request, response);
+            request.setAttribute("departmentMap", departmentMap);
+            request.getRequestDispatcher("/officialAppointment.jsp").forward(request, response);
         }
     }
 
