@@ -5,11 +5,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import team.sugarsmile.cprms.dto.PaginationDto;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
+import team.sugarsmile.cprms.model.Admin;
+import team.sugarsmile.cprms.model.Audit;
 import team.sugarsmile.cprms.model.Department;
 import team.sugarsmile.cprms.model.OfficialAppointment;
+import team.sugarsmile.cprms.service.AuditService;
 import team.sugarsmile.cprms.service.DepartmentService;
 import team.sugarsmile.cprms.service.OfficialAppointmentService;
 
@@ -21,7 +25,7 @@ import java.util.List;
 public class QueryAppointment extends HttpServlet {
     private final OfficialAppointmentService officialAppointmentService = new OfficialAppointmentService();
     private final DepartmentService departmentService = new DepartmentService();
-
+    private final AuditService auditService = new AuditService();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         BizException be = null;
@@ -29,6 +33,8 @@ public class QueryAppointment extends HttpServlet {
         HashMap<Integer, Department> departmentMap=new HashMap<Integer, Department>() ;
 
         try {
+            HttpSession session = request.getSession();
+            Admin admin = (Admin) session.getAttribute("admin");
             int pageNum = parseIntegerOrDefault(request.getParameter("pageNum"), 1);
             int pageSize = parseIntegerOrDefault(request.getParameter("pageSize"), 10);
             String applyDate = request.getParameter("create_time");
@@ -45,6 +51,7 @@ public class QueryAppointment extends HttpServlet {
             for(Department department:d){
                 departmentMap.put(department.getId(),department);
             }
+            auditService.createAudit("查询公务预约", Audit.AuditType.QUERY,admin.getId());
         } catch (NumberFormatException e) {
             be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
         }

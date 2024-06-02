@@ -5,9 +5,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
+import team.sugarsmile.cprms.model.Admin;
+import team.sugarsmile.cprms.model.Audit;
 import team.sugarsmile.cprms.service.AdminService;
+import team.sugarsmile.cprms.service.AuditService;
 
 import java.io.IOException;
 
@@ -15,11 +19,15 @@ import java.io.IOException;
 public class DeleteDepartmentAdminServlet extends HttpServlet {
 
     final private AdminService adminService=new AdminService();
+    private final AuditService auditService = new AuditService();
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BizException be = null;
         try {
+            HttpSession session = request.getSession();
+            Admin admin = (Admin) session.getAttribute("admin");
             int id = Integer.parseInt(request.getParameter("id"));
             adminService.deleteAdminByID(id);
+            auditService.createAudit("删除部门管理员", Audit.AuditType.DELETE,admin.getId());
         } catch (BizException e) {
             be = e;
         } catch (NumberFormatException e) {

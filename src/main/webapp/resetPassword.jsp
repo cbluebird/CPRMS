@@ -10,6 +10,7 @@
 <head>
     <title>重置密码</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -67,23 +68,25 @@
     </script>
 </head>
 <body>
-<form id="userForm" action="${pageContext.request.contextPath}/auth/rePassword" method="post">
-    <div class="login-form" id="form">
+<div class="container">
+    <div class="login-section">
+    <form class="login-form" id="userForm" action="${pageContext.request.contextPath}/auth/rePassword" method="post">
         <div class="title">
             <h1>重置密码</h1>
         </div>
         <div class="input-field">
-            <label for="password">新密码</label>
+            <i class="fas fa-user"></i>
             <input type="password" id="password" name="password" placeholder="请输入你的新密码" required>
         </div>
         <div class="input-field">
-            <label for="re_password">重复输入</label>
-            <input type="password" id="re_password" name="re_password" required>
+            <i class="fas fa-user"></i>
+            <input type="password" id="re_password" name="re_password" placeholder="重新输入你的密码" required>
         </div>
         <div class="input-field">
             <button type="button" id="submitButton">重置密码</button>
         </div>
+    </form>
     </div>
-</form>
+</div>
 </body>
 </html>

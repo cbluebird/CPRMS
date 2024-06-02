@@ -7,13 +7,16 @@ import jakarta.servlet.annotation.*;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
+import team.sugarsmile.cprms.model.Audit;
 import team.sugarsmile.cprms.service.AdminService;
+import team.sugarsmile.cprms.service.AuditService;
 
 import java.io.IOException;
 
 @WebServlet("/admin/system/add")
 public class AddAdminServlet extends HttpServlet {
     private final AdminService adminService =new AdminService();
+    private final AuditService auditService = new AuditService();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -23,6 +26,8 @@ public class AddAdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BizException be = null;
         try {
+            HttpSession session = request.getSession();
+            Admin admin = (Admin) session.getAttribute("admin");
             String name = request.getParameter("name");
             String phone = request.getParameter("phone");
             String userName = request.getParameter("userName");
@@ -31,6 +36,7 @@ public class AddAdminServlet extends HttpServlet {
                 throw new BizException(ErrorCode.PARAM_ERROR.getCode(), "参数不能为空");
             }
             adminService.addAdmin(type,phone,name,userName,0);
+            auditService.createAudit("添加管理员", Audit.AuditType.ADD,admin.getId());
         } catch (BizException e) {
             be = e;
         } catch (IllegalArgumentException e) {

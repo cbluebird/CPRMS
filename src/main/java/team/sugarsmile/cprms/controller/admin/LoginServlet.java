@@ -6,7 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
+import team.sugarsmile.cprms.model.Audit;
 import team.sugarsmile.cprms.service.AdminService;
+import team.sugarsmile.cprms.service.AuditService;
 import team.sugarsmile.cprms.util.SM3;
 
 import java.net.URLEncoder;
@@ -17,6 +19,7 @@ import java.util.GregorianCalendar;
 @WebServlet("/auth/login")
 public class LoginServlet extends HttpServlet {
     private final AdminService adminService = new AdminService();
+    private final AuditService auditService = new AuditService();
 
     @Override
     protected void doGet(jakarta.servlet.http.HttpServletRequest req, jakarta.servlet.http.HttpServletResponse resp) throws java.io.IOException {
@@ -45,6 +48,7 @@ public class LoginServlet extends HttpServlet {
 
             if (admin != null) {
                 req.getSession().setAttribute("admin", admin);
+                auditService.createAudit("管理员登录", Audit.AuditType.LOGIN,admin.getId());
                 resp.sendRedirect(req.getContextPath() + "/homepage.jsp");
             } else {
                 resp.sendRedirect(req.getContextPath() + "/login.jsp");

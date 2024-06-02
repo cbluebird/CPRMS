@@ -56,4 +56,12 @@ CREATE TABLE official_appointment (
     receptionist VARCHAR(20) NOT NULL COMMENT '公务访问接待人',
     reason VARCHAR(200) NOT NULL COMMENT '来访事由',
     status TINYINT NOT NULL COMMENT '审核状态 1:未审核 2:通过 3:驳回',
-)
+);
+
+CREATE TABLE audit (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    operate VARCHAR(64) NOT NULL COMMENT '操作',
+    admin_id BIGINT NOT NULL COMMENT '管理员id',
+    create_time DATE NOT NULL COMMENT '创建时间',
+    type TINYINT NOT NULL COMMENT '操作类型 1:登录 2:添加 3:删除 4:更新 5:查询'
+);

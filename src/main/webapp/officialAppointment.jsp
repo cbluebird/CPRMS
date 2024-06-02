@@ -61,7 +61,8 @@
                 </div>
                 <div class="row">
                     <button type="submit" class="btn btn-primary">查询</button>
-                    <button type="button" class="btn btn-secondary" onclick="window.location.href='appointmentStatistics.jsp'">统计</button>
+                    <label for="count">符合条件的记录总数：</label>
+                    <span type="text" id="count" name="count">${pagination.total}</span>>
                 </div>
             </form>
         </div>
