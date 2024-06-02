@@ -45,12 +45,24 @@ public class QueryAppointment extends HttpServlet {
             String idCard = request.getParameter("idCard");
             String receptionist = request.getParameter("receptionist");
             Integer status = parseIntegerOrNull(request.getParameter("status"));
-            Integer departmentId = parseIntegerOrNull(request.getParameter("departmentId"));
-            pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name,idCard, receptionist, status, departmentId, pageNum, pageSize);
+            Integer departmentId = parseIntegerOrNull(request.getParameter("department"));
+
             List<Department> d= departmentService.getAll();
             for(Department department:d){
                 departmentMap.put(department.getId(),department);
             }
+
+            if (admin.getAdminType() == Admin.AdminType.DEPARTMENT) {
+                Department department = departmentMap.get(admin.getDepartmentID());
+                if (department.getBusiness()) {
+                    pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, departmentId, pageNum, pageSize);
+                } else {
+                    pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, department.getId(), pageNum, pageSize);
+                }
+            } else {
+                pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, departmentId, pageNum, pageSize);
+            }
+
             auditService.createAudit("查询公务预约", Audit.AuditType.QUERY,admin.getId());
         } catch (NumberFormatException e) {
             be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());

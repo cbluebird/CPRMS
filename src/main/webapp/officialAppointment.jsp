@@ -46,7 +46,12 @@
                     <input type="text" id="idCard" name="idCard">
 
                     <label for="department">访问部门：</label>
-                    <input type="text" id="department" name="department">
+                    <select id="department" name="department">
+                        <option value="">请选择</option>
+                        <c:forEach items="${departmentMap}" var="entry">
+                            <option value="${entry.key}">${entry.value.name}</option>
+                        </c:forEach>
+                    </select>
 
                     <label for="receptionist">接待人：</label>
                     <input type="text" id="receptionist" name="receptionist">
@@ -62,7 +67,7 @@
                 <div class="row">
                     <button type="submit" class="btn btn-primary">查询</button>
                     <label for="count">符合条件的记录总数：</label>
-                    <span type="text" id="count" name="count">${pagination.total}</span>>
+                    <span type="text" id="count" name="count">${pagination.total}</span>
                 </div>
             </form>
         </div>
