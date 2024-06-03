@@ -28,10 +28,10 @@ public class AuthFilter implements Filter {
             String url = request.getServletPath();
             adminService.getAdminByID(admin.getId());
             roleService.checkPermission(url, admin);
-            filterChain.doFilter(servletRequest, servletResponse);
         } catch (BizException e) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
         }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
