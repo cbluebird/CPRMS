@@ -1,0 +1,30 @@
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: [ 'localhost:9090' ]
+        labels:
+          instance: prometheus
+
+  - job_name: mac
+    static_configs:
+      - targets: [ '192.168.0.1:9100' ]
+        labels:
+          instance: node_exporter
+
+  - job_name: mysql
+    static_configs:
+      - targets: [ '172.17.0.2:9104' ]
+        labels:
+          instance: mysqld_exporter
+
+  - job_name: redis
+    static_configs:
+      - targets: [ '172.17.0.3:9121' ]
+        labels:
+          instance: redis_exporter
+
+  - job_name: kafka
+    static_configs:
+      - targets: [ '172.17.0.4:9308' ]
+        labels:
+          instance: kafka_exporter

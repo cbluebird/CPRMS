@@ -1,0 +1,76 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: java_web
+      MYSQL_USER: java_web
+      MYSQL_PASSWORD: java_web
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+    volumes:
+      - ./deploy/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./custom/data/mysql/data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - java-web
+
+  redis:
+    image: redis/redis-stack:7.2.0-v2
+    restart: always
+    ports:
+      - 6379:6379
+      - 8001:8001
+    environment:
+      REDISEARCH_ARGS: "MAXSEARCHRESULTS 5"
+    networks:
+      - java-web
+
+  prometheus:
+    image: prom/prometheus
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - ./deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - java-web
+
+  grafana:
+    image: grafana/grafana
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./custom/grafana-storage:/var/lib/grafana
+    networks:
+      - java-web
+
+  mysqld-exporter:
+    image: prom/mysqld-exporter
+    restart: always
+    ports:
+      - 9104:9104
+    volumes:
+      - ./deploy/mysql_exporter/my.cnf:/.my.cnf
+    networks:
+      - java-web
+    environment:
+      DATA_SOURCE_NAME: "java_web:java_web@tcp(db:3306)/java_web"
+
+  redis-exporter:
+    image: oliver006/redis_exporter
+    restart: always
+    ports:
+      - 9121:9121
+    networks:
+      - java-web
+    command:
+      - '--redis.addr=redis://redis:6379'
+      - '--redis.password='
+
+networks:
+  java-web:
+    driver: bridge
