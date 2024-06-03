@@ -2,13 +2,11 @@ package team.sugarsmile.cprms.dao;
 
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.exception.SystemException;
-import team.sugarsmile.cprms.model.OfficialAppointment;
 import team.sugarsmile.cprms.model.PublicAppointment;
 import team.sugarsmile.cprms.util.JDBCUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PublicAppointmentDao {
     public void insert(PublicAppointment appointment) {
@@ -115,7 +113,6 @@ public class PublicAppointmentDao {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        ArrayList<PublicAppointment> appointmentList = new ArrayList<>();
         try {
             conn = JDBCUtil.getConnection();
             String sql = "SELECT * FROM public_appointment LIMIT ?, ?";
@@ -123,22 +120,7 @@ public class PublicAppointmentDao {
             stmt.setInt(1, (pageNum - 1) * pageSize);
             stmt.setInt(2, pageSize);
             rs = stmt.executeQuery();
-            while (rs.next()) {
-                appointmentList.add(PublicAppointment.builder()
-                        .id(rs.getLong("id"))
-                        .name(rs.getString("name"))
-                        .idCard(rs.getString("id_card"))
-                        .phone(rs.getString("phone"))
-                        .campus(PublicAppointment.Campus.getType(rs.getInt("campus")))
-                        .createTime(rs.getTimestamp("create_time"))
-                        .startTime(rs.getTimestamp("start_time"))
-                        .endTime(rs.getTimestamp("end_time"))
-                        .unit(rs.getString("unit"))
-                        .transportation(PublicAppointment.Transportation.getType(rs.getInt("transportation")))
-                        .licensePlate(rs.getString("license_plate"))
-                        .build());
-            }
-            return appointmentList;
+            return getAppointmentList(rs);
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
         } finally {
@@ -166,12 +148,55 @@ public class PublicAppointmentDao {
         }
     }
 
+    public ArrayList<PublicAppointment> findByPage(String name, String idCard, String phone, int pageNum, int pageSize) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "SELECT * FROM public_appointment WHERE name = ? AND id_card = ? AND phone = ? ORDER BY create_time DESC LIMIT ?, ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, name);
+            stmt.setString(2, idCard);
+            stmt.setString(3, phone);
+            stmt.setInt(4, (pageNum - 1) * pageSize);
+            stmt.setInt(5, pageSize);
+            rs = stmt.executeQuery();
+            return getAppointmentList(rs);
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt, rs);
+        }
+    }
+
+    public int count(String name, String idCard, String phone) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "SELECT COUNT(*) FROM public_appointment WHERE name = ? AND id_card = ? AND phone = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, name);
+            stmt.setString(2, idCard);
+            stmt.setString(3, phone);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt, rs);
+        }
+    }
 
     public ArrayList<PublicAppointment> searchAppointments(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, int pageNum, int pageSize) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        ArrayList<PublicAppointment> appointmentList = new ArrayList<>();
         try {
             conn = JDBCUtil.getConnection();
             StringBuilder sql = new StringBuilder("SELECT * FROM public_appointment WHERE 1=1");
@@ -189,34 +214,19 @@ public class PublicAppointmentDao {
             if (applyDate != null && !applyDate.isEmpty()) stmt.setString(index++, applyDate);
             if (appointmentDate != null && !appointmentDate.isEmpty()) stmt.setString(index++, appointmentDate);
             if (campus != null) stmt.setInt(index++, campus);
-            if (unit != null && !unit.isEmpty()) stmt.setString(index++, unit );
-            if (name != null && !name.isEmpty()) stmt.setString(index++,  name );
+            if (unit != null && !unit.isEmpty()) stmt.setString(index++, unit);
+            if (name != null && !name.isEmpty()) stmt.setString(index++, name);
             if (idCard != null && !idCard.isEmpty()) stmt.setString(index++, idCard);
             stmt.setInt(index++, (pageNum - 1) * pageSize);
             stmt.setInt(index++, pageSize);
 
             rs = stmt.executeQuery();
-            while (rs.next()) {
-                appointmentList.add(PublicAppointment.builder()
-                        .id(rs.getLong("id"))
-                        .name(rs.getString("name"))
-                        .idCard(rs.getString("id_card"))
-                        .phone(rs.getString("phone"))
-                        .campus(PublicAppointment.Campus.getType(rs.getInt("campus")))
-                        .startTime(rs.getTimestamp("start_time"))
-                        .endTime(rs.getTimestamp("end_time"))
-                        .createTime(rs.getTimestamp("create_time"))
-                        .unit(rs.getString("unit"))
-                        .transportation(PublicAppointment.Transportation.getType(rs.getInt("transportation")))
-                        .licensePlate(rs.getString("license_plate"))
-                        .build());
-            }
+            return getAppointmentList(rs);
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
         } finally {
             JDBCUtil.close(conn, stmt, rs);
         }
-        return appointmentList;
     }
 
     public int countForSearch(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard) {
@@ -225,7 +235,7 @@ public class PublicAppointmentDao {
         ResultSet rs = null;
         try {
             conn = JDBCUtil.getConnection();
-            StringBuilder sql =  new StringBuilder("SELECT COUNT(*) FROM public_appointment where 1=1");
+            StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM public_appointment where 1=1");
             if (applyDate != null && !applyDate.isEmpty()) sql.append(" AND DATE(create_time) = ?");
             if (appointmentDate != null && !appointmentDate.isEmpty()) sql.append(" AND DATE(start_time) = ?");
             if (campus != null) sql.append(" AND campus = ?");
@@ -239,8 +249,8 @@ public class PublicAppointmentDao {
             if (applyDate != null && !applyDate.isEmpty()) stmt.setString(index++, applyDate);
             if (appointmentDate != null && !appointmentDate.isEmpty()) stmt.setString(index++, appointmentDate);
             if (campus != null) stmt.setInt(index++, campus);
-            if (unit != null && !unit.isEmpty()) stmt.setString(index++,  unit );
-            if (name != null && !name.isEmpty()) stmt.setString(index++,  name );
+            if (unit != null && !unit.isEmpty()) stmt.setString(index++, unit);
+            if (name != null && !name.isEmpty()) stmt.setString(index++, name);
             if (idCard != null && !idCard.isEmpty()) stmt.setString(index++, idCard);
             rs = stmt.executeQuery();
             if (rs.next()) {
@@ -252,5 +262,25 @@ public class PublicAppointmentDao {
         } finally {
             JDBCUtil.close(conn, stmt, rs);
         }
+    }
+
+    private ArrayList<PublicAppointment> getAppointmentList(ResultSet rs) throws SQLException {
+        ArrayList<PublicAppointment> appointmentList = new ArrayList<>();
+        while (rs.next()) {
+            appointmentList.add(PublicAppointment.builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .idCard(rs.getString("id_card"))
+                    .phone(rs.getString("phone"))
+                    .campus(PublicAppointment.Campus.getType(rs.getInt("campus")))
+                    .startTime(rs.getTimestamp("start_time"))
+                    .endTime(rs.getTimestamp("end_time"))
+                    .createTime(rs.getTimestamp("create_time"))
+                    .unit(rs.getString("unit"))
+                    .transportation(PublicAppointment.Transportation.getType(rs.getInt("transportation")))
+                    .licensePlate(rs.getString("license_plate"))
+                    .build());
+        }
+        return appointmentList;
     }
 }

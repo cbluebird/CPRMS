@@ -1,0 +1,46 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #6dd5ed, #2193b0);
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    width: 350px;
+    box-sizing: border-box;
+}
+
+.name {
+    font-size: 20px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+}
+
+.currentTime {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.validTime {
+    font-size: 18px;
+    color: #ababab;
+    text-align: center;
+}
+
+.passcode {
+    text-align: center;
+}
+
+.notice {
+    text-align: center;
+    margin-top: 5px;
+    color: #666;
+}
