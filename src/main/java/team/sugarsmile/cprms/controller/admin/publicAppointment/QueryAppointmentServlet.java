@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @WebServlet("/admin/appointment/public/query")
-public class QueryAppointment extends HttpServlet {
+public class QueryAppointmentServlet extends HttpServlet {
     private final PublicAppointmentService publicAppointmentService = new PublicAppointmentService();
     private final DepartmentService departmentService = new DepartmentService();
     private final AuditService auditService = new AuditService();

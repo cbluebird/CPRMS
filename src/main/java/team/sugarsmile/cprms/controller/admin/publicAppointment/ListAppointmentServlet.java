@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @WebServlet("/admin/appointment/public/list")
-public class ListAppointment extends HttpServlet {
+public class ListAppointmentServlet extends HttpServlet {
     private final PublicAppointmentService publicAppointmentService = new PublicAppointmentService();
     private final DepartmentService departmentService = new DepartmentService();
 
