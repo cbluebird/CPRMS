@@ -59,7 +59,7 @@ public class ListAppointment extends HttpServlet {
         } else {
             request.setAttribute("pagination", pagination);
             request.setAttribute("departmentMap", departmentMap);
-            request.getRequestDispatcher(request.getContextPath() + "/publicAppointment.jsp").forward(request, response);
+            request.getRequestDispatcher("/publicAppointment.jsp").forward(request, response);
         }
     }
 
