@@ -21,7 +21,7 @@ public class DepartmentDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "INSERT INTO department (type, name, public, business) VALUES (?, ? ,? ,?)";
+            String sql = "INSERT INTO department (type, name, public, business) VALUES (?, ?, ?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, department.getType().getValue());
             stmt.setString(2, department.getName());
@@ -56,13 +56,13 @@ public class DepartmentDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "UPDATE department SET type = ?, name = ? ,public=?,business=? WHERE id = ?";
+            String sql = "UPDATE department SET type = ?, name = ?, public = ?, business = ? WHERE id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, department.getType().getValue());
             stmt.setString(2, department.getName());
             stmt.setLong(5, department.getId());
-            stmt.setBoolean(3,department.getSocial());
-            stmt.setBoolean(4,department.getBusiness());
+            stmt.setBoolean(3, department.getSocial());
+            stmt.setBoolean(4, department.getBusiness());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);

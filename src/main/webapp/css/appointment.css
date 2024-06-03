@@ -231,8 +231,14 @@ button.delete:active {
         height: auto;
         position: relative;
     }
-    .sidebar a { float: left; }
-    .content { margin-left: 0; }
+
+    .sidebar a {
+        float: left;
+    }
+
+    .content {
+        margin-left: 0;
+    }
 }
 
 @media screen and (max-width: 400px) {

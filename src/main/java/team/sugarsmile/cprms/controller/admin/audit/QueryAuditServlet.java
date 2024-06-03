@@ -10,55 +10,51 @@ import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Audit;
 import team.sugarsmile.cprms.model.Department;
-import team.sugarsmile.cprms.model.PublicAppointment;
 import team.sugarsmile.cprms.service.AuditService;
 import team.sugarsmile.cprms.service.DepartmentService;
-import team.sugarsmile.cprms.service.PublicAppointmentService;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
 @WebServlet("/admin/audit/query")
-public class QueryAudit extends HttpServlet {
+public class QueryAuditServlet extends HttpServlet {
     private final AuditService auditService = new AuditService();
     private final DepartmentService departmentService = new DepartmentService();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BizException be = null;
         PaginationDto<Audit> pagination = null;
-        HashMap<Integer, Department> departmentMap=new HashMap<Integer, Department>() ;
-
+        HashMap<Integer, Department> departmentMap = new HashMap<Integer, Department>();
         try {
             int pageNum = parseIntegerOrDefault(request.getParameter("pageNum"), 1);
             int pageSize = parseIntegerOrDefault(request.getParameter("pageSize"), 10);
             String applyDate = request.getParameter("create_time");
-            String operate=request.getParameter("operate");
+            String operate = request.getParameter("operate");
             Integer type = parseIntegerOrNull(request.getParameter("type"));
             Integer adminID = parseIntegerOrNull(request.getParameter("admin_id"));
-            pagination = auditService.searchAppointments(operate,type,adminID,applyDate ,pageNum,pageSize);
-            List<Department> d= departmentService.getAll();
-            for(Department department:d){
-                departmentMap.put(department.getId(),department);
+            pagination = auditService.searchAppointments(operate, type, adminID, applyDate, pageNum, pageSize);
+            List<Department> departmentList = departmentService.getAll();
+            for (Department department : departmentList) {
+                departmentMap.put(department.getId(), department);
             }
         } catch (NumberFormatException e) {
             be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
         }
-
         if (be != null) {
             request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
             response.sendRedirect(request.getContextPath() + "/admin/audit/list?pageNum=1&pageSize=10");
             throw be;
         } else {
             request.setAttribute("pagination", pagination);
-            request.setAttribute("departmentMap",departmentMap);
+            request.setAttribute("departmentMap", departmentMap);
             request.getRequestDispatcher("/audit.jsp").forward(request, response);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 

@@ -5,22 +5,17 @@ import team.sugarsmile.cprms.dto.PaginationDto;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
-import team.sugarsmile.cprms.util.SM3;
-import team.sugarsmile.cprms.util.SM4;
-
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import team.sugarsmile.cprms.util.SM3Util;
 
 public class AdminService {
-    private final AdminDao adminDao=new AdminDao();
-    public void addAdmin(Admin.AdminType type, String phone,String name,String userName,Integer departmentID) {
+    private final AdminDao adminDao = new AdminDao();
+
+    public void addAdmin(Admin.AdminType type, String phone, String name, String userName, Integer departmentID) {
         if (adminDao.findByUserName(userName) != null) {
             throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户： " + userName + " 已存在");
         }
 
-        String pass= SM3.encrypt("zjut123456");
-
+        String pass = SM3Util.encrypt("zjut123456");
 
         adminDao.insert(Admin.builder()
                 .adminType(type)
@@ -32,39 +27,37 @@ public class AdminService {
                 .build());
     }
 
-    public Admin checkAdminByPassword(String userName,String password){
-
-        Admin admin=adminDao.findByUserName(userName);
+    public Admin checkAdminByPassword(String userName, String password) {
+        Admin admin = adminDao.findByUserName(userName);
         if (admin == null) {
             throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户" + userName + "不存在");
         }
 
-        String pass=SM3.encrypt(password);
+        String pass = SM3Util.encrypt(password);
 
-        if(!pass.equals(admin.getPassword())){
+        if (!pass.equals(admin.getPassword())) {
             throw new BizException(ErrorCode.ADMIN_LOGIN_ERROR.getCode(), "用户：" + userName + " 密码错误");
         }
-        
+
         return admin;
     }
 
-    public void updatePasswordByID(Integer id,String password){
-
-        if(id==0||adminDao.findByID(id)==null){
+    public void updatePasswordByID(Integer id, String password) {
+        if (id == 0 || adminDao.findByID(id) == null) {
             throw new BizException(ErrorCode.ADMIN_NOT_EXIST.getCode(), "用户编号 " + id + " 不存在");
         }
 
-        if(password.length()<6){
+        if (password.length() < 6) {
             throw new BizException(ErrorCode.PASSWORD_SHORT.getCode(), "用户密码太短");
         }
 
-        String pass=SM3.encrypt(password);
+        String pass = SM3Util.encrypt(password);
 
         adminDao.updatePasswordByID(id, pass);
     }
 
-    public void updateAdmin(Integer id,Admin.AdminType type,String phone,String name,String userName,Integer departmentID){
-        if(id==0||adminDao.findByID(id)==null){
+    public void updateAdmin(Integer id, Admin.AdminType type, String phone, String name, String userName, Integer departmentID) {
+        if (id == 0 || adminDao.findByID(id) == null) {
             throw new BizException(ErrorCode.ADMIN_NOT_EXIST.getCode(), "用户编号 " + id + " 不存在");
         }
 
@@ -97,7 +90,7 @@ public class AdminService {
                 .pageNum(pageNum)
                 .pageSize(pageSize)
                 .total(adminDao.countByType(type))
-                .list(adminDao.findByPageAndType(pageNum, pageSize,type))
+                .list(adminDao.findByPageAndType(pageNum, pageSize, type))
                 .build();
     }
 
@@ -120,13 +113,11 @@ public class AdminService {
         adminDao.delete(id);
     }
 
-    public Admin getAdminByID(int id){
-        Admin admin= adminDao.findByID(id);
-        if(admin==null){
+    public Admin getAdminByID(int id) {
+        Admin admin = adminDao.findByID(id);
+        if (admin == null) {
             throw new BizException(ErrorCode.DEPARTMENT_NOT_EXIST.getCode(), "管理员编号 " + id + " 不存在");
         }
         return admin;
     }
-
-
 }

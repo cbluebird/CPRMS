@@ -3,16 +3,14 @@ package team.sugarsmile.cprms.service;
 import team.sugarsmile.cprms.dao.AuditDao;
 import team.sugarsmile.cprms.dto.PaginationDto;
 import team.sugarsmile.cprms.model.Audit;
-import team.sugarsmile.cprms.model.PublicAppointment;
 
 import java.util.ArrayList;
 
 public class AuditService {
-
     private final AuditDao auditDao = new AuditDao();
 
-    public void createAudit(String operate, Audit.AuditType type,Integer adminID) {
-        Audit audit=Audit.builder().adminId(adminID).type(type).operate(operate).build();
+    public void createAudit(String operate, Audit.AuditType type, Integer adminID) {
+        Audit audit = Audit.builder().adminId(adminID).type(type).operate(operate).build();
         auditDao.insert(audit);
     }
 
@@ -40,11 +38,11 @@ public class AuditService {
         auditDao.delete(id);
     }
 
-    public PaginationDto<Audit> searchAppointments(String operate, Integer type,Integer adminID,String createDate ,int pageNum, int pageSize) {
+    public PaginationDto<Audit> searchAppointments(String operate, Integer type, Integer adminID, String createDate, int pageNum, int pageSize) {
         pageNum = pageNum <= 0 ? 1 : pageNum;
         pageSize = pageSize <= 0 ? 10 : pageSize;
-        int total = auditDao.countForSearch(operate, type, adminID,createDate);
-        ArrayList<Audit> list = auditDao.searchAudit( operate, type, adminID,createDate, pageNum, pageSize);
+        int total = auditDao.countForSearch(operate, type, adminID, createDate);
+        ArrayList<Audit> list = auditDao.searchAudit(operate, type, adminID, createDate, pageNum, pageSize);
         return PaginationDto.<Audit>builder()
                 .pageNum(pageNum)
                 .pageSize(pageSize)
@@ -52,5 +50,4 @@ public class AuditService {
                 .list(list)
                 .build();
     }
-
 }

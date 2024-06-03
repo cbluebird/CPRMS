@@ -1,16 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: crk
-  Date: 2024/6/2
-  Time: 16:48
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<jsp:useBean id="pagination" scope="request" type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Audit>"/>
+<jsp:useBean id="pagination" scope="request"
+             type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Audit>"/>
 <jsp:useBean id="departmentMap" scope="request" type="java.util.HashMap"/>
-<fmt:formatNumber var="totalPage" scope="request" type="number" value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}" maxFractionDigits="0"/>
+<fmt:formatNumber var="totalPage" scope="request" type="number"
+                  value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}"
+                  maxFractionDigits="0"/>
 <html>
 <head>
     <title>审计管理</title>
@@ -30,7 +26,7 @@
 </head>
 <body>
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
-<jsp:include page="sidebar.jsp" />
+<jsp:include page="sidebar.jsp"/>
 <div class="content">
     <div class="container">
         <div class="header">
@@ -78,7 +74,7 @@
                 <tbody>
                 <c:forEach var="audit" items="${pagination.list}">
                     <tr>
-                        <td><fmt:formatDate value="${audit.createTime}" pattern="yyyy-MM-dd" /></td>
+                        <td><fmt:formatDate value="${audit.createTime}" pattern="yyyy-MM-dd"/></td>
                         <td>
                             <c:choose>
                                 <c:when test="${audit.type.value == 1}">登录</c:when>

@@ -1,16 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: crk
-  Date: 2024/5/27
-  Time: 22:31
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<jsp:useBean id="pagination" scope="request" type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Admin>"/>
+<jsp:useBean id="pagination" scope="request"
+             type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Admin>"/>
 <jsp:useBean id="departmentMap" scope="request" type="java.util.HashMap"/>
-<fmt:formatNumber var="totalPage" scope="request" type="number" value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}" maxFractionDigits="0"/>
+<fmt:formatNumber var="totalPage" scope="request" type="number"
+                  value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}"
+                  maxFractionDigits="0"/>
 <html>
 <head>
     <title>部门管理员管理页面</title>
@@ -30,7 +26,7 @@
 </head>
 <body>
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
-<jsp:include page="sidebar.jsp" />
+<jsp:include page="sidebar.jsp"/>
 <div class="content">
     <div id="departmentTable" class="table">
         <div class="table-container">
@@ -103,7 +99,8 @@
                 <select id="addDepartmentID" name="departmentID">
                     <option value="">请选择</option>
                     <c:forEach items="${departmentMap}" var="entry">
-                        <option value="${entry.key}" <c:if test="${entry.key == param.departmentID}">selected="selected"</c:if>>${entry.value.name}</option>
+                        <option value="${entry.key}"
+                                <c:if test="${entry.key == param.departmentID}">selected="selected"</c:if>>${entry.value.name}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -135,7 +132,8 @@
                 <select id="updateDepartmentID" name="departmentID">
                     <option value="">请选择</option>
                     <c:forEach items="${departmentMap}" var="entry">
-                        <option value="${entry.key}" <c:if test="${entry.key == param.departmentID}">selected="selected"</c:if>>${entry.value.name}</option>
+                        <option value="${entry.key}"
+                                <c:if test="${entry.key == param.departmentID}">selected="selected"</c:if>>${entry.value.name}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -145,7 +143,7 @@
             </div>
         </form>
     </div>
-</div>>
+</div>
 
 <script>
     let currPage = ${pagination.pageNum};
@@ -169,7 +167,7 @@
         window.location.href = "${pageContext.request.contextPath}/admin/department/list?pageNum=" + currPage + "&pageSize=10";
     }
 
-    function updateDepartmentAdmin(id,name,userName,phone,departmentID) {
+    function updateDepartmentAdmin(id, name, userName, phone, departmentID) {
         document.getElementById("updateId").value = id;
         document.getElementById("updateName").value = name;
         document.getElementById("updateUserName").value = userName;

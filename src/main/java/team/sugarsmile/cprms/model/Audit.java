@@ -35,7 +35,7 @@ public class Audit {
                     return type;
                 }
             }
-            throw new IllegalArgumentException("Invalid AuditType value: " + value);
+            throw new IllegalArgumentException("Invalid Audit Type value: " + value);
         }
     }
 }

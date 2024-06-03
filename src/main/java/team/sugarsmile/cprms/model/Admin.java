@@ -18,6 +18,7 @@ public class Admin {
     private Integer departmentID;
     private Date date;
     private String userName;
+
     @AllArgsConstructor
     @Getter
     public enum AdminType {
@@ -28,13 +29,13 @@ public class Admin {
 
         private final Integer value;
 
-        public static Admin.AdminType getType(Integer value) {
-            for (Admin.AdminType v : Admin.AdminType.values()) {
+        public static AdminType getType(Integer value) {
+            for (AdminType v : AdminType.values()) {
                 if (value.equals(v.getValue())) {
                     return v;
                 }
             }
-            throw new IllegalArgumentException("Invalid AdminType value: " + value);
+            throw new IllegalArgumentException("Invalid Admin Type value: " + value);
         }
     }
 }

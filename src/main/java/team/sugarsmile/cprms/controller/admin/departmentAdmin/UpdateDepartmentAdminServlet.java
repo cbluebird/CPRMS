@@ -10,10 +10,8 @@ import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
 import team.sugarsmile.cprms.model.Audit;
-import team.sugarsmile.cprms.model.Department;
 import team.sugarsmile.cprms.service.AdminService;
 import team.sugarsmile.cprms.service.AuditService;
-import team.sugarsmile.cprms.service.DepartmentService;
 
 import java.io.IOException;
 
@@ -37,12 +35,12 @@ public class UpdateDepartmentAdminServlet extends HttpServlet {
             String name = request.getParameter("name");
             String userName = request.getParameter("userName");
             String phone = request.getParameter("phone");
-            Integer departmentID =Integer.parseInt( request.getParameter("departmentID"));
+            Integer departmentID = Integer.parseInt(request.getParameter("departmentID"));
             if (name.isEmpty()) {
                 throw new BizException(ErrorCode.PARAM_ERROR.getCode(), "参数不能为空");
             }
-            adminService.updateAdmin(id, Admin.AdminType.DEPARTMENT,phone,name,userName,departmentID);
-            auditService.createAudit("更新部门管理员", Audit.AuditType.UPDATE,admin.getId());
+            adminService.updateAdmin(id, Admin.AdminType.DEPARTMENT, phone, name, userName, departmentID);
+            auditService.createAudit("更新部门管理员", Audit.AuditType.UPDATE, admin.getId());
         } catch (BizException e) {
             be = e;
         } catch (IllegalArgumentException e) {

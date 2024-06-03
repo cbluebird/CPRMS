@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: crk
-  Date: 2024/5/23
-  Time: 21:43
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -82,22 +75,23 @@
 <body>
 <div class="container">
     <div class="login-section">
-    <form class="login-form" id="userForm" action="${pageContext.request.contextPath}/auth/rePassword" method="post">
-        <div class="title">
-            <h1>重置密码</h1>
-        </div>
-        <div class="input-field">
-            <i class="fas fa-user"></i>
-            <input type="password" id="password" name="password" placeholder="请输入你的新密码" required>
-        </div>
-        <div class="input-field">
-            <i class="fas fa-user"></i>
-            <input type="password" id="re_password" name="re_password" placeholder="重新输入你的密码" required>
-        </div>
-        <div class="input-field">
-            <button type="button" id="submitButton">重置密码</button>
-        </div>
-    </form>
+        <form class="login-form" id="userForm" action="${pageContext.request.contextPath}/auth/rePassword"
+              method="post">
+            <div class="title">
+                <h1>重置密码</h1>
+            </div>
+            <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="password" id="password" name="password" placeholder="请输入你的新密码" required>
+            </div>
+            <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="password" id="re_password" name="re_password" placeholder="重新输入你的密码" required>
+            </div>
+            <div class="input-field">
+                <button type="button" id="submitButton">重置密码</button>
+            </div>
+        </form>
     </div>
 </div>
 </body>

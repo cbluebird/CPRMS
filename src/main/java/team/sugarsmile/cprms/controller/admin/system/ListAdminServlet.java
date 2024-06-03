@@ -28,8 +28,8 @@ public class ListAdminServlet extends HttpServlet {
             int pageNum = Integer.parseInt(request.getParameter("pageNum"));
             int pageSize = Integer.parseInt(request.getParameter("pageSize"));
             pagination = adminService.getSystemList(pageNum, pageSize);
-            List<Department> d = departmentService.getAll();
-            for (Department department : d) {
+            List<Department> departmentList = departmentService.getAll();
+            for (Department department : departmentList) {
                 departmentMap.put(department.getId(), department);
             }
         } catch (NumberFormatException e) {

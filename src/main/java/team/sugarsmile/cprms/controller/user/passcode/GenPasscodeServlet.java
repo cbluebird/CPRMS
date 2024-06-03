@@ -10,7 +10,7 @@ import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.service.OfficialAppointmentService;
 import team.sugarsmile.cprms.service.PublicAppointmentService;
-import team.sugarsmile.cprms.util.QRCode;
+import team.sugarsmile.cprms.util.QRCodeUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -30,7 +30,6 @@ public class GenPasscodeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("image/png");
-
         BizException be = null;
         String type = null;
         BufferedImage bufferedImage = null;
@@ -42,7 +41,6 @@ public class GenPasscodeServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/user/appointment.jsp");
                 return;
             }
-
             type = request.getParameter("type");
             int id = Integer.parseInt(request.getParameter("id"));
             if (!"public".equals(type) && !"official".equals(type)) {
@@ -51,7 +49,6 @@ public class GenPasscodeServlet extends HttpServlet {
             if (id <= 0) {
                 throw new BizException(ErrorCode.PARAM_ERROR.getCode(), "参数id为空或有误");
             }
-
             PasscodeDto passcode = null;
             switch (type) {
                 case "public" -> {
@@ -61,16 +58,14 @@ public class GenPasscodeServlet extends HttpServlet {
                     passcode = officialAppointmentService.getPasscode(id, name, idCard, phone);
                 }
             }
-
             int color = 0x900090;
             if (LocalDateTime.now().isBefore(passcode.getStartTime()) || LocalDateTime.now().isAfter(passcode.getEndTime())) {
                 color = 0x808080;
             }
-            bufferedImage = QRCode.genQRCode(passcode.toString(), color, 200, 200);
+            bufferedImage = QRCodeUtil.genQRCode(passcode.toString(), color, 200, 200);
         } catch (BizException e) {
             be = e;
         }
-
         if (be != null) {
             request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
             response.sendRedirect(request.getContextPath() + "/user/appointment/" + type + "/list?pageNum=1&pageSize=10");

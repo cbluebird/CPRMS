@@ -1,12 +1,16 @@
 package team.sugarsmile.cprms.controller.admin;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.model.Audit;
 import team.sugarsmile.cprms.service.AdminService;
 import team.sugarsmile.cprms.service.AuditService;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 
 @WebServlet("/auth/rePassword")
@@ -16,22 +20,21 @@ public class UpdatePasswordServlet extends HttpServlet {
     Integer userID = 0;
 
     @Override
-    protected void doGet(jakarta.servlet.http.HttpServletRequest req, jakarta.servlet.http.HttpServletResponse resp) throws java.io.IOException {
-        resp.sendRedirect("/resetPassword.jsp");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.sendRedirect("/resetPassword.jsp");
     }
 
     @Override
-    protected void doPost(jakarta.servlet.http.HttpServletRequest req, jakarta.servlet.http.HttpServletResponse resp) throws java.io.IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            String password = req.getParameter("password");
-            userID = Integer.parseInt(req.getParameter("id"));
+            String password = request.getParameter("password");
+            userID = Integer.parseInt(request.getParameter("id"));
             adminService.updatePasswordByID(userID, password);
-            auditService.createAudit("更新密码", Audit.AuditType.UPDATE,userID);
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            auditService.createAudit("更新密码", Audit.AuditType.UPDATE, userID);
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
         } catch (BizException e) {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
+            response.sendRedirect(request.getContextPath() + "/login.jsp?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
         }
     }
-
 }
 

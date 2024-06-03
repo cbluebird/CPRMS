@@ -39,7 +39,6 @@ public class ListAppointmentServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/user/appointment.jsp");
                 return;
             }
-
             int pageNum = Integer.parseInt(request.getParameter("pageNum"));
             int pageSize = Integer.parseInt(request.getParameter("pageSize"));
             pagination = officialAppointmentService.findOfficialAppointmentList(name, idCard, phone, pageNum, pageSize);

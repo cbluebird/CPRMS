@@ -25,9 +25,9 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         try {
             Admin admin = (Admin) request.getSession().getAttribute("admin");
-            String path = request.getServletPath();
+            String url = request.getServletPath();
             adminService.getAdminByID(admin.getId());
-            roleService.checkPermission(path, admin);
+            roleService.checkPermission(url, admin);
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (BizException e) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");

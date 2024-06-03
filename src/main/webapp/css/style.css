@@ -113,6 +113,7 @@ body {
     justify-content: center;
     flex-direction: column;
 }
+
 .add_main {
     margin: auto;
     border-radius: 30px;
@@ -123,12 +124,14 @@ body {
     justify-content: center;
     flex-direction: column;
 }
+
 .table {
     width: 80%;
     margin: 100px auto;
     border-radius: 4px;
     background: #ffffff;
 }
+
 .item {
     padding: 20px;
     border-radius: 30px;
@@ -138,31 +141,39 @@ body {
     justify-content: center;
     flex-wrap: wrap;
 }
+
 table {
     border-spacing: 0;
     width: 100%;
 }
+
 tr {
     text-align: center;
 }
+
 th {
     padding: 10px;
 }
-table tbody tr:nth-child(odd){
+
+table tbody tr:nth-child(odd) {
     background-color: #eee
 }
+
 table thead {
     background-color: blue;
     color: white;
 }
+
 table thead th:first-child {
     border-radius: 5px 0 0 0;
     border: 1px solid blue;
 }
+
 table thead th:last-child {
     border-radius: 0 5px 0 0;
     border-right: 1px solid blue;
 }
+
 table tbody tr:last-child td:first-child {
     border-radius: 0 0 0 5px;
 }

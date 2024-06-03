@@ -1,13 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: crk
-  Date: 2024/5/28
-  Time: 15:26
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="team.sugarsmile.cprms.model.Admin"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="team.sugarsmile.cprms.model.Admin" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.time.LocalDate" %>
 <html>
@@ -30,7 +23,7 @@
 </head>
 <body>
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
-<jsp:include page="sidebar.jsp" />
+<jsp:include page="sidebar.jsp"/>
 <div class="content">
     <div class="container">
         <%
@@ -39,10 +32,11 @@
             admin = (Admin) session.getAttribute("admin");
         %>
         <h1>Welcome to the 管理员系统</h1>
-        <h2><strong>Hello! 管理员</strong> <%= admin != null ? admin.getName() : "Unknown" %></h2>
-        <h3><strong>今天是:</strong> <%= date.format(formatter) %></h3>
+        <h2><strong>Hello! 管理员</strong> <%= admin != null ? admin.getName() : "Unknown" %>
+        </h2>
+        <h3><strong>今天是:</strong> <%= date.format(formatter) %>
+        </h3>
     </div>
-
 </div>
 </body>
 </html>

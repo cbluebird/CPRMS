@@ -1,11 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: crk
-  Date: 2024/5/31
-  Time: 09:02
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page import="team.sugarsmile.cprms.model.Admin" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
@@ -13,19 +6,19 @@
     <a href="${pageContext.request.contextPath}/homepage.jsp">Home</a>
 
     <c:if test="${admin.adminType.value eq 2||admin.adminType.value eq 3}">
-    <a href="${pageContext.request.contextPath}/admin/appointment/official/list?pageNum=1&pageSize=10">公务预约</a>
+        <a href="${pageContext.request.contextPath}/admin/appointment/official/list?pageNum=1&pageSize=10">公务预约</a>
     </c:if>
 
     <c:if test="${admin.adminType.value eq 2||admin.adminType.value eq 3}">
-    <a href="${pageContext.request.contextPath}/admin/appointment/public/list?pageNum=1&pageSize=10">社会预约</a>
+        <a href="${pageContext.request.contextPath}/admin/appointment/public/list?pageNum=1&pageSize=10">社会预约</a>
     </c:if>
 
     <c:if test="${admin.adminType.value eq 1}">
-    <a href="${pageContext.request.contextPath}/admin/system/list?pageNum=1&pageSize=10">管理员管理</a>
+        <a href="${pageContext.request.contextPath}/admin/system/list?pageNum=1&pageSize=10">管理员管理</a>
     </c:if>
 
     <c:if test="${admin.adminType.value eq 4}">
-    <a href="${pageContext.request.contextPath}/admin/audit/list?pageNum=1&pageSize=10">审计管理</a>
+        <a href="${pageContext.request.contextPath}/admin/audit/list?pageNum=1&pageSize=10">审计管理</a>
     </c:if>
 
     <c:if test="${admin.adminType.value eq 2}">

@@ -3,7 +3,6 @@ package team.sugarsmile.cprms.dao;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.exception.SystemException;
 import team.sugarsmile.cprms.model.Admin;
-import team.sugarsmile.cprms.model.Role;
 import team.sugarsmile.cprms.util.JDBCUtil;
 
 import java.sql.Connection;
@@ -19,9 +18,9 @@ public class RoleDao {
         ResultSet rs = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "SELECT path FROM role where admin_type =?" ;
+            String sql = "SELECT path FROM role where admin_type = ?";
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,type.getValue());
+            stmt.setInt(1, type.getValue());
             rs = stmt.executeQuery();
             ArrayList<String> roleList = new ArrayList<String>();
             while (rs.next()) {

@@ -10,7 +10,6 @@ import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
 import team.sugarsmile.cprms.model.Audit;
-import team.sugarsmile.cprms.model.Department;
 import team.sugarsmile.cprms.service.AdminService;
 import team.sugarsmile.cprms.service.AuditService;
 
@@ -18,7 +17,7 @@ import java.io.IOException;
 
 @WebServlet("/admin/departmentAdmin/add")
 public class AddDepartmentAdminServlet extends HttpServlet {
-    private final AdminService adminService =new AdminService();
+    private final AdminService adminService = new AdminService();
     private final AuditService auditService = new AuditService();
 
     @Override
@@ -38,12 +37,12 @@ public class AddDepartmentAdminServlet extends HttpServlet {
             System.out.println(name);
             System.out.println(phone);
             System.out.println(userName);
-            Integer departmentID=Integer.parseInt(request.getParameter("departmentID"));
-            if (name.isEmpty()||userName.isEmpty()||phone.isEmpty()) {
+            Integer departmentID = Integer.parseInt(request.getParameter("departmentID"));
+            if (name.isEmpty() || userName.isEmpty() || phone.isEmpty()) {
                 throw new BizException(ErrorCode.PARAM_ERROR.getCode(), "参数不能为空");
             }
-            adminService.addAdmin(Admin.AdminType.DEPARTMENT,phone,name,userName,departmentID);
-            auditService.createAudit("添加部门管理员", Audit.AuditType.ADD,admin.getId());
+            adminService.addAdmin(Admin.AdminType.DEPARTMENT, phone, name, userName, departmentID);
+            auditService.createAudit("添加部门管理员", Audit.AuditType.ADD, admin.getId());
         } catch (BizException e) {
             be = e;
         } catch (IllegalArgumentException e) {
@@ -57,6 +56,4 @@ public class AddDepartmentAdminServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/admin/departmentAdmin/list?pageNum=1&pageSize=10");
         }
     }
-
-
 }

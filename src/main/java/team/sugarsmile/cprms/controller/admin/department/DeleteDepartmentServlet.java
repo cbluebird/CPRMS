@@ -32,7 +32,7 @@ public class DeleteDepartmentServlet extends HttpServlet {
             Admin admin = (Admin) session.getAttribute("admin");
             int id = Integer.parseInt(request.getParameter("id"));
             departmentService.deleteDepartment(id);
-            auditService.createAudit("删除部门", Audit.AuditType.DELETE,admin.getId());
+            auditService.createAudit("删除部门", Audit.AuditType.DELETE, admin.getId());
         } catch (BizException e) {
             be = e;
         } catch (NumberFormatException e) {

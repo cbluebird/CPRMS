@@ -33,7 +33,7 @@ public class Department {
                     return v;
                 }
             }
-            throw new IllegalArgumentException("Invalid DepartmentType value: " + value);
+            throw new IllegalArgumentException("Invalid Department Type value: " + value);
         }
     }
 }

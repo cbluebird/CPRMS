@@ -14,6 +14,7 @@ import team.sugarsmile.cprms.service.AdminService;
 import team.sugarsmile.cprms.service.AuditService;
 
 import java.io.IOException;
+
 @WebServlet("/admin/system/update")
 public class UpdateAdminServlet extends HttpServlet {
     private final AdminService adminService = new AdminService();
@@ -34,9 +35,9 @@ public class UpdateAdminServlet extends HttpServlet {
             String name = request.getParameter("name");
             String userName = request.getParameter("userName");
             String phone = request.getParameter("phone");
-            Admin.AdminType type= Admin.AdminType.getType(Integer.parseInt(request.getParameter("type")));
-            adminService.updateAdmin(id, type,phone,name,userName,0);
-            auditService.createAudit("删除部门", Audit.AuditType.DELETE,admin.getId());
+            Admin.AdminType type = Admin.AdminType.getType(Integer.parseInt(request.getParameter("type")));
+            adminService.updateAdmin(id, type, phone, name, userName, 0);
+            auditService.createAudit("删除部门", Audit.AuditType.DELETE, admin.getId());
         } catch (BizException e) {
             be = e;
         } catch (IllegalArgumentException e) {

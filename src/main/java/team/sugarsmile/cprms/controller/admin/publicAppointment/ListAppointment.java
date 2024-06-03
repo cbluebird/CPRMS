@@ -4,6 +4,8 @@ package team.sugarsmile.cprms.controller.admin.publicAppointment;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import team.sugarsmile.cprms.dto.PaginationDto;
 import team.sugarsmile.cprms.exception.BizException;
@@ -14,6 +16,7 @@ import team.sugarsmile.cprms.model.PublicAppointment;
 import team.sugarsmile.cprms.service.DepartmentService;
 import team.sugarsmile.cprms.service.PublicAppointmentService;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,7 +26,7 @@ public class ListAppointment extends HttpServlet {
     private final DepartmentService departmentService = new DepartmentService();
 
     @Override
-    protected void doGet(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException, ServletException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BizException be = null;
         PaginationDto<PublicAppointment> pagination = null;
         HashMap<Integer, Department> departmentMap = new HashMap<Integer, Department>();
@@ -32,12 +35,10 @@ public class ListAppointment extends HttpServlet {
             Admin admin = (Admin) session.getAttribute("admin");
             int pageNum = Integer.parseInt(request.getParameter("pageNum"));
             int pageSize = Integer.parseInt(request.getParameter("pageSize"));
-
-            List<Department> d = departmentService.getAll();
-            for (Department department : d) {
+            List<Department> departmentList = departmentService.getAll();
+            for (Department department : departmentList) {
                 departmentMap.put(department.getId(), department);
             }
-
             if (admin.getAdminType() == Admin.AdminType.DEPARTMENT) {
                 Department department = departmentMap.get(admin.getDepartmentID());
                 if (!department.getSocial()) {
@@ -45,10 +46,7 @@ public class ListAppointment extends HttpServlet {
                     return;
                 }
             }
-
             pagination = publicAppointmentService.findPublicAppointmentList(pageNum, pageSize);
-
-
         } catch (NumberFormatException e) {
             be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
         }
@@ -64,7 +62,7 @@ public class ListAppointment extends HttpServlet {
     }
 
     @Override
-    protected void doPost(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException, ServletException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 }

@@ -1,9 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<jsp:useBean id="pagination" scope="request" type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.PublicAppointment>"/>
+<jsp:useBean id="pagination" scope="request"
+             type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.PublicAppointment>"/>
 <jsp:useBean id="departmentMap" scope="request" type="java.util.HashMap"/>
-<fmt:formatNumber var="totalPage" scope="request" type="number" value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}" maxFractionDigits="0"/>
+<fmt:formatNumber var="totalPage" scope="request" type="number"
+                  value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}"
+                  maxFractionDigits="0"/>
 <html>
 <head>
     <title>公务预约管理</title>
@@ -23,14 +26,15 @@
 </head>
 <body>
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
-<jsp:include page="sidebar.jsp" />
+<jsp:include page="sidebar.jsp"/>
 <div class="content">
     <div class="container">
         <div class="header">
             <h2>社会预约管理</h2>
         </div>
         <div class="search-section">
-            <form action="${pageContext.request.contextPath}/admin/appointment/public/query?pageNum=1&pageSize=10" method="get">
+            <form action="${pageContext.request.contextPath}/admin/appointment/public/query?pageNum=1&pageSize=10"
+                  method="get">
                 <div class="row">
                     <label for="applyDate">申请日期：</label>
                     <input type="date" id="applyDate" name="applyDate">
@@ -79,7 +83,7 @@
                 <tbody>
                 <c:forEach var="appointment" items="${pagination.list}">
                     <tr>
-                        <td><fmt:formatDate value="${appointment.createTime}" pattern="yyyy-MM-dd" /></td>
+                        <td><fmt:formatDate value="${appointment.createTime}" pattern="yyyy-MM-dd"/></td>
                         <td>
                             <c:choose>
                                 <c:when test="${appointment.campus.value == 1}">朝晖</c:when>
@@ -87,11 +91,13 @@
                                 <c:when test="${appointment.campus.value == 3}">莫干山</c:when>
                             </c:choose>
                         </td>
-                        <td><fmt:formatDate value="${appointment.startTime}" pattern="yyyy-MM-dd" /> - <fmt:formatDate value="${appointment.endTime}" pattern="yyyy-MM-dd" /></td>
+                        <td><fmt:formatDate value="${appointment.startTime}" pattern="yyyy-MM-dd"/> - <fmt:formatDate
+                                value="${appointment.endTime}" pattern="yyyy-MM-dd"/></td>
                         <td>${appointment.unit}</td>
                         <td>${appointment.name}</td>
                         <td>
-                            <button class="modify" onclick="getAppointment('${appointment.id}', '${appointment.name}', '${appointment.idCard}', '${appointment.phone}', '${appointment.campus.value}', '${appointment.startTime}', '${appointment.endTime}', '${appointment.createTime}', '${appointment.unit}', '${appointment.transportation.value}', '${appointment.licensePlate}')">
+                            <button class="modify"
+                                    onclick="getAppointment('${appointment.id}', '${appointment.name}', '${appointment.idCard}', '${appointment.phone}', '${appointment.campus.value}', '${appointment.startTime}', '${appointment.endTime}', '${appointment.createTime}', '${appointment.unit}', '${appointment.transportation.value}', '${appointment.licensePlate}')">
                                 查看详情
                             </button>
                         </td>

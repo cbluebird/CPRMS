@@ -200,25 +200,49 @@ public class PublicAppointmentDao {
         try {
             conn = JDBCUtil.getConnection();
             StringBuilder sql = new StringBuilder("SELECT * FROM public_appointment WHERE 1=1");
-            if (applyDate != null && !applyDate.isEmpty()) sql.append(" AND DATE(create_time) = ?");
-            if (appointmentDate != null && !appointmentDate.isEmpty()) sql.append(" AND DATE(start_time) = ?");
-            if (campus != null) sql.append(" AND campus = ?");
-            if (unit != null && !unit.isEmpty()) sql.append(" AND unit LIKE ?");
-            if (name != null && !name.isEmpty()) sql.append(" AND name LIKE ?");
-            if (idCard != null && !idCard.isEmpty()) sql.append(" AND id_card = ?");
+            if (applyDate != null && !applyDate.isEmpty()) {
+                sql.append(" AND DATE(create_time) = ?");
+            }
+            if (appointmentDate != null && !appointmentDate.isEmpty()) {
+                sql.append(" AND DATE(start_time) = ?");
+            }
+            if (campus != null) {
+                sql.append(" AND campus = ?");
+            }
+            if (unit != null && !unit.isEmpty()) {
+                sql.append(" AND unit LIKE ?");
+            }
+            if (name != null && !name.isEmpty()) {
+                sql.append(" AND name LIKE ?");
+            }
+            if (idCard != null && !idCard.isEmpty()) {
+                sql.append(" AND id_card = ?");
+            }
             sql.append(" LIMIT ?, ?");
 
             stmt = conn.prepareStatement(sql.toString());
 
             int index = 1;
-            if (applyDate != null && !applyDate.isEmpty()) stmt.setString(index++, applyDate);
-            if (appointmentDate != null && !appointmentDate.isEmpty()) stmt.setString(index++, appointmentDate);
-            if (campus != null) stmt.setInt(index++, campus);
-            if (unit != null && !unit.isEmpty()) stmt.setString(index++, unit);
-            if (name != null && !name.isEmpty()) stmt.setString(index++, name);
-            if (idCard != null && !idCard.isEmpty()) stmt.setString(index++, idCard);
+            if (applyDate != null && !applyDate.isEmpty()) {
+                stmt.setString(index++, applyDate);
+            }
+            if (appointmentDate != null && !appointmentDate.isEmpty()) {
+                stmt.setString(index++, appointmentDate);
+            }
+            if (campus != null) {
+                stmt.setInt(index++, campus);
+            }
+            if (unit != null && !unit.isEmpty()) {
+                stmt.setString(index++, unit);
+            }
+            if (name != null && !name.isEmpty()) {
+                stmt.setString(index++, name);
+            }
+            if (idCard != null && !idCard.isEmpty()) {
+                stmt.setString(index++, idCard);
+            }
             stmt.setInt(index++, (pageNum - 1) * pageSize);
-            stmt.setInt(index++, pageSize);
+            stmt.setInt(index, pageSize);
 
             rs = stmt.executeQuery();
             return getAppointmentList(rs);
@@ -236,22 +260,46 @@ public class PublicAppointmentDao {
         try {
             conn = JDBCUtil.getConnection();
             StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM public_appointment where 1=1");
-            if (applyDate != null && !applyDate.isEmpty()) sql.append(" AND DATE(create_time) = ?");
-            if (appointmentDate != null && !appointmentDate.isEmpty()) sql.append(" AND DATE(start_time) = ?");
-            if (campus != null) sql.append(" AND campus = ?");
-            if (unit != null && !unit.isEmpty()) sql.append(" AND unit LIKE ?");
-            if (name != null && !name.isEmpty()) sql.append(" AND name LIKE ?");
-            if (idCard != null && !idCard.isEmpty()) sql.append(" AND id_card = ?");
+            if (applyDate != null && !applyDate.isEmpty()) {
+                sql.append(" AND DATE(create_time) = ?");
+            }
+            if (appointmentDate != null && !appointmentDate.isEmpty()) {
+                sql.append(" AND DATE(start_time) = ?");
+            }
+            if (campus != null) {
+                sql.append(" AND campus = ?");
+            }
+            if (unit != null && !unit.isEmpty()) {
+                sql.append(" AND unit LIKE ?");
+            }
+            if (name != null && !name.isEmpty()) {
+                sql.append(" AND name LIKE ?");
+            }
+            if (idCard != null && !idCard.isEmpty()) {
+                sql.append(" AND id_card = ?");
+            }
 
             stmt = conn.prepareStatement(sql.toString());
 
             int index = 1;
-            if (applyDate != null && !applyDate.isEmpty()) stmt.setString(index++, applyDate);
-            if (appointmentDate != null && !appointmentDate.isEmpty()) stmt.setString(index++, appointmentDate);
-            if (campus != null) stmt.setInt(index++, campus);
-            if (unit != null && !unit.isEmpty()) stmt.setString(index++, unit);
-            if (name != null && !name.isEmpty()) stmt.setString(index++, name);
-            if (idCard != null && !idCard.isEmpty()) stmt.setString(index++, idCard);
+            if (applyDate != null && !applyDate.isEmpty()) {
+                stmt.setString(index++, applyDate);
+            }
+            if (appointmentDate != null && !appointmentDate.isEmpty()) {
+                stmt.setString(index++, appointmentDate);
+            }
+            if (campus != null) {
+                stmt.setInt(index++, campus);
+            }
+            if (unit != null && !unit.isEmpty()) {
+                stmt.setString(index++, unit);
+            }
+            if (name != null && !name.isEmpty()) {
+                stmt.setString(index++, name);
+            }
+            if (idCard != null && !idCard.isEmpty()) {
+                stmt.setString(index, idCard);
+            }
             rs = stmt.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);

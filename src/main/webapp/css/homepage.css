@@ -105,8 +105,15 @@ button:hover {
         height: auto;
         position: relative;
     }
-    .sidebar a { float: left; }
-    .content { margin-left: 0; }
+
+    .sidebar a {
+        float: left;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
     .footer {
         width: 100%;
         margin-left: 0;

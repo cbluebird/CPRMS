@@ -36,7 +36,6 @@ public class QueryPasscodeServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/user/appointment.jsp");
                 return;
             }
-
             type = request.getParameter("type");
             id = Integer.parseInt(request.getParameter("id"));
             if (!"public".equals(type) && !"official".equals(type)) {
@@ -58,7 +57,6 @@ public class QueryPasscodeServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
         }
-
         if (be != null) {
             request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
             response.sendRedirect(request.getContextPath() + "/user/appointment/" + type + "/list?pageNum=1&pageSize=10");

@@ -14,10 +14,13 @@ import team.sugarsmile.cprms.service.AdminService;
 import team.sugarsmile.cprms.service.AuditService;
 
 import java.io.IOException;
+
 @WebServlet("/admin/system/delete")
 public class DeleteAdminServlet extends HttpServlet {
-    final private AdminService adminService=new AdminService();
+    final private AdminService adminService = new AdminService();
     private final AuditService auditService = new AuditService();
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BizException be = null;
         try {
@@ -25,7 +28,7 @@ public class DeleteAdminServlet extends HttpServlet {
             Admin admin = (Admin) session.getAttribute("admin");
             int id = Integer.parseInt(request.getParameter("id"));
             adminService.deleteAdminByID(id);
-            auditService.createAudit("删除管理员", Audit.AuditType.DELETE,admin.getId());
+            auditService.createAudit("删除管理员", Audit.AuditType.DELETE, admin.getId());
         } catch (BizException e) {
             be = e;
         } catch (NumberFormatException e) {

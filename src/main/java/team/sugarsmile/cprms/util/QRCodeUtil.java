@@ -15,7 +15,7 @@ import java.util.HashMap;
 /**
  * @author XiMo
  */
-public class QRCode {
+public class QRCodeUtil {
     public static BufferedImage genQRCode(String content, int color, int width, int height) {
         try {
             HashMap<EncodeHintType, Object> typeObjectHashMap = new HashMap<>();
@@ -33,6 +33,7 @@ public class QRCode {
                     bufferedImage.setRGB(x, y, bitMatrix.get(x, y) ? color : 0xFFFFFF);
                 }
             }
+
             return bufferedImage;
         } catch (WriterException e) {
             throw new SystemException(ErrorCode.ZXING_ERROR.getCode(), e.getMessage(), e);

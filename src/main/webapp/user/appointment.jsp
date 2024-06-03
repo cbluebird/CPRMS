@@ -14,7 +14,7 @@
             response.sendRedirect(request.getContextPath() + "/user/appointment/public/list?pageNum=1&pageSize=10");
             return;
         }
-        
+
         String error = (String) request.getAttribute("error");
         if (error != null) {
     %>

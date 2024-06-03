@@ -11,7 +11,6 @@ import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
 import team.sugarsmile.cprms.model.Audit;
 import team.sugarsmile.cprms.model.Department;
-import team.sugarsmile.cprms.service.AdminService;
 import team.sugarsmile.cprms.service.AuditService;
 import team.sugarsmile.cprms.service.DepartmentService;
 
@@ -40,12 +39,12 @@ public class AddDepartmentServlet extends HttpServlet {
             Department.Type type = Department.Type.getType(Integer.parseInt(request.getParameter("type")));
             String name = request.getParameter("name");
             Boolean social = "true".equals(request.getParameter("social"));
-            Boolean business="true".equals(request.getParameter("business"));
+            Boolean business = "true".equals(request.getParameter("business"));
             if (name.isEmpty()) {
                 throw new BizException(ErrorCode.PARAM_ERROR.getCode(), "参数不能为空");
             }
-            departmentService.addDepartment(type, name,social,business);
-            auditService.createAudit("添加部门", Audit.AuditType.ADD,admin.getId());
+            departmentService.addDepartment(type, name, social, business);
+            auditService.createAudit("添加部门", Audit.AuditType.ADD, admin.getId());
         } catch (BizException e) {
             be = e;
         } catch (IllegalArgumentException e) {
