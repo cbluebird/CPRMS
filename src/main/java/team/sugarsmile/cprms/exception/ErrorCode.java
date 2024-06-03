@@ -16,6 +16,7 @@ public enum ErrorCode {
     ADMIN_NOT_EXIST(202012, "管理员不存在"),
     ADMIN_LOGIN_ERROR(202013, "管理员登录时密码错误"),
     PASSWORD_SHORT(202014, "密码太短"),
+    PASSWORD_ERROR_TO_MANY(202016, "密码错误次数过多，请五分钟后再试"),
     ADMIN_PASSWORD_OUT_DATE(202015, "密码需要更新"),
     APPOINTMENT_NOT_EXIST(20301,"预约不存在");
 

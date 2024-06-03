@@ -66,6 +66,18 @@
             });
         });
     </script>
+    <%
+        String error = (String) request.getAttribute("error");
+        if (error != null) {
+    %>
+    <script>
+        window.onload = function () {
+            alert("<%= error %>");
+        };
+    </script>
+    <%
+        }
+    %>
 </head>
 <body>
 <div class="container">

@@ -16,7 +16,7 @@
     <title>管理员管理页面</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/table.css">
     <%
-        String error = (String) session.getAttribute("error");
+        String error = (String) request.getAttribute("error");
         if (error != null) {
     %>
     <script>
@@ -25,7 +25,6 @@
         };
     </script>
     <%
-            session.removeAttribute("error");
         }
     %>
 </head>

@@ -3,9 +3,11 @@ package team.sugarsmile.cprms.util;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Transaction;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -35,7 +37,10 @@ public final class JedisUtil {
 
     public static Jedis getJedis() {
         Jedis jedis = jedisPool.getResource();
-        jedis.auth(properties.getProperty("password"));
+        String pass = properties.getProperty("password");
+        if (!Objects.equals(pass, "")) {
+            jedis.auth(properties.getProperty("password"));
+        }
         jedis.select(Integer.parseInt(properties.getProperty("db")));
         return jedis;
     }
@@ -45,5 +50,64 @@ public final class JedisUtil {
             jedis.close();
         }
     }
+
+    public static Integer getLoginKey(String username) {
+        Jedis redis = null;
+        try {
+            redis = JedisUtil.getJedis();
+            String loginKey = username + "_login_key";
+
+            // 使用Redis事务来保证操作的原子性
+            redis.watch(loginKey);
+            String currentValue = redis.get(loginKey);
+
+            if (currentValue != null) {
+                return Integer.parseInt(currentValue);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (redis != null) {
+                redis.unwatch();
+            }
+        } finally {
+            if (redis != null) {
+                redis.close();
+            }
+        }
+        return 0;
+    }
+
+    public static void incrementLoginKey(String username) {
+        Jedis redis = null;
+        try {
+            redis = JedisUtil.getJedis();
+            String loginKey = username + "_login_key";
+
+            // 使用Redis事务来保证操作的原子性
+            redis.watch(loginKey);
+            String currentValue = redis.get(loginKey);
+
+            Transaction transaction = redis.multi();
+            if (currentValue != null) {
+                transaction.incr(loginKey);
+            } else {
+                transaction.set(loginKey, "1");
+                transaction.expire(loginKey, 300); // 设置过期时间为5分钟（300秒）
+            }
+            // 提交事务
+            transaction.exec();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (redis != null) {
+                redis.unwatch();
+            }
+        } finally {
+            if (redis != null) {
+                redis.close();
+            }
+        }
+    }
+
 }
 

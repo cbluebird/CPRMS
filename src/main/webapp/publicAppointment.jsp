@@ -8,6 +8,18 @@
 <head>
     <title>公务预约管理</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/appointment.css">
+    <%
+        String error = (String) request.getAttribute("error");
+        if (error != null) {
+    %>
+    <script>
+        window.onload = function () {
+            alert("<%= error %>");
+        };
+    </script>
+    <%
+        }
+    %>
 </head>
 <body>
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>

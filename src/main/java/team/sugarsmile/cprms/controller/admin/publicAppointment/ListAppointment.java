@@ -54,7 +54,7 @@ public class ListAppointment extends HttpServlet {
         }
         if (be != null) {
             request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
-            response.sendRedirect(request.getContextPath() + "/officialAppointment.jsp");
+            response.sendRedirect(request.getContextPath() + "/homepage.jsp");
             throw be;
         } else {
             request.setAttribute("pagination", pagination);

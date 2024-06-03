@@ -15,6 +15,18 @@
     <meta charset="UTF-8">
     <title>Homepage</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/homepage.css">
+    <%
+        String error = (String) request.getAttribute("error");
+        if (error != null) {
+    %>
+    <script>
+        window.onload = function () {
+            alert("<%= error %>");
+        };
+    </script>
+    <%
+        }
+    %>
 </head>
 <body>
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
