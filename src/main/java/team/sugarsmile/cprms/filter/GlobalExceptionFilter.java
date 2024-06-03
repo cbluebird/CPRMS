@@ -1,7 +1,6 @@
 package team.sugarsmile.cprms.filter;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,6 @@ import java.io.IOException;
  */
 
 @Slf4j
-@WebFilter("/*")
 public class GlobalExceptionFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

@@ -1,7 +1,6 @@
 package team.sugarsmile.cprms.filter;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import team.sugarsmile.cprms.exception.BizException;
@@ -11,7 +10,6 @@ import team.sugarsmile.cprms.service.RoleService;
 
 import java.io.IOException;
 
-@WebFilter("/admin/*")
 public class AuthFilter implements Filter {
     private final RoleService roleService = new RoleService();
     private final AdminService adminService = new AdminService();

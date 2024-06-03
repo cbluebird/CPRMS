@@ -12,4 +12,29 @@
         <error-code>500</error-code>
         <location>/500.jsp</location>
     </error-page>
+
+    <filter>
+        <filter-name>CharacterFilter</filter-name>
+        <filter-class>team.sugarsmile.cprms.filter.CharacterFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>GlobalExceptionFilter</filter-name>
+        <filter-class>team.sugarsmile.cprms.filter.GlobalExceptionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>GlobalExceptionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>team.sugarsmile.cprms.filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
 </web-app>

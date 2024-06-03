@@ -1,7 +1,6 @@
 package team.sugarsmile.cprms.filter;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -11,7 +10,6 @@ import java.io.IOException;
  * @author XiMo
  */
 
-@WebFilter("/*")
 public class CharacterFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -26,7 +24,7 @@ public class CharacterFilter implements Filter {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=utf-8");
 
-        filterChain.doFilter(request, servletResponse);
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
