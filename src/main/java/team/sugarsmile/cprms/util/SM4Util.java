@@ -2,18 +2,29 @@ package team.sugarsmile.cprms.util;
 
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
 
-public class SM4Util {
-    //key必须是16字节，即128位
-    final static String key = "sm4demo123456789";
-    //指明加密算法和秘钥
-    static SymmetricCrypto sm4 = new SymmetricCrypto("SM4/ECB/PKCS5Padding", key.getBytes());
+import java.io.InputStream;
+import java.util.Properties;
 
-    //加密为16进制，也可以加密成base64/字节数组
+public class SM4Util {
+    private static SymmetricCrypto sm4;
+
+    static {
+        Properties properties = new Properties();
+        InputStream inputStream = SM4Util.class.getClassLoader().getResourceAsStream("sm4.properties");
+
+        try {
+            properties.load(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        sm4 = new SymmetricCrypto("SM4/ECB/PKCS5Padding", properties.getProperty("key").getBytes());
+    }
+
     public static String encryptSm4(String plaintext) {
         return sm4.encryptHex(plaintext);
     }
 
-    //解密
     public static String decryptSm4(String ciphertext) {
         return sm4.decryptStr(ciphertext);
     }
