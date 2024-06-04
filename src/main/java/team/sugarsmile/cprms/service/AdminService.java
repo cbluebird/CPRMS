@@ -19,12 +19,10 @@ public class AdminService {
             throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户手机： " + phone + " 已存在");
         }
 
-        String pass = SM3Util.encrypt("zjut123456");
-
         adminDao.insert(Admin.builder()
                 .adminType(type)
                 .phone(phone)
-                .password(pass)
+                .password(SM3Util.encrypt("zjut" + phone.substring(phone.length() - 6)))
                 .name(name)
                 .departmentID(departmentID)
                 .userName(userName)
@@ -37,9 +35,7 @@ public class AdminService {
             throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户" + userName + "不存在");
         }
 
-        String pass = SM3Util.encrypt(password);
-
-        if (!pass.equals(admin.getPassword())) {
+        if (!admin.getPassword().equals(SM3Util.encrypt(password))) {
             throw new BizException(ErrorCode.ADMIN_LOGIN_ERROR.getCode(), "用户：" + userName + " 密码错误");
         }
 
@@ -47,21 +43,21 @@ public class AdminService {
     }
 
     public void updatePasswordByID(Integer id, String password) {
-        if (id == 0 || adminDao.findByID(id) == null) {
+        Admin admin = adminDao.findByID(id);
+        if (admin == null) {
             throw new BizException(ErrorCode.ADMIN_NOT_EXIST.getCode(), "用户编号 " + id + " 不存在");
         }
 
-        if (password.length() < 6) {
-            throw new BizException(ErrorCode.PASSWORD_SHORT.getCode(), "用户密码太短");
+        password = SM3Util.encrypt(password);
+        if (admin.getPassword().equals(password)) {
+            throw new BizException(ErrorCode.PASSWORD_UPDATE_SAME);
         }
 
-        String pass = SM3Util.encrypt(password);
-
-        adminDao.updatePasswordByID(id, pass);
+        adminDao.updatePasswordByID(id, password);
     }
 
     public void updateAdmin(Integer id, Admin.AdminType type, String phone, String name, String userName, Integer departmentID) {
-        if (id == 0 || adminDao.findByID(id) == null) {
+        if (adminDao.findByID(id) == null) {
             throw new BizException(ErrorCode.ADMIN_NOT_EXIST.getCode(), "用户编号 " + id + " 不存在");
         }
 

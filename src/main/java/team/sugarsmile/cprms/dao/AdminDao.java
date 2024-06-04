@@ -126,13 +126,12 @@ public class AdminDao {
     public void updatePasswordByID(Integer id, String password) {
         Connection conn = null;
         PreparedStatement stmt = null;
-        Date date = new Date(new java.util.Date().getTime());
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "UPDATE admin SET password = ? ,date=? WHERE id = ?";
+            String sql = "UPDATE admin SET password = ?, date = ? WHERE id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, password);
-            stmt.setDate(2, date);
+            stmt.setDate(2, new Date(System.currentTimeMillis()));
             stmt.setLong(3, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -154,7 +153,7 @@ public class AdminDao {
             stmt.setInt(1, (pageNum - 1) * pageSize);
             stmt.setInt(2, pageSize);
             rs = stmt.executeQuery();
-            ArrayList<Admin> adminList = new ArrayList<Admin>();
+            ArrayList<Admin> adminList = new ArrayList<>();
             while (rs.next()) {
                 adminList.add(Admin.builder()
                         .id(rs.getInt("id"))
@@ -187,7 +186,7 @@ public class AdminDao {
             stmt.setInt(2, (pageNum - 1) * pageSize);
             stmt.setInt(3, pageSize);
             rs = stmt.executeQuery();
-            ArrayList<Admin> adminList = new ArrayList<Admin>();
+            ArrayList<Admin> adminList = new ArrayList<>();
             while (rs.next()) {
                 adminList.add(Admin.builder()
                         .id(rs.getInt("id"))
@@ -219,7 +218,7 @@ public class AdminDao {
             stmt.setInt(1, (pageNum - 1) * pageSize);
             stmt.setInt(2, pageSize);
             rs = stmt.executeQuery();
-            ArrayList<Admin> adminList = new ArrayList<Admin>();
+            ArrayList<Admin> adminList = new ArrayList<>();
             while (rs.next()) {
                 adminList.add(Admin.builder()
                         .id(rs.getInt("id"))

@@ -6,34 +6,44 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import team.sugarsmile.cprms.exception.BizException;
+import team.sugarsmile.cprms.exception.ErrorCode;
+import team.sugarsmile.cprms.model.Admin;
 import team.sugarsmile.cprms.model.Audit;
 import team.sugarsmile.cprms.service.AdminService;
 import team.sugarsmile.cprms.service.AuditService;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 
-@WebServlet("/auth/rePassword")
+@WebServlet("/admin/password/update")
 public class UpdatePasswordServlet extends HttpServlet {
     private final AdminService adminService = new AdminService();
     private final AuditService auditService = new AuditService();
-    Integer userID = 0;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect("/admin/resetPassword.jsp");
+        doPost(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BizException be = null;
         try {
+            Admin admin = (Admin) request.getSession().getAttribute("admin");
             String password = request.getParameter("password");
-            userID = Integer.parseInt(request.getParameter("id"));
-            adminService.updatePasswordByID(userID, password);
-            auditService.createAudit("更新密码", Audit.AuditType.UPDATE, userID);
-            response.sendRedirect(request.getContextPath() + "/admin/login.jsp");
+            adminService.updatePasswordByID(admin.getId(), password);
+            Boolean updatePassword = (Boolean) request.getSession().getAttribute("updatePassword");
+            if (updatePassword != null && updatePassword) {
+                request.getSession().removeAttribute("updatePassword");
+            }
+            auditService.createAudit("更新密码", Audit.AuditType.UPDATE, admin.getId());
         } catch (BizException e) {
-            response.sendRedirect(request.getContextPath() + "/admin/login.jsp?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
+            be = e;
+        }
+        if (be != null) {
+            request.setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
+            request.getRequestDispatcher("/admin/updatePassword.jsp");
+        } else {
+            response.sendRedirect(request.getContextPath() + "/admin/home.jsp");
         }
     }
 }

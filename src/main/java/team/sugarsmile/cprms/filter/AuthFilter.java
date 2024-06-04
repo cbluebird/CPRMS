@@ -39,6 +39,12 @@ public class AuthFilter implements Filter {
                     throw new BizException(ErrorCode.ADMIN_NOT_LOGIN);
                 }
                 adminService.getAdminByID(admin.getId());
+                if (!url.endsWith("/updatePassword.jsp") && !url.endsWith("/password/update")) {
+                    Boolean updatePassword = (Boolean) request.getSession().getAttribute("updatePassword");
+                    if (updatePassword != null && updatePassword) {
+                        throw new BizException(ErrorCode.PASSWORD_NEED_UPDATE.getCode(), "管理员编号 " + admin.getId() + " 需要更新密码");
+                    }
+                }
                 if (!url.endsWith(".jsp") && !url.endsWith(".css") && !url.endsWith(".js")) {
                     roleService.checkPermission(url, admin);
                 }
@@ -54,6 +60,8 @@ public class AuthFilter implements Filter {
             RequestDispatcher rd;
             if (Objects.equals(be.getCode(), ErrorCode.ADMIN_NOT_EXIST.getCode()) || Objects.equals(be.getCode(), ErrorCode.ADMIN_NOT_LOGIN.getCode())) {
                 rd = request.getRequestDispatcher("/admin/login.jsp");
+            } else if (Objects.equals(be.getCode(), ErrorCode.PASSWORD_NEED_UPDATE.getCode())) {
+                rd = request.getRequestDispatcher("/admin/updatePassword.jsp");
             } else {
                 rd = request.getRequestDispatcher("/admin/home.jsp");
             }

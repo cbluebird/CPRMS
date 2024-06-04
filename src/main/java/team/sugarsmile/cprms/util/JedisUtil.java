@@ -4,6 +4,8 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Transaction;
+import team.sugarsmile.cprms.exception.ErrorCode;
+import team.sugarsmile.cprms.exception.SystemException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,8 +39,8 @@ public final class JedisUtil {
 
     public static Jedis getJedis() {
         Jedis jedis = jedisPool.getResource();
-        String pass = properties.getProperty("password");
-        if (!Objects.equals(pass, "")) {
+        String password = properties.getProperty("password");
+        if (!Objects.equals(password, "")) {
             jedis.auth(properties.getProperty("password"));
         }
         jedis.select(Integer.parseInt(properties.getProperty("db")));
@@ -64,16 +66,13 @@ public final class JedisUtil {
             if (currentValue != null) {
                 return Integer.parseInt(currentValue);
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
             if (redis != null) {
                 redis.unwatch();
             }
+            throw new SystemException(ErrorCode.REDIS_ERROR.getCode(), e.getMessage(), e);
         } finally {
-            if (redis != null) {
-                redis.close();
-            }
+            close(redis);
         }
         return 0;
     }
@@ -98,16 +97,13 @@ public final class JedisUtil {
             // 提交事务
             transaction.exec();
         } catch (Exception e) {
-            e.printStackTrace();
             if (redis != null) {
                 redis.unwatch();
             }
+            throw new SystemException(ErrorCode.REDIS_ERROR.getCode(), e.getMessage(), e);
         } finally {
-            if (redis != null) {
-                redis.close();
-            }
+            close(redis);
         }
     }
-
 }
 
