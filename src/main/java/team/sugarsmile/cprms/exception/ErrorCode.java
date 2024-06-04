@@ -20,6 +20,7 @@ public enum ErrorCode {
     PASSWORD_SHORT(20204, "密码太短"),
     PASSWORD_ERROR_TO_MANY(20205, "密码错误次数过多，请五分钟后再试"),
     ADMIN_PASSWORD_OUT_DATE(20206, "密码需要更新"),
+    ADMIN_NOT_LOGIN(200207, "管理员未登录"),
 
     APPOINTMENT_NOT_EXIST(20301, "预约不存在"),
     APPOINTMENT_HISTORY_NOT_EXIST(20302, "暂无历史预约记录"),

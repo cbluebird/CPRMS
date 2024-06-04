@@ -4,11 +4,13 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import team.sugarsmile.cprms.exception.BizException;
+import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
 import team.sugarsmile.cprms.service.AdminService;
 import team.sugarsmile.cprms.service.RoleService;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class AuthFilter implements Filter {
     private final RoleService roleService = new RoleService();
@@ -23,16 +25,36 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        BizException be = null;
         try {
-            Admin admin = (Admin) request.getSession().getAttribute("admin");
             String url = request.getServletPath();
-            adminService.getAdminByID(admin.getId());
-            roleService.checkPermission(url, admin);
+            if (!url.endsWith("/login.jsp") && !url.endsWith("/resetPassword.jsp") && !url.endsWith(".css") && !url.endsWith(".js")) {
+                Admin admin = (Admin) request.getSession().getAttribute("admin");
+                if (admin == null) {
+                    throw new BizException(ErrorCode.ADMIN_NOT_LOGIN);
+                }
+                adminService.getAdminByID(admin.getId());
+                roleService.checkPermission(url, admin);
+            }
         } catch (BizException e) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
-            return;
+            be = e;
         }
-        filterChain.doFilter(servletRequest, servletResponse);
+        if (be != null) {
+            if (Objects.equals(be.getCode(), ErrorCode.ADMIN_NOT_EXIST.getCode())) {
+                request.getSession().removeAttribute("admin");
+            }
+            request.setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
+            RequestDispatcher rd;
+            if (Objects.equals(be.getCode(), ErrorCode.ADMIN_NOT_EXIST.getCode()) || Objects.equals(be.getCode(), ErrorCode.ADMIN_NOT_LOGIN.getCode())) {
+                rd = request.getRequestDispatcher("/admin/login.jsp");
+            } else {
+                rd = request.getRequestDispatcher("/admin/home.jsp");
+            }
+            rd.forward(request, response);
+            throw be;
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
     }
 
     @Override
