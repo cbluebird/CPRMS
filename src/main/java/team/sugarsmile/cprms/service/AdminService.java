@@ -108,7 +108,7 @@ public class AdminService {
 
     public void deleteAdminByID(int id) {
         if (adminDao.findByID(id) == null) {
-            throw new BizException(ErrorCode.DEPARTMENT_NOT_EXIST.getCode(), "管理员编号 " + id + " 不存在");
+            throw new BizException(ErrorCode.ADMIN_NOT_EXIST.getCode(), "管理员编号 " + id + " 不存在");
         }
         adminDao.delete(id);
     }
@@ -116,7 +116,7 @@ public class AdminService {
     public Admin getAdminByID(int id) {
         Admin admin = adminDao.findByID(id);
         if (admin == null) {
-            throw new BizException(ErrorCode.DEPARTMENT_NOT_EXIST.getCode(), "管理员编号 " + id + " 不存在");
+            throw new BizException(ErrorCode.ADMIN_NOT_EXIST.getCode(), "管理员编号 " + id + " 不存在");
         }
         return admin;
     }
