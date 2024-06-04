@@ -34,11 +34,11 @@ public class ListDepartmentServlet extends HttpServlet {
         }
         if (be != null) {
             request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
-            response.sendRedirect(request.getContextPath() + "/department.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/department/list?pageNum=1&pageSize=10");
             throw be;
         } else {
             request.setAttribute("pagination", pagination);
-            request.getRequestDispatcher("/department.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/department.jsp").forward(request, response);
         }
     }
 

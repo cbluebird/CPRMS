@@ -49,7 +49,7 @@ public class QueryAuditServlet extends HttpServlet {
         } else {
             request.setAttribute("pagination", pagination);
             request.setAttribute("departmentMap", departmentMap);
-            request.getRequestDispatcher("/audit.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/audit.jsp").forward(request, response);
         }
     }
 

@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/admin/login.jsp");
     }
 
     @Override
@@ -48,22 +48,22 @@ public class LoginServlet extends HttpServlet {
             Date outDate = new Date(utilDate.getTime());
             Date nowDate = new Date(new java.util.Date().getTime());
             if (admin.getPassword().equals(SM3Util.encrypt("zjut123456")) || outDate.before(nowDate)) {
-                response.sendRedirect(request.getContextPath() + "/resetPassword.jsp?id=" + URLEncoder.encode(admin.getId().toString(), "UTF-8"));
+                response.sendRedirect(request.getContextPath() + "/admin/resetPassword.jsp?id=" + URLEncoder.encode(admin.getId().toString(), "UTF-8"));
                 return;
             }
             if (admin != null) {
                 request.getSession().setAttribute("admin", admin);
                 auditService.createAudit("管理员登录", Audit.AuditType.LOGIN, admin.getId());
-                response.sendRedirect(request.getContextPath() + "/homepage.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin/home.jsp");
             } else {
-                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin/login.jsp");
             }
         } catch (BizException e) {
             request.setAttribute("error", ErrorCode.getByCode(e.getCode()).getMessage());
             if (Objects.equals(e.getCode(), ErrorCode.ADMIN_LOGIN_ERROR.getCode())) {
                 JedisUtil.incrementLoginKey(username);
             }
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/login.jsp").forward(request, response);
             throw e;
         }
     }

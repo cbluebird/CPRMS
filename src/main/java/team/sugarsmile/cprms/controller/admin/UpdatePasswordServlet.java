@@ -21,7 +21,7 @@ public class UpdatePasswordServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect("/resetPassword.jsp");
+        response.sendRedirect("/admin/resetPassword.jsp");
     }
 
     @Override
@@ -31,9 +31,9 @@ public class UpdatePasswordServlet extends HttpServlet {
             userID = Integer.parseInt(request.getParameter("id"));
             adminService.updatePasswordByID(userID, password);
             auditService.createAudit("更新密码", Audit.AuditType.UPDATE, userID);
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/login.jsp");
         } catch (BizException e) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
+            response.sendRedirect(request.getContextPath() + "/admin/login.jsp?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
         }
     }
 }

@@ -9,7 +9,7 @@
     <div class="error-code">500</div>
     <div class="error-message">Internal Server Error</div>
     <p>服务器遇到了一个错误，暂时无法处理您的请求，请稍后再试或点击下方按钮返回主页。</p>
-    <a href="${pageContext.request.contextPath}/homepage.jsp" class="btn">返回主页</a>
+    <a href="${pageContext.request.contextPath}/admin/home.jsp" class="btn">返回主页</a>
 </div>
 </body>
 </html>

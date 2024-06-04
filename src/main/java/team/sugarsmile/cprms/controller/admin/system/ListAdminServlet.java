@@ -37,12 +37,12 @@ public class ListAdminServlet extends HttpServlet {
         }
         if (be != null) {
             request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
-            response.sendRedirect(request.getContextPath() + "/system.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/system/list?pageNum=1&pageSize=10");
             throw be;
         } else {
             request.setAttribute("pagination", pagination);
             request.setAttribute("departmentMap", departmentMap);
-            request.getRequestDispatcher("/system.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/system.jsp").forward(request, response);
         }
     }
 

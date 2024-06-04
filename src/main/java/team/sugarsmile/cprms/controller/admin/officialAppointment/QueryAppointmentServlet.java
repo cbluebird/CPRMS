@@ -66,12 +66,12 @@ public class QueryAppointmentServlet extends HttpServlet {
         }
         if (be != null) {
             request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
-            response.sendRedirect(request.getContextPath() + "/officialAppointment.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/appointment/official/list?pageNum=1&pageSize=10");
             throw be;
         } else {
             request.setAttribute("pagination", pagination);
             request.setAttribute("departmentMap", departmentMap);
-            request.getRequestDispatcher("/officialAppointment.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/officialAppointment.jsp").forward(request, response);
         }
     }
 

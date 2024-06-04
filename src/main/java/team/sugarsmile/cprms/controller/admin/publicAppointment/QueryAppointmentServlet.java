@@ -59,7 +59,7 @@ public class QueryAppointmentServlet extends HttpServlet {
         } else {
             request.setAttribute("pagination", pagination);
             request.setAttribute("departmentMap", departmentMap);
-            request.getRequestDispatcher("/publicAppointment.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/publicAppointment.jsp").forward(request, response);
         }
     }
 

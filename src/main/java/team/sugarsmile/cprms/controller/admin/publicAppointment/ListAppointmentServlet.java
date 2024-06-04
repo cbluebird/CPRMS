@@ -42,7 +42,7 @@ public class ListAppointmentServlet extends HttpServlet {
             if (admin.getAdminType() == Admin.AdminType.DEPARTMENT) {
                 Department department = departmentMap.get(admin.getDepartmentID());
                 if (!department.getSocial()) {
-                    response.sendRedirect(request.getContextPath() + "/homepage.jsp");
+                    response.sendRedirect(request.getContextPath() + "/admin/home.jsp");
                     return;
                 }
             }
@@ -52,12 +52,12 @@ public class ListAppointmentServlet extends HttpServlet {
         }
         if (be != null) {
             request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
-            response.sendRedirect(request.getContextPath() + "/homepage.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/appointment/public/list?pageNum=1&pageSize=10");
             throw be;
         } else {
             request.setAttribute("pagination", pagination);
             request.setAttribute("departmentMap", departmentMap);
-            request.getRequestDispatcher("/publicAppointment.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/publicAppointment.jsp").forward(request, response);
         }
     }
 

@@ -3,7 +3,7 @@
 <head>
     <title>登录页</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/login.css">
     <%
         String error = (String) request.getAttribute("error");
         if (error != null) {

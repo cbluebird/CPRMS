@@ -34,9 +34,6 @@ public class AddDepartmentAdminServlet extends HttpServlet {
             String name = request.getParameter("name");
             String phone = request.getParameter("phone");
             String userName = request.getParameter("userName");
-            System.out.println(name);
-            System.out.println(phone);
-            System.out.println(userName);
             Integer departmentID = Integer.parseInt(request.getParameter("departmentID"));
             if (name.isEmpty() || userName.isEmpty() || phone.isEmpty()) {
                 throw new BizException(ErrorCode.PARAM_ERROR.getCode(), "参数不能为空");

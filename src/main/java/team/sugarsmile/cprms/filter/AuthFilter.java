@@ -28,13 +28,20 @@ public class AuthFilter implements Filter {
         BizException be = null;
         try {
             String url = request.getServletPath();
-            if (!url.endsWith("/login.jsp") && !url.endsWith("/resetPassword.jsp") && !url.endsWith(".css") && !url.endsWith(".js")) {
-                Admin admin = (Admin) request.getSession().getAttribute("admin");
+            Admin admin = (Admin) request.getSession().getAttribute("admin");
+            if (url.endsWith("/login.jsp")) {
+                if (admin != null) {
+                    response.sendRedirect(request.getContextPath() + "/admin/home.jsp");
+                    return;
+                }
+            } else {
                 if (admin == null) {
                     throw new BizException(ErrorCode.ADMIN_NOT_LOGIN);
                 }
                 adminService.getAdminByID(admin.getId());
-                roleService.checkPermission(url, admin);
+                if (!url.endsWith(".jsp") && !url.endsWith(".css") && !url.endsWith(".js")) {
+                    roleService.checkPermission(url, admin);
+                }
             }
         } catch (BizException e) {
             be = e;

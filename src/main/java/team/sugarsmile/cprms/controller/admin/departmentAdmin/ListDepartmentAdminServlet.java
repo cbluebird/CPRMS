@@ -40,12 +40,12 @@ public class ListDepartmentAdminServlet extends HttpServlet {
         }
         if (be != null) {
             request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
-            response.sendRedirect(request.getContextPath() + "/departmentAdmin.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/departmentAdmin/list?pageNum=1&pageSize=10");
             throw be;
         } else {
             request.setAttribute("pagination", pagination);
             request.setAttribute("departmentMap", departmentMap);
-            request.getRequestDispatcher("/departmentAdmin.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/departmentAdmin.jsp").forward(request, response);
         }
     }
 

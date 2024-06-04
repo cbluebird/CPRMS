@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-image: url('../static/background.jpg');
+    background-image: url('../../static/background.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -19,7 +19,7 @@ body {
 }
 
 .welcome-section {
-    background-image: url('../static/background.jpg');
+    background-image: url('../../static/background.jpg');
     background-size: cover;
     background-position: center;
     display: flex;

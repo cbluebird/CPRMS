@@ -5,7 +5,7 @@ body {
     padding: 0;
     height: 100vh;
     display: flex;
-    background: #f0f2f5 url(../static/background.jpg) no-repeat fixed center center;
+    background: #f0f2f5 url(../../static/background.jpg) no-repeat fixed center center;
     background-size: cover;
 }
 

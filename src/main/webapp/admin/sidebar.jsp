@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/sidebar.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/sidebar.css">
 <div class="sidebar">
-    <a href="${pageContext.request.contextPath}/homepage.jsp">Home</a>
+    <a href="${pageContext.request.contextPath}/admin/homepage.jsp">Home</a>
 
     <c:if test="${admin.adminType.value eq 2||admin.adminType.value eq 3}">
         <a href="${pageContext.request.contextPath}/admin/appointment/official/list?pageNum=1&pageSize=10">公务预约</a>

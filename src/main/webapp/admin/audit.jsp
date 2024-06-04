@@ -12,7 +12,7 @@
 <html>
 <head>
     <title>审计管理</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/table.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/table.css">
     <%
         String error = (String) session.getAttribute("error");
         if (error != null) {

@@ -3,14 +3,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="sidebar.jsp"/>
 <jsp:useBean id="pagination" scope="request"
-             type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Department>"/>
+             type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Admin>"/>
+<jsp:useBean id="departmentMap" scope="request" type="java.util.HashMap"/>
 <fmt:formatNumber var="totalPage" scope="request" type="number"
                   value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}"
                   maxFractionDigits="0"/>
+<jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
 <html>
 <head>
-    <title>部门管理页面</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/table.css">
+    <title>部门管理员管理页面</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/table.css">
     <%
         String error = (String) session.getAttribute("error");
         if (error != null) {
@@ -29,64 +31,34 @@
 <div class="container">
     <div class="table">
         <div class="header-container">
-            <h2>部门管理</h2>
+            <h2>部门管理员管理</h2>
         </div>
         <div class="table-container">
             <table>
                 <thead>
                 <tr>
-                    <th>部门编号</th>
-                    <th>部门类型</th>
-                    <th>部门名称</th>
-                    <th>社会公众预约管理权限</th>
-                    <th>公务预约管理权限</th>
+                    <th>编号</th>
+                    <th>姓名</th>
+                    <th>登录名</th>
+                    <th>电话</th>
+                    <th>部门</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="department" items="${pagination.list}">
+                <c:forEach var="admin" items="${pagination.list}">
                     <tr>
-                        <td>${department.id}</td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${department.type.value eq 1}">
-                                    行政部门
-                                </c:when>
-                                <c:when test="${department.type.value eq 2}">
-                                    直属部门
-                                </c:when>
-                                <c:when test="${department.type.value eq 3}">
-                                    学院
-                                </c:when>
-                            </c:choose>
-                        </td>
-                        <td>${department.name}</td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${department.social}">
-                                    有
-                                </c:when>
-                                <c:otherwise>
-                                    无
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${department.business}">
-                                    所有部门
-                                </c:when>
-                                <c:otherwise>
-                                    本部门
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
+                        <td>${admin.id}</td>
+                        <td>${admin.name}</td>
+                        <td>${admin.userName}</td>
+                        <td>${admin.phone}</td>
+                        <td>${departmentMap[admin.departmentID].name}</td>
                         <td>
                             <button class="modify"
-                                    onclick="updateDepartment('${department.id}','${department.type.value}','${department.name}','${department.social}','${department.business}')">
+                                    onclick="updateDepartmentAdmin('${admin.id}','${admin.name}','${admin.userName}','${admin.phone}','${admin.departmentID}')">
                                 修改
                             </button>
-                            <button class="delete" onclick="deleteDepartment('${department.id}')">删除</button>
+                            <button class="delete" onclick="deleteDepartmentAdmin('${admin.id}')">删除</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -113,27 +85,29 @@
     <div id="overlay" class="overlay"></div>
 
     <div id="popup-add" class="popup">
-        <h2>添加部门</h2>
-        <form action="${pageContext.request.contextPath}/admin/department/add" method="post">
+        <h2>添加部门管理员</h2>
+        <form action="${pageContext.request.contextPath}/admin/departmentAdmin/add" method="post">
             <div>
-                <label for="addType">部门类型:</label>
-                <select id="addType" name="type">
-                    <option value="1">行政部门</option>
-                    <option value="2">直属部门</option>
-                    <option value="3">学院</option>
-                </select>
-            </div>
-            <div>
-                <label for="addName">部门名称:</label>
+                <label for="addName">姓名:</label>
                 <input type="text" id="addName" name="name"/>
             </div>
             <div>
-                <label for="addSocial">社会公众预约管理权限:</label>
-                <input type="checkbox" id="addSocial" name="social" value="true"/>
+                <label for="addUserName">登录名:</label>
+                <input type="text" id="addUserName" name="userName"/>
             </div>
             <div>
-                <label for="addBusiness">所有部门公务预约管理权限:</label>
-                <input type="checkbox" id="addBusiness" name="business" value="true"/>
+                <label for="addPhone">电话:</label>
+                <input type="text" id="addPhone" name="phone"/>
+            </div>
+            <div>
+                <label for="addDepartmentID">部门:</label>
+                <select id="addDepartmentID" name="departmentID">
+                    <option value="">请选择</option>
+                    <c:forEach items="${departmentMap}" var="entry">
+                        <option value="${entry.key}"
+                                <c:if test="${entry.key == param.departmentID}">selected="selected"</c:if>>${entry.value.name}</option>
+                    </c:forEach>
+                </select>
             </div>
             <div>
                 <button type="submit">提交</button>
@@ -143,28 +117,30 @@
     </div>
 
     <div id="popup-update" class="popup">
-        <h2>修改部门</h2>
-        <form action="${pageContext.request.contextPath}/admin/department/update" method="post">
+        <h2>修改部门管理员信息</h2>
+        <form action="${pageContext.request.contextPath}/admin/departmentAdmin/update" method="post">
             <input type="hidden" id="updateId" name="id"/>
             <div>
-                <label for="updateType">部门类型:</label>
-                <select id="updateType" name="type">
-                    <option value="1">行政部门</option>
-                    <option value="2">直属部门</option>
-                    <option value="3">学院</option>
-                </select>
-            </div>
-            <div>
-                <label for="updateName">部门名称:</label>
+                <label for="updateName">姓名:</label>
                 <input type="text" id="updateName" name="name"/>
             </div>
             <div>
-                <label for="updateSocial">社会公众预约管理权限:</label>
-                <input type="checkbox" id="updateSocial" name="social" value="true"/>
+                <label for="updateUserName">登录名:</label>
+                <input type="text" id="updateUserName" name="userName"/>
             </div>
             <div>
-                <label for="updateBusiness">所有部门公务预约管理权限:</label>
-                <input type="checkbox" id="updateBusiness" name="business" value="true"/>
+                <label for="updatePhone">电话:</label>
+                <input type="text" id="updatePhone" name="phone"/>
+            </div>
+            <div>
+                <label for="updateDepartmentID">部门:</label>
+                <select id="updateDepartmentID" name="departmentID">
+                    <option value="">请选择</option>
+                    <c:forEach items="${departmentMap}" var="entry">
+                        <option value="${entry.key}"
+                                <c:if test="${entry.key == param.departmentID}">selected="selected"</c:if>>${entry.value.name}</option>
+                    </c:forEach>
+                </select>
             </div>
             <div>
                 <button type="submit">保存</button>
@@ -196,18 +172,17 @@
         window.location.href = "${pageContext.request.contextPath}/admin/department/list?pageNum=" + currPage + "&pageSize=10";
     }
 
-    function updateDepartment(id, type, name, social, business) {
+    function updateDepartmentAdmin(id, name, userName, phone, departmentID) {
         document.getElementById("updateId").value = id;
-        document.getElementById("updateType").value = type;
         document.getElementById("updateName").value = name;
-        document.getElementById("updateSocial").value = social;
-        document.getElementById("updateBusiness").value = business;
-
+        document.getElementById("updateUserName").value = userName;
+        document.getElementById("updatePhone").value = phone;
+        document.getElementById("updateDepartmentID").value = departmentID;
         showUpdatePopup();
     }
 
-    function deleteDepartment(id) {
-        window.location.href = "${pageContext.request.contextPath}/admin/department/delete?id=" + id;
+    function deleteDepartmentAdmin(id) {
+        window.location.href = "${pageContext.request.contextPath}/admin/departmentAdmin/delete?id=" + id;
     }
 
     function showUpdatePopup() {
