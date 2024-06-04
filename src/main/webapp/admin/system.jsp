@@ -89,9 +89,11 @@
 
     <div id="overlay" class="overlay"></div>
 
-    <div id="popup-add" class="popup">
+    <div id="popup-add" class="popup-admin">
         <h2>添加部门管理员</h2>
-        <form action="${pageContext.request.contextPath}/admin/system/add" method="post">
+        <form action="${pageContext.request.contextPath}/admin/system/add" method="post"
+              onsubmit="return validateAddForm()">
+            <div class="admin-info">
             <div>
                 <label for="addName">姓名:</label>
                 <input type="text" id="addName" name="name"/>
@@ -115,12 +117,15 @@
                 <button type="submit">提交</button>
                 <button type="button" onclick="closeAddPopup()">取消</button>
             </div>
+            </div>
         </form>
     </div>
 
-    <div id="popup-update" class="popup">
+    <div id="popup-update" class="popup-admin">
         <h2>修改部门管理员信息</h2>
-        <form action="${pageContext.request.contextPath}/admin/system/update" method="post">
+        <form action="${pageContext.request.contextPath}/admin/system/update" method="post"
+              onsubmit="return validateUpdateForm()">
+            <div class="admin-info">
             <input type="hidden" id="updateId" name="id"/>
             <div>
                 <label for="updateName">姓名:</label>
@@ -145,6 +150,7 @@
                 <button type="submit">保存</button>
                 <button type="button" onclick="closeUpdatePopup()">取消</button>
             </div>
+            </div>
         </form>
     </div>
 </div>
@@ -152,6 +158,30 @@
 <script>
     let currPage = ${pagination.pageNum};
     let totalPage = ${requestScope.totalPage};
+
+    function validatePhone(phone) {
+        const phoneRegex = /^1[3-9]\d{9}$/;
+        return phoneRegex.test(phone);
+    }
+
+    function validateAddForm() {
+        const addPhone = document.getElementById("addPhone");
+        if (!validatePhone(addPhone.value)) {
+            alert('手机号格式不正确');
+            return false;
+        }
+        return true
+    }
+
+    function validateUpdateForm() {
+        const updatePhone = document.getElementById("updatePhone");
+        if (!validatePhone(updatePhone.value)) {
+            alert('手机号格式不正确');
+            return false;
+        }
+        return true
+    }
+
 
     function loadNextPage() {
         if (currPage === totalPage) {

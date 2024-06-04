@@ -92,6 +92,37 @@ public class AdminDao {
         }
     }
 
+
+    public Admin findByUserPhone(String phone) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "SELECT * FROM admin WHERE phone = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, phone);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                return Admin.builder()
+                        .id(rs.getInt("id"))
+                        .adminType(Admin.AdminType.getType(rs.getInt("admin_type")))
+                        .name(rs.getString("name"))
+                        .phone(rs.getString("phone"))
+                        .password(rs.getString("password"))
+                        .departmentID(rs.getInt("department_id"))
+                        .userName(rs.getString("user_name"))
+                        .date(rs.getDate("date"))
+                        .build();
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt, rs);
+        }
+    }
+
     public void updatePasswordByID(Integer id, String password) {
         Connection conn = null;
         PreparedStatement stmt = null;

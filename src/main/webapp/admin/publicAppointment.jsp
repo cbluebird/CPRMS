@@ -42,7 +42,8 @@
 
                     <label for="appointmentDate">预约日期:</label>
                     <input type="date" id="appointmentDate" name="appointmentDate">
-
+                </div>
+                <div class="row">
                     <label for="campus">预约校区:</label>
                     <select id="campus" name="campus">
                         <option value="">全部</option>

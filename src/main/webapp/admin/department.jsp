@@ -112,7 +112,7 @@
 
     <div id="overlay" class="overlay"></div>
 
-    <div id="popup-add" class="popup">
+    <div id="popup-add" class="popup-admin">
         <h2>添加部门</h2>
         <form action="${pageContext.request.contextPath}/admin/department/add" method="post">
             <div>
@@ -142,7 +142,7 @@
         </form>
     </div>
 
-    <div id="popup-update" class="popup">
+    <div id="popup-update" class="popup-admin">
         <h2>修改部门</h2>
         <form action="${pageContext.request.contextPath}/admin/department/update" method="post">
             <input type="hidden" id="updateId" name="id"/>

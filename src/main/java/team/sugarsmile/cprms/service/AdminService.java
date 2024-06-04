@@ -15,6 +15,10 @@ public class AdminService {
             throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户： " + userName + " 已存在");
         }
 
+        if (adminDao.findByUserPhone(phone) != null) {
+            throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户手机： " + phone + " 已存在");
+        }
+
         String pass = SM3Util.encrypt("zjut123456");
 
         adminDao.insert(Admin.builder()

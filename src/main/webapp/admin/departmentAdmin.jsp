@@ -54,11 +54,11 @@
                         <td>${admin.phone}</td>
                         <td>${departmentMap[admin.departmentID].name}</td>
                         <td>
-                            <button class="modify"
+                            <button class="modify-admin"
                                     onclick="updateDepartmentAdmin('${admin.id}','${admin.name}','${admin.userName}','${admin.phone}','${admin.departmentID}')">
                                 修改
                             </button>
-                            <button class="delete" onclick="deleteDepartmentAdmin('${admin.id}')">删除</button>
+                            <button class="delete-admin" onclick="deleteDepartmentAdmin('${admin.id}')">删除</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -84,9 +84,10 @@
 
     <div id="overlay" class="overlay"></div>
 
-    <div id="popup-add" class="popup">
+    <div id="popup-add" class="popup-admin">
         <h2>添加部门管理员</h2>
-        <form action="${pageContext.request.contextPath}/admin/departmentAdmin/add" method="post">
+        <form action="${pageContext.request.contextPath}/admin/departmentAdmin/add" method="post"
+              onsubmit="return validateAddForm()">
             <div>
                 <label for="addName">姓名:</label>
                 <input type="text" id="addName" name="name"/>
@@ -116,9 +117,10 @@
         </form>
     </div>
 
-    <div id="popup-update" class="popup">
+    <div id="popup-update" class="popup-admin">
         <h2>修改部门管理员信息</h2>
-        <form action="${pageContext.request.contextPath}/admin/departmentAdmin/update" method="post">
+        <form action="${pageContext.request.contextPath}/admin/departmentAdmin/update" method="post"
+              onsubmit="return validateUpdateForm()">
             <input type="hidden" id="updateId" name="id"/>
             <div>
                 <label for="updateName">姓名:</label>
@@ -153,6 +155,29 @@
 <script>
     let currPage = ${pagination.pageNum};
     let totalPage = ${requestScope.totalPage};
+
+    function validatePhone(phone) {
+        const phoneRegex = /^1[3-9]\d{9}$/;
+        return phoneRegex.test(phone);
+    }
+
+    function validateAddForm() {
+        const addPhone = document.getElementById("addPhone");
+        if (!validatePhone(addPhone.value)) {
+            alert('手机号格式不正确');
+            return false;
+        }
+        return true
+    }
+
+    function validateUpdateForm() {
+        const updatePhone = document.getElementById("updatePhone");
+        if (!validatePhone(updatePhone.value)) {
+            alert('手机号格式不正确');
+            return false;
+        }
+        return true
+    }
 
     function loadNextPage() {
         if (currPage === totalPage) {
