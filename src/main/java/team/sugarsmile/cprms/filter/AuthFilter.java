@@ -30,6 +30,7 @@ public class AuthFilter implements Filter {
             roleService.checkPermission(url, admin);
         } catch (BizException e) {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
