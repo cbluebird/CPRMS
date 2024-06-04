@@ -10,36 +10,7 @@ body {
     background-size: cover;
 }
 
-.sidebar {
-    width: 200px;
-    background-color: #343a40;
-    position: fixed;
-    height: 100%;
-    overflow: auto;
-    padding-top: 20px;
-    top: 0;
-    left: 0;
-}
-
-.sidebar a {
-    display: block;
-    color: white;
-    padding: 16px;
-    text-decoration: none;
-    font-size: 1em;
-}
-
-.sidebar a.active {
-    background-color: #007BFF;
-    color: white;
-}
-
-.sidebar a:hover:not(.active) {
-    background-color: #555;
-    color: white;
-}
-
-.content {
+.container {
     margin-left: 200px;
     padding: 16px;
     flex-grow: 1;
@@ -49,33 +20,41 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
 }
 
 .table {
     width: 90%;
-    max-width: 1200px;
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    overflow: hidden;
-    margin-top: 20px;
     padding: 20px;
 }
 
-.table-container {
+.header-container {
+    text-align: center;
+}
+
+.search-container {
+    margin: 20px auto;
     padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-container {
+    overflow: auto;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    white-space: nowrap;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 thead {
-    background-color: #007BFF;
+    background-color: #5E98EC;
     color: #fff;
 }
 
@@ -91,54 +70,55 @@ tbody tr:nth-child(even) {
 tbody td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
+    text-align: center;
 }
 
 tbody tr:hover {
     background-color: #f1f1f1;
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.1), 0 2px 4px rgba(0, 123, 255, 0.1);
+thead th:last-child,
+tbody td:last-child {
+    position: sticky;
+    right: 0;
+    z-index: 1;
 }
 
-button:hover {
-    background-color: #0056b3;
-    box-shadow: 0 6px 10px rgba(0, 123, 255, 0.15), 0 3px 6px rgba(0, 123, 255, 0.15);
+thead th:last-child {
+    background-color: #5593EB;
 }
 
-.foot {
+tbody td:last-child {
+    background-color: #EDF4FD;
+}
+
+.foot-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 10px;
     background-color: #f4f4f4;
-    border-top: 2px solid #007BFF;
+    border-top: 2px solid #4886DE;
 }
 
-.foot_page {
+.foot-page {
     display: flex;
     align-items: center;
 }
 
-.foot_page a {
-    color: #007BFF;
+.foot-page a {
+    color: #6899CC;
     text-decoration: none;
     margin: 0 10px;
 }
 
-.foot_page a:hover {
+.foot-page a:hover {
+    color: #5089C4;
     text-decoration: underline;
+    cursor: pointer;
 }
 
-.foot_add {
+.foot-add {
     display: flex;
     align-items: center;
 }
@@ -169,10 +149,6 @@ button:hover {
     display: none;
 }
 
-.popup h2 {
-    margin-top: 0;
-}
-
 .popup input[type=text], .popup select {
     width: 100%;
     padding: 10px;
@@ -181,70 +157,34 @@ button:hover {
     border-radius: 5px;
 }
 
-.popup button {
-    width: 100px;
-    margin: 5px;
+button {
+    padding: 8px 16px;
+    background-color: #79AAEF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.1), 0 2px 4px rgba(0, 123, 255, 0.1);
 }
 
-
-button:active {
-    background-color: #003d80;
-    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2), 0 1px 2px rgba(0, 123, 255, 0.2);
+button:hover {
+    background-color: #4886DE;
 }
 
-.foot_add button {
-    margin: 0;
-    padding: 10px 20px;
+button.modify, button.approve {
+    background-color: #55A863;
 }
 
-.table-container button {
-    margin: 5px;
-    padding: 10px 20px;
+button.modify:hover, button.approve:hover {
+    background-color: #3D9C4D;
 }
 
-button.modify {
-    background-color: #28a745;
+button.delete, button.reject {
+    background-color: #D44366;
 }
 
-button.modify:hover {
-    background-color: #218838;
-}
-
-button.modify:active {
-    background-color: #1e7e34;
-}
-
-button.delete {
-    background-color: #dc3545;
-}
-
-button.delete:hover {
-    background-color: #c82333;
-}
-
-button.delete:active {
-    background-color: #bd2130;
-}
-
-@media screen and (max-width: 700px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-
-    .sidebar a {
-        float: left;
-    }
-
-    .content {
-        margin-left: 0;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .sidebar a {
-        text-align: center;
-        float: none;
-    }
+button.delete:hover, button.reject:hover {
+    background-color: #C83659;
 }

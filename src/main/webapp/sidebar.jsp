@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="team.sugarsmile.cprms.model.Admin" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/sidebar.css">
 <div class="sidebar">
     <a href="${pageContext.request.contextPath}/homepage.jsp">Home</a>
 

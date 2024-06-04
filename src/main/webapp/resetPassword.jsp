@@ -81,11 +81,11 @@
                 <h1>重置密码</h1>
             </div>
             <div class="input-field">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-lock"></i>
                 <input type="password" id="password" name="password" placeholder="请输入你的新密码" required>
             </div>
             <div class="input-field">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-lock"></i>
                 <input type="password" id="re_password" name="re_password" placeholder="重新输入你的密码" required>
             </div>
             <div class="input-field">

@@ -1,17 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:include page="sidebar.jsp"/>
 <jsp:useBean id="pagination" scope="request"
              type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Admin>"/>
 <fmt:formatNumber var="totalPage" scope="request" type="number"
                   value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}"
                   maxFractionDigits="0"/>
+<jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
 <html>
 <head>
     <title>管理员管理页面</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/table.css">
     <%
-        String error = (String) request.getAttribute("error");
+        String error = (String) session.getAttribute("error");
         if (error != null) {
     %>
     <script>
@@ -20,16 +22,15 @@
         };
     </script>
     <%
+            session.removeAttribute("error");
         }
     %>
 </head>
 <body>
-<jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
-<jsp:include page="sidebar.jsp"/>
-<div class="content">
-    <div id="departmentTable" class="table">
+<div class="container">
+    <div class="table">
         <div class="table-container">
-            <table border="1">
+            <table>
                 <thead>
                 <tr>
                     <th>编号</th>
@@ -58,18 +59,19 @@
                             </c:choose>
                         </td>
                         <td>
-                            <button onclick="updateAdmin('${admin.id}','${admin.name}','${admin.userName}','${admin.phone}','${admin.adminType.value}')">
+                            <button class="modify"
+                                    onclick="updateAdmin('${admin.id}','${admin.name}','${admin.userName}','${admin.phone}','${admin.adminType.value}')">
                                 修改
                             </button>
-                            <button onclick="deleteAdmin('${admin.id}')">删除</button>
+                            <button class="delete" onclick="deleteAdmin('${admin.id}')">删除</button>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
         </div>
-        <div class="foot">
-            <div class="foot_page">
+        <div class="foot-container">
+            <div class="foot-page">
                 共&nbsp;${pagination.total}&nbsp;条&nbsp;${pagination.pageSize}条/页&nbsp;
                 <c:if test="${pagination.pageNum gt 1}">
                     <a onclick="loadPreviousPage()">上一页</a>
@@ -79,7 +81,7 @@
                     <a onclick="loadNextPage()">下一页</a>
                 </c:if>
             </div>
-            <div class="foot_add">
+            <div class="foot-add">
                 <button onclick="showAddPopup()">添加</button>
             </div>
         </div>
@@ -87,7 +89,7 @@
 
     <div id="overlay" class="overlay"></div>
 
-    <div id="popup_add" class="popup">
+    <div id="popup-add" class="popup">
         <h2>添加部门管理员</h2>
         <form action="${pageContext.request.contextPath}/admin/system/add" method="post">
             <div>
@@ -116,7 +118,7 @@
         </form>
     </div>
 
-    <div id="popup_update" class="popup">
+    <div id="popup-update" class="popup">
         <h2>修改部门管理员信息</h2>
         <form action="${pageContext.request.contextPath}/admin/system/update" method="post">
             <input type="hidden" id="updateId" name="id"/>
@@ -184,28 +186,28 @@
 
     function showUpdatePopup() {
         const overlay = document.getElementById("overlay");
-        const popup = document.getElementById("popup_update");
+        const popup = document.getElementById("popup-update");
         overlay.style.display = "block";
         popup.style.display = "block";
     }
 
     function closeUpdatePopup() {
         const overlay = document.getElementById("overlay");
-        const popup = document.getElementById("popup_update");
+        const popup = document.getElementById("popup-update");
         overlay.style.display = "none";
         popup.style.display = "none";
     }
 
     function showAddPopup() {
         const overlay = document.getElementById('overlay');
-        const popup = document.getElementById('popup_add');
+        const popup = document.getElementById('popup-add');
         overlay.style.display = 'block';
         popup.style.display = 'block';
     }
 
     function closeAddPopup() {
         const overlay = document.getElementById('overlay');
-        const popup = document.getElementById('popup_add');
+        const popup = document.getElementById('popup-add');
         overlay.style.display = 'none';
         popup.style.display = 'none';
     }

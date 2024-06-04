@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #343a40;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    padding-top: 20px;
+    top: 0;
+    left: 0;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 16px;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.sidebar a.active {
+    background-color: #007BFF;
+    color: white;
+}
+
+.sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
