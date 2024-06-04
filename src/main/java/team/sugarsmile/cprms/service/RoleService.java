@@ -26,7 +26,7 @@ public class RoleService {
             }
         }
         if (!flag) {
-            throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户 " + admin.getName() + " 不存在权限: " + url);
+            throw new BizException(ErrorCode.PERMISSION_DENIED.getCode(), "用户 " + admin.getName() + " 不存在权限: " + url);
         }
     }
 }
