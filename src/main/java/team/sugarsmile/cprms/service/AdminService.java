@@ -40,7 +40,7 @@ public class AdminService {
     public Admin checkAdminByPassword(String userName, String password) {
         Admin admin = adminDao.findByUserName(userName);
         if (admin == null) {
-            throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户" + userName + "不存在");
+            throw new BizException(ErrorCode.ADMIN_NOT_EXIST.getCode(), "用户" + userName + "不存在");
         }
 
         if (!admin.getPassword().equals(SM3Util.encrypt(password))) {
