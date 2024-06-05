@@ -63,8 +63,13 @@ public class PublicAppointmentService {
     public PaginationDto<PublicAppointment> findPublicAppointmentList(String name, String idCard, String phone, int pageNum, int pageSize) {
         pageNum = pageNum <= 0 ? 1 : pageNum;
         pageSize = pageSize <= 0 ? 10 : pageSize;
-        idCard = SM4Util.encrypt(idCard);
-        phone = SM4Util.encrypt(phone);
+        if (idCard != null && !idCard.isEmpty()) {
+            idCard = SM4Util.encrypt(idCard);
+        }
+        if (phone != null && !phone.isEmpty()) {
+            phone = SM4Util.encrypt(phone);
+        }
+
         int total = publicAppointmentDao.count(name, idCard, phone);
         ArrayList<PublicAppointment> list = publicAppointmentDao.findByPage(name, idCard, phone, pageNum, pageSize);
         for (PublicAppointment appointment : list) {
@@ -87,7 +92,9 @@ public class PublicAppointmentService {
     public PaginationDto<PublicAppointment> searchAppointments(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, int pageNum, int pageSize) {
         pageNum = pageNum <= 0 ? 1 : pageNum;
         pageSize = pageSize <= 0 ? 10 : pageSize;
-        idCard = SM4Util.encrypt(idCard);
+        if (idCard != null && !idCard.isEmpty()) {
+            idCard = SM4Util.encrypt(idCard);
+        }
         int total = publicAppointmentDao.countForSearch(applyDate, appointmentDate, campus, unit, name, idCard);
         ArrayList<PublicAppointment> list = publicAppointmentDao.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, pageNum, pageSize);
         for (PublicAppointment appointment : list) {

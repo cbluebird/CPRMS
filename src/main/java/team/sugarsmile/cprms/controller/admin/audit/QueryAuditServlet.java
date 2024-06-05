@@ -30,7 +30,7 @@ public class QueryAuditServlet extends HttpServlet {
         try {
             int pageNum = parseIntegerOrDefault(request.getParameter("pageNum"), 1);
             int pageSize = parseIntegerOrDefault(request.getParameter("pageSize"), 10);
-            String applyDate = request.getParameter("create_time");
+            String applyDate = request.getParameter("applyDate");
             String operate = request.getParameter("operate");
             Integer type = parseIntegerOrNull(request.getParameter("type"));
             Integer adminID = parseIntegerOrNull(request.getParameter("admin_id"));

@@ -230,10 +230,10 @@ public class OfficialAppointmentDao {
             conn = JDBCUtil.getConnection();
             StringBuilder sql = new StringBuilder("SELECT * FROM official_appointment WHERE 1=1");
             if (applyDate != null && !applyDate.isEmpty()) {
-                sql.append(" AND DATE(create_time) = ?");
+                sql.append(" AND create_time = ?");
             }
             if (appointmentDate != null && !appointmentDate.isEmpty()) {
-                sql.append(" AND DATE(start_time) = ?");
+                sql.append(" AND start_time = ?");
             }
             if (campus != null) {
                 sql.append(" AND campus = ?");
@@ -307,10 +307,10 @@ public class OfficialAppointmentDao {
             conn = JDBCUtil.getConnection();
             StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM official_appointment where 1=1");
             if (applyDate != null && !applyDate.isEmpty()) {
-                sql.append(" AND DATE(create_time) = ?");
+                sql.append(" AND create_time = ?");
             }
             if (appointmentDate != null && !appointmentDate.isEmpty()) {
-                sql.append(" AND DATE(start_time) = ?");
+                sql.append(" AND start_time = ?");
             }
             if (campus != null) {
                 sql.append(" AND campus = ?");

@@ -147,7 +147,7 @@ public class AuditDao {
             conn = JDBCUtil.getConnection();
             StringBuilder sql = new StringBuilder("SELECT * FROM audit WHERE 1=1");
             if (createDate != null && !createDate.isEmpty()) {
-                sql.append(" AND DATE(create_time) = ?");
+                sql.append(" AND create_time = ?");
             }
             if (operate != null && !operate.isEmpty()) {
                 sql.append(" AND operate LIKE ?");
@@ -207,7 +207,7 @@ public class AuditDao {
             conn = JDBCUtil.getConnection();
             StringBuilder sql = new StringBuilder("SELECT * FROM audit WHERE 1=1");
             if (createDate != null && !createDate.isEmpty()) {
-                sql.append(" AND DATE(create_time) = ?");
+                sql.append(" AND create_time = ?");
             }
             if (operate != null && !operate.isEmpty()) {
                 sql.append(" AND operate LIKE ?");
@@ -262,7 +262,7 @@ public class AuditDao {
             conn = JDBCUtil.getConnection();
             StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM audit where 1=1");
             if (createDate != null && !createDate.isEmpty()) {
-                sql.append(" AND DATE(create_time) = ?");
+                sql.append(" AND create_time = ?");
             }
             if (operate != null && !operate.isEmpty()) {
                 sql.append(" AND operate LIKE ?");
