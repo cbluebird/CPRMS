@@ -21,11 +21,11 @@ public class SM4Util {
         sm4 = new SymmetricCrypto("SM4/ECB/PKCS5Padding", properties.getProperty("key").getBytes());
     }
 
-    public static String encryptSm4(String plaintext) {
+    public static String encrypt(String plaintext) {
         return sm4.encryptHex(plaintext);
     }
 
-    public static String decryptSm4(String ciphertext) {
+    public static String decrypt(String ciphertext) {
         return sm4.decryptStr(ciphertext);
     }
 }
