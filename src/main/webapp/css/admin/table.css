@@ -58,6 +58,7 @@ body {
 
 .search-container input[type="date"],
 .search-container input[type="text"],
+.search-container input[type="month"],
 .search-container select {
     flex: 1 1 48%;
     padding: 6px;
@@ -73,6 +74,7 @@ body {
 
 .search-container input[type="date"]:focus,
 .search-container input[type="text"]:focus,
+.search-container input[type="month"]:focus,
 .search-container select:focus {
     border-color: #79AAEF;
     outline: none;

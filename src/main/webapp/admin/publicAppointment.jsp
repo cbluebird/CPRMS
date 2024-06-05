@@ -11,7 +11,7 @@
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
 <html>
 <head>
-    <title>公务预约管理</title>
+    <title>社会公众预约管理</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/table.css">
     <%
         String error = (String) session.getAttribute("error");
@@ -43,6 +43,12 @@
                     <label for="appointmentDate">预约日期:</label>
                     <input type="date" id="appointmentDate" name="appointmentDate">
 
+                    <label for="countApplyDate">申请月度:</label>
+                    <input type="month" id="countApplyDate" name="countApplyDate">
+
+                    <label for="countAppointmentDate">预约月度:</label>
+                    <input type="month" id="countAppointmentDate" name="countAppointmentDate">
+
                     <label for="campus">预约校区:</label>
                     <select id="campus" name="campus">
                         <option value="">全部</option>
@@ -50,22 +56,16 @@
                         <option value="2">屏峰校区</option>
                         <option value="3">莫干山校区</option>
                     </select>
-
-                    <label for="unit">所在单位:</label>
-                    <input type="text" id="unit" name="unit">
                 </div>
                 <div class="row">
+                    <label for="unit">所在单位:</label>
+                    <input type="text" id="unit" name="unit">
+
                     <label for="name">预约人姓名:</label>
                     <input type="text" id="name" name="name">
 
                     <label for="idCard">身份证号:</label>
                     <input type="text" id="idCard" name="idCard">
-
-                    <label for="countApplyDate">申请月度:</label>
-                    <input type="month" id="countApplyDate" name="countApplyDate">
-
-                    <label for="countAppointmentDate">预约月度:</label>
-                    <input type="month" id="countAppointmentDate" name="countAppointmentDate">
                 </div>
                 <div class="row">
                     <button type="submit" class="query">查询</button>

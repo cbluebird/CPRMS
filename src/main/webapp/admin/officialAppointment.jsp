@@ -43,6 +43,12 @@
                     <label for="appointmentDate">预约日期:</label>
                     <input type="date" id="appointmentDate" name="appointmentDate">
 
+                    <label for="countApplyDate">申请月度:</label>
+                    <input type="month" id="countApplyDate" name="countApplyDate">
+
+                    <label for="countAppointmentDate">预约月度:</label>
+                    <input type="month" id="countAppointmentDate" name="countAppointmentDate">
+
                     <label for="campus">预约校区:</label>
                     <select id="campus" name="campus">
                         <option value="">全部</option>
@@ -50,11 +56,11 @@
                         <option value="2">屏峰校区</option>
                         <option value="3">莫干山校区</option>
                     </select>
-
-                    <label for="unit">所在单位:</label>
-                    <input type="text" id="unit" name="unit">
                 </div>
                 <div class="row">
+                    <label for="unit">所在单位:</label>
+                    <input type="text" id="unit" name="unit">
+
                     <label for="name">预约人姓名:</label>
                     <input type="text" id="name" name="name">
 
@@ -70,7 +76,7 @@
                         </c:forEach>
                     </select>
 
-                    <label for="receptionist">接待人:</label>
+                    <label for="receptionist">访问接待人:</label>
                     <input type="text" id="receptionist" name="receptionist">
 
                     <label for="status">审核状态:</label>
@@ -80,12 +86,6 @@
                         <option value="2">通过</option>
                         <option value="3">驳回</option>
                     </select>
-
-                    <label for="countApplyDate">申请月度:</label>
-                    <input type="month" id="countApplyDate" name="countApplyDate">
-
-                    <label for="countAppointmentDate">预约月度:</label>
-                    <input type="month" id="countAppointmentDate" name="countAppointmentDate">
                 </div>
                 <div class="row">
                     <button type="submit" class="query">查询</button>

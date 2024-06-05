@@ -11,7 +11,7 @@
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
 <html>
 <head>
-    <title>部门管理员管理页面</title>
+    <title>部门管理员管理</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/table.css">
     <%
         String error = (String) session.getAttribute("error");

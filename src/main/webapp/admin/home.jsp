@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Homepage</title>
+    <title>主页</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/home.css">
     <%
         String error = (String) request.getAttribute("error");

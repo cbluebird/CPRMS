@@ -9,7 +9,7 @@
                   maxFractionDigits="0"/>
 <html>
 <head>
-    <title>部门管理页面</title>
+    <title>部门管理</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/table.css">
     <%
         String error = (String) session.getAttribute("error");
