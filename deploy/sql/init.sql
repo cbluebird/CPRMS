@@ -66,5 +66,6 @@ CREATE TABLE audit
     operate     VARCHAR(64) NOT NULL COMMENT '操作',
     admin_id    BIGINT      NOT NULL COMMENT '管理员id',
     create_time DATE        NOT NULL COMMENT '创建时间',
-    type        TINYINT     NOT NULL COMMENT '操作类型 1:登录 2:添加 3:删除 4:更新 5:查询'
+    type TINYINT     NOT NULL COMMENT '操作类型 1:登录 2:添加 3:删除 4:更新 5:查询',
+    hmac VARCHAR(64) NOT NULL COMMENT '验证数值'
 );
