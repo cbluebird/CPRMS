@@ -37,8 +37,8 @@ public class QueryAppointmentServlet extends HttpServlet {
             Admin admin = (Admin) session.getAttribute("admin");
             int pageNum = parseIntegerOrDefault(request.getParameter("pageNum"), 1);
             int pageSize = parseIntegerOrDefault(request.getParameter("pageSize"), 10);
-            String applyDate = request.getParameter("create_time");
-            String appointmentDate = request.getParameter("start_time");
+            String applyDate = request.getParameter("applyDate");
+            String appointmentDate = request.getParameter("appointmentDate");
             Integer campus = parseIntegerOrNull(request.getParameter("campus"));
             String unit = request.getParameter("unit");
             String name = request.getParameter("name");
