@@ -163,7 +163,7 @@
             <label>交通方式:</label>
             <span id="getTransportation"></span>
         </div>
-        <div>
+        <div id="licensePlate">
             <label>车牌号:</label>
             <span id="getLicensePlate"></span>
         </div>
@@ -206,6 +206,12 @@
         document.getElementById("getCreateTime").innerText = new Date(createTime).toISOString().split('T')[0];
         document.getElementById("getUnit").innerText = unit;
         document.getElementById("getTransportation").innerText = transportation === '1' ? '步行' : '自驾';
+        if (transportation === '1') {
+            document.getElementById("licensePlate").style.display = 'none';
+        } else {
+            document.getElementById("licensePlate").style.display = 'block';
+            document.getElementById("getLicensePlate").innerText = licensePlate;
+        }
         document.getElementById("getLicensePlate").innerText = licensePlate;
         showGetPopup();
     }
