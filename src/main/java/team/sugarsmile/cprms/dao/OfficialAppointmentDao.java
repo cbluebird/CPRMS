@@ -205,7 +205,7 @@ public class OfficialAppointmentDao {
         }
     }
 
-    public void approveAppointment(Integer id, OfficialAppointment.Status status) {
+    public void updateAppointmentStatus(Integer id, OfficialAppointment.Status status) {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {

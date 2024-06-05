@@ -134,16 +134,24 @@
                                     onclick="getAppointment('${appointment.id}', '${appointment.name}', '${appointment.idCard}', '${appointment.phone}', '${appointment.campus.value}', '${appointment.startTime}', '${appointment.endTime}', '${appointment.createTime}', '${appointment.unit}', '${appointment.transportation.value}', '${appointment.licensePlate}', '${departmentMap[appointment.departmentId].name}', '${appointment.receptionist}', '${appointment.reason}', '${appointment.status.value}')">
                                 查看详情
                             </button>
-                            <c:if test="${appointment.status.value == 1}">
-                                <button class="approve"
-                                        onclick="reviewAppointment('${appointment.id}',2)">
-                                    通过
-                                </button>
-                                <button class="reject"
-                                        onclick="reviewAppointment('${appointment.id}',3)">
-                                    驳回
-                                </button>
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${appointment.status.value == 1}">
+                                    <button class="approve"
+                                            onclick="reviewAppointment('${appointment.id}',2)">
+                                        通过
+                                    </button>
+                                    <button class="reject"
+                                            onclick="reviewAppointment('${appointment.id}',3)">
+                                        驳回
+                                    </button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button class="cancel"
+                                            onclick="reviewAppointment('${appointment.id}',1)">
+                                        撤销审核
+                                    </button>
+                                </c:otherwise>
+                            </c:choose>
                         </td>
                     </tr>
                 </c:forEach>
@@ -253,7 +261,7 @@
     }
 
     function reviewAppointment(id, status) {
-        window.location.href = "${pageContext.request.contextPath}/admin/appointment/official/approve?id=" + id + "&status=" + status;
+        window.location.href = "${pageContext.request.contextPath}/admin/appointment/official/review?id=" + id + "&status=" + status;
     }
 
     function getAppointment(id, name, idCard, phone, campus, startTime, endTime, createTime, unit, transportation, licensePlate, departmentId, receptionist, reason, status) {

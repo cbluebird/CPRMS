@@ -87,8 +87,8 @@ public class OfficialAppointmentService {
                 .build();
     }
 
-    public void approveAppointment(Integer id, OfficialAppointment.Status status) {
-        officialAppointmentDao.approveAppointment(id, status);
+    public void reviewAppointment(Integer id, OfficialAppointment.Status status) {
+        officialAppointmentDao.updateAppointmentStatus(id, status);
     }
 
     public PasscodeDto getPasscode(int appointmentID, String name, String idCard, String phone) {
