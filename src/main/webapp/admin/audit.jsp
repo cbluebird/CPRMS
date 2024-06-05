@@ -70,6 +70,7 @@
                     <th>操作类型</th>
                     <th>操作</th>
                     <th>管理员ID</th>
+                    <th>状态</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -87,6 +88,7 @@
                         </td>
                         <td>${audit.operate}</td>
                         <td>${audit.adminId}</td>
+                        <td>${audit.HMAC}</td>
                     </tr>
                 </c:forEach>
                 </tbody>

@@ -5,7 +5,10 @@ import team.sugarsmile.cprms.exception.SystemException;
 import team.sugarsmile.cprms.model.Audit;
 import team.sugarsmile.cprms.util.JDBCUtil;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AuditDao {
@@ -14,12 +17,13 @@ public class AuditDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "INSERT INTO audit (operate, admin_id, create_time, type) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO audit (operate, admin_id, create_time, type, hmac) VALUES (?, ?, ?, ?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, audit.getOperate());
             stmt.setLong(2, audit.getAdminId());
-            stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            stmt.setDate(3, audit.getCreateTime());
             stmt.setInt(4, audit.getType().getValue());
+            stmt.setString(5, audit.getHMAC());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
@@ -43,8 +47,9 @@ public class AuditDao {
                         .id(rs.getInt("id"))
                         .operate(rs.getString("operate"))
                         .adminId(rs.getInt("admin_id"))
-                        .createTime(rs.getTimestamp("create_time"))
+                        .createTime(rs.getDate("create_time"))
                         .type(Audit.AuditType.fromValue(rs.getInt("type")))
+                        .HMAC(rs.getString("hmac"))
                         .build();
             }
             return null;
@@ -72,8 +77,9 @@ public class AuditDao {
                         .id(rs.getInt("id"))
                         .operate(rs.getString("operate"))
                         .adminId(rs.getInt("admin_id"))
-                        .createTime(rs.getTimestamp("create_time"))
+                        .createTime(rs.getDate("create_time"))
                         .type(Audit.AuditType.fromValue(rs.getInt("type")))
+                        .HMAC(rs.getString("hmac"))
                         .build());
             }
             return auditList;
@@ -150,8 +156,9 @@ public class AuditDao {
                         .id(rs.getInt("id"))
                         .operate(rs.getString("operate"))
                         .adminId(rs.getInt("admin_id"))
-                        .createTime(rs.getTimestamp("create_time"))
+                        .createTime(rs.getDate("create_time"))
                         .type(Audit.AuditType.fromValue(rs.getInt("type")))
+                        .HMAC(rs.getString("hmac"))
                         .build());
             }
         } catch (SQLException e) {
@@ -214,13 +221,14 @@ public class AuditDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "UPDATE audit SET operate = ?, admin_id = ?, create_time = ?, type = ? WHERE id = ?";
+            String sql = "UPDATE audit SET operate = ?, admin_id = ?, create_time = ?, type = ?,hmac = ? WHERE id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, audit.getOperate());
             stmt.setLong(2, audit.getAdminId());
-            stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            stmt.setDate(3, audit.getCreateTime());
             stmt.setInt(4, audit.getType().getValue());
-            stmt.setLong(5, audit.getId());
+            stmt.setString(5, audit.getHMAC());
+            stmt.setLong(6, audit.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
