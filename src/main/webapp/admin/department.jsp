@@ -64,10 +64,10 @@
                         <td>
                             <c:choose>
                                 <c:when test="${department.social}">
-                                    有
+                                    授予
                                 </c:when>
                                 <c:otherwise>
-                                    无
+                                    限制
                                 </c:otherwise>
                             </c:choose>
                         </td>
@@ -77,7 +77,7 @@
                                     所有部门
                                 </c:when>
                                 <c:otherwise>
-                                    本部门
+                                    仅本部门
                                 </c:otherwise>
                             </c:choose>
                         </td>
@@ -129,11 +129,17 @@
             </div>
             <div>
                 <label for="addSocial">社会公众预约管理权限:</label>
-                <input type="checkbox" id="addSocial" name="social" value="true"/>
+                <select id="addSocial" name="social">
+                    <option value="false">限制</option>
+                    <option value="true">授予</option>
+                </select>
             </div>
             <div>
-                <label for="addBusiness">所有部门公务预约管理权限:</label>
-                <input type="checkbox" id="addBusiness" name="business" value="true"/>
+                <label for="addBusiness">公务预约管理权限:</label>
+                <select id="addBusiness" name="business">
+                    <option value="false">仅本部门</option>
+                    <option value="true">所有部门</option>
+                </select>
             </div>
             <div class="button-group">
                 <button type="submit">提交</button>
@@ -160,11 +166,17 @@
             </div>
             <div>
                 <label for="updateSocial">社会公众预约管理权限:</label>
-                <input type="checkbox" id="updateSocial" name="social" value="true"/>
+                <select id="updateSocial" name="social">
+                    <option value="false">限制</option>
+                    <option value="true">授予</option>
+                </select>
             </div>
             <div>
-                <label for="updateBusiness">所有部门公务预约管理权限:</label>
-                <input type="checkbox" id="updateBusiness" name="business" value="true"/>
+                <label for="updateBusiness">公务预约管理权限:</label>
+                <select id="updateBusiness" name="business">
+                    <option value="false">仅本部门</option>
+                    <option value="true">所有部门</option>
+                </select>
             </div>
             <div class="button-group">
                 <button type="submit">保存</button>

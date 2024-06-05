@@ -39,8 +39,8 @@ public class UpdateDepartmentServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             Department.Type type = Department.Type.getType(Integer.parseInt(request.getParameter("type")));
             String name = request.getParameter("name");
-            Boolean social = "false".equals(request.getParameter("social"));
-            Boolean business = "false".equals(request.getParameter("business"));
+            Boolean social = Boolean.parseBoolean(request.getParameter("social"));
+            Boolean business = Boolean.parseBoolean(request.getParameter("business"));
             if (name.isEmpty()) {
                 throw new BizException(ErrorCode.PARAM_ERROR.getCode(), "参数不能为空");
             }
