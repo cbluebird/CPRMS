@@ -58,6 +58,8 @@ public class QueryAppointmentServlet extends HttpServlet {
                     pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, departmentId, countApplyDate, countAppointmentDate, pageNum, pageSize);
                 } else {
                     pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, department.getId(), countApplyDate, countAppointmentDate, pageNum, pageSize);
+                    departmentMap.clear();
+                    departmentMap.put(department.getId(), department);
                 }
             } else {
                 pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, departmentId, countApplyDate, countAppointmentDate, pageNum, pageSize);
