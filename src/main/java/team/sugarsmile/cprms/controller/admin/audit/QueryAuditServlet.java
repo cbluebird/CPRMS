@@ -34,7 +34,13 @@ public class QueryAuditServlet extends HttpServlet {
             String operate = request.getParameter("operate");
             Integer type = parseIntegerOrNull(request.getParameter("type"));
             Integer adminID = parseIntegerOrNull(request.getParameter("admin_id"));
-            pagination = auditService.searchAppointments(operate, type, adminID, applyDate, pageNum, pageSize);
+            Integer status = parseIntegerOrNull(request.getParameter("status"));
+            if (status != null) {
+                pagination = auditService.searchAuditWithStatus(operate, type, adminID, applyDate, status, pageNum, pageSize);
+            } else {
+                pagination = auditService.searchAudit(operate, type, adminID, applyDate, pageNum, pageSize);
+            }
+
             List<Department> departmentList = departmentService.getAll();
             for (Department department : departmentList) {
                 departmentMap.put(department.getId(), department);

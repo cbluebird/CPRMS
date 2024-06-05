@@ -54,6 +54,13 @@
 
                     <label for="admin_id">管理员ID:</label>
                     <input type="text" id="admin_id" name="admin_id">
+
+                    <label for="type">状态:</label>
+                    <select id="status" name="status">
+                        <option value="">状态</option>
+                        <option value="1">正确</option>
+                        <option value="2">错误</option>
+                    </select>
                 </div>
                 <div class="row">
                     <button type="submit" class="query">查询</button>
@@ -121,7 +128,7 @@
             return;
         }
         currPage++;
-        window.location.href = "${pageContext.request.contextPath}/admin/appointment/public/query?pageNum=" + currPage + "&pageSize=10";
+        window.location.href = "${pageContext.request.contextPath}/admin/audit/query?pageNum=" + currPage + "&pageSize=10";
     }
 
     function loadPreviousPage() {
@@ -130,7 +137,7 @@
             return;
         }
         currPage--;
-        window.location.href = "${pageContext.request.contextPath}/admin/appointment/public/query?pageNum=" + currPage + "&pageSize=10";
+        window.location.href = "${pageContext.request.contextPath}/admin/audit/query?pageNum=" + currPage + "&pageSize=10";
     }
 </script>
 </body>
