@@ -19,6 +19,7 @@ import team.sugarsmile.cprms.service.PublicAppointmentService;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @WebServlet("/admin/appointment/public/list")
 public class ListAppointmentServlet extends HttpServlet {
@@ -42,17 +43,23 @@ public class ListAppointmentServlet extends HttpServlet {
             if (admin.getAdminType() == Admin.AdminType.DEPARTMENT) {
                 Department department = departmentMap.get(admin.getDepartmentID());
                 if (!department.getSocial()) {
-                    response.sendRedirect(request.getContextPath() + "/admin/home.jsp");
-                    return;
+                    throw new BizException(ErrorCode.PERMISSION_DENIED.getCode(), "用户 " + admin.getName() + " 不存在社会公众预约管理权限");
                 }
             }
             pagination = publicAppointmentService.findPublicAppointmentList(pageNum, pageSize);
+        } catch (BizException e) {
+            be = e;
         } catch (NumberFormatException e) {
             be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
         }
         if (be != null) {
-            request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
-            response.sendRedirect(request.getContextPath() + "/admin/appointment/public/list?pageNum=1&pageSize=10");
+            if (Objects.equals(be.getCode(), ErrorCode.PERMISSION_DENIED.getCode())) {
+                request.setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
+                request.getRequestDispatcher("/admin/home.jsp").forward(request, response);
+            } else {
+                request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
+                response.sendRedirect(request.getContextPath() + "/admin/appointment/public/list?pageNum=1&pageSize=10");
+            }
             throw be;
         } else {
             request.setAttribute("pagination", pagination);
