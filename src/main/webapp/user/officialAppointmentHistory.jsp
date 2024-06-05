@@ -84,7 +84,7 @@
                         </td>
                         <td>
                             <button class="button" id="passcode-button"
-                                    onclick="getPasscode('${appointment.status}', '${appointment.id}')">
+                                    onclick="getPasscode(${appointment.status.value}, '${appointment.id}')">
                                 查看
                             </button>
                         </td>
