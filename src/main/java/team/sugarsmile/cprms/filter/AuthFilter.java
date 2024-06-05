@@ -45,7 +45,7 @@ public class AuthFilter implements Filter {
                         throw new BizException(ErrorCode.PASSWORD_NEED_UPDATE.getCode(), "管理员编号 " + admin.getId() + " 需要更新密码");
                     }
                 }
-                if (!url.endsWith(".jsp") && !url.endsWith(".css") && !url.endsWith(".js")) {
+                if (!url.endsWith(".jsp")) {
                     roleService.checkPermission(url, admin);
                 }
             }
