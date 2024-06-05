@@ -112,7 +112,7 @@
 
     <div id="overlay" class="overlay"></div>
 
-    <div id="popup-add" class="popup-admin">
+    <div id="popup-add" class="popup">
         <h2>添加部门</h2>
         <form action="${pageContext.request.contextPath}/admin/department/add" method="post">
             <div>
@@ -125,7 +125,7 @@
             </div>
             <div>
                 <label for="addName">部门名称:</label>
-                <input type="text" id="addName" name="name"/>
+                <input type="text" id="addName" name="name" required/>
             </div>
             <div>
                 <label for="addSocial">社会公众预约管理权限:</label>
@@ -135,14 +135,14 @@
                 <label for="addBusiness">所有部门公务预约管理权限:</label>
                 <input type="checkbox" id="addBusiness" name="business" value="true"/>
             </div>
-            <div>
+            <div class="button-group">
                 <button type="submit">提交</button>
-                <button type="button" onclick="closeAddPopup()">取消</button>
+                <button class="cancel" type="button" onclick="closeAddPopup()">取消</button>
             </div>
         </form>
     </div>
 
-    <div id="popup-update" class="popup-admin">
+    <div id="popup-update" class="popup">
         <h2>修改部门</h2>
         <form action="${pageContext.request.contextPath}/admin/department/update" method="post">
             <input type="hidden" id="updateId" name="id"/>
@@ -156,7 +156,7 @@
             </div>
             <div>
                 <label for="updateName">部门名称:</label>
-                <input type="text" id="updateName" name="name"/>
+                <input type="text" id="updateName" name="name" required/>
             </div>
             <div>
                 <label for="updateSocial">社会公众预约管理权限:</label>
@@ -166,9 +166,9 @@
                 <label for="updateBusiness">所有部门公务预约管理权限:</label>
                 <input type="checkbox" id="updateBusiness" name="business" value="true"/>
             </div>
-            <div>
+            <div class="button-group">
                 <button type="submit">保存</button>
-                <button type="button" onclick="closeUpdatePopup()">取消</button>
+                <button class="cancel" type="button" onclick="closeUpdatePopup()">取消</button>
             </div>
         </form>
     </div>

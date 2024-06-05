@@ -46,6 +46,10 @@ body {
     justify-content: space-between;
 }
 
+.search-container form {
+    margin: 0;
+}
+
 .search-container label {
     flex: 1 1 100%;
     margin-bottom: 5px;
@@ -56,8 +60,9 @@ body {
 .search-container input[type="text"],
 .search-container select {
     flex: 1 1 48%;
-    padding: 10px;
+    padding: 6px;
     margin-bottom: 10px;
+    margin-right: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-sizing: border-box;
@@ -72,29 +77,6 @@ body {
     border-color: #79AAEF;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-.search-container select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23789baf' d='M2 0L0 2h4zM2 5L0 3h4z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 8px 10px;
-}
-
-.search-container button {
-    flex: 1 1 48%;
-    padding: 10px 20px;
-    background-color: #79AAEF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.1), 0 2px 4px rgba(0, 123, 255, 0.1);
 }
 
 .search-container button:hover {
@@ -193,11 +175,10 @@ tbody td:last-child {
     z-index: 9999;
 }
 
-/* 公共预约管理页面的弹窗样式 */
 .popup {
     width: 400px;
-    max-height: 80vh; /* 限制弹窗的最大高度 */
-    overflow-y: auto; /* 添加垂直滚动条 */
+    max-height: 60vh;
+    overflow-y: auto;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -209,6 +190,11 @@ tbody td:last-child {
     z-index: 10000;
     text-align: left;
     display: none;
+}
+
+#popup-add,
+#popup-update {
+    width: 300px;
 }
 
 .popup h2 {
@@ -234,22 +220,34 @@ tbody td:last-child {
     background-color: #f9f9f9;
 }
 
+#popup-add input[type="text"],
+#popup-update input[type="text"],
+#popup-add select,
+#popup-update select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
 .popup button {
     width: 100%;
-    padding: 10px 0;
-    background-color: #79AAEF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.1), 0 2px 4px rgba(0, 123, 255, 0.1);
+    margin-top: 10px;
 }
 
 .popup button:hover {
     background-color: #4886DE;
 }
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-group button {
+    margin: 10px 10px;
+}
+
 button {
     padding: 8px 16px;
     background-color: #79AAEF;
@@ -266,92 +264,30 @@ button:hover {
     background-color: #4886DE;
 }
 
-button.modify, button.approve {
+button.modify,
+button.approve {
     background-color: #55A863;
 }
 
-button.modify:hover, button.approve:hover {
+button.modify:hover,
+button.approve:hover {
     background-color: #3D9C4D;
 }
 
-button.delete, button.reject {
+button.delete,
+button.reject {
     background-color: #D44366;
 }
 
-button.delete:hover, button.reject:hover {
+button.delete:hover,
+button.reject:hover {
     background-color: #C83659;
 }
 
-/* 部门管理员管理页面的弹窗样式 */
-.popup-admin {
-    width: 400px;
-    max-height: 80vh; /* 限制弹窗的最大高度 */
-    overflow-y: auto; /* 添加垂直滚动条 */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 10000;
-    text-align: left;
-    display: none;
+button.cancel {
+    background-color: #E1B064;
 }
 
-.popup-admin h2 {
-    margin-top: 0;
-    color: #4886DE;
-}
-
-.popup-admin div {
-    margin-bottom: 10px;
-}
-
-.popup-admin label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.popup-admin input[type="text"], .popup-admin select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.popup-admin button {
-    width: 48%;
-    margin: 5px 1%;
-    padding: 10px 0;
-    background-color: #79AAEF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.1), 0 2px 4px rgba(0, 123, 255, 0.1);
-}
-
-.popup-admin button:hover {
-    background-color: #4886DE;
-}
-
-button.modify-admin {
-    background-color: #55A863;
-}
-
-button.modify-admin:hover {
-    background-color: #3D9C4D;
-}
-
-button.delete-admin {
-    background-color: #D44366;
-}
-
-button.delete-admin:hover {
-    background-color: #C83659;
+button.cancel:hover {
+    background-color: #DA9E41;
 }

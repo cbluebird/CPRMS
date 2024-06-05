@@ -60,7 +60,8 @@
 
                     <label for="idCard">身份证号:</label>
                     <input type="text" id="idCard" name="idCard">
-
+                </div>
+                <div class="row">
                     <label for="department">访问部门:</label>
                     <select id="department" name="department">
                         <option value="">请选择</option>
