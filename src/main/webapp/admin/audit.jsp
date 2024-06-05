@@ -6,7 +6,7 @@
              type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Audit>"/>
 <jsp:useBean id="departmentMap" scope="request" type="java.util.HashMap"/>
 <fmt:formatNumber var="totalPage" scope="request" type="number"
-                  value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}"
+                  value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 0.51}"
                   maxFractionDigits="0"/>
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
 <html>

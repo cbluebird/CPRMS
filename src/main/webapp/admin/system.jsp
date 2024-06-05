@@ -5,7 +5,7 @@
 <jsp:useBean id="pagination" scope="request"
              type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Admin>"/>
 <fmt:formatNumber var="totalPage" scope="request" type="number"
-                  value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 1}"
+                  value="${pagination.total == 0 ? 1 : (pagination.total - 1) / pagination.pageSize + 0.51}"
                   maxFractionDigits="0"/>
 <jsp:useBean id="admin" scope="session" type="team.sugarsmile.cprms.model.Admin"/>
 <html>
@@ -94,29 +94,29 @@
         <form action="${pageContext.request.contextPath}/admin/system/add" method="post"
               onsubmit="return validateAddForm()">
             <div class="admin-info">
-            <div>
-                <label for="addName">姓名:</label>
-                <input type="text" id="addName" name="name"/>
-            </div>
-            <div>
-                <label for="addUserName">登录名:</label>
-                <input type="text" id="addUserName" name="userName"/>
-            </div>
-            <div>
-                <label for="addPhone">电话:</label>
-                <input type="text" id="addPhone" name="phone"/>
-            </div>
-            <div>
-                <label for="addType">管理员类型:</label>
-                <select id="addType" name="type">
-                    <option value="2">学校管理员</option>
-                    <option value="4">审计管理员</option>
-                </select>
-            </div>
-            <div>
-                <button type="submit">提交</button>
-                <button type="button" onclick="closeAddPopup()">取消</button>
-            </div>
+                <div>
+                    <label for="addName">姓名:</label>
+                    <input type="text" id="addName" name="name"/>
+                </div>
+                <div>
+                    <label for="addUserName">登录名:</label>
+                    <input type="text" id="addUserName" name="userName"/>
+                </div>
+                <div>
+                    <label for="addPhone">电话:</label>
+                    <input type="text" id="addPhone" name="phone"/>
+                </div>
+                <div>
+                    <label for="addType">管理员类型:</label>
+                    <select id="addType" name="type">
+                        <option value="2">学校管理员</option>
+                        <option value="4">审计管理员</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit">提交</button>
+                    <button type="button" onclick="closeAddPopup()">取消</button>
+                </div>
             </div>
         </form>
     </div>
@@ -126,30 +126,30 @@
         <form action="${pageContext.request.contextPath}/admin/system/update" method="post"
               onsubmit="return validateUpdateForm()">
             <div class="admin-info">
-            <input type="hidden" id="updateId" name="id"/>
-            <div>
-                <label for="updateName">姓名:</label>
-                <input type="text" id="updateName" name="name"/>
-            </div>
-            <div>
-                <label for="updateUserName">登录名:</label>
-                <input type="text" id="updateUserName" name="userName"/>
-            </div>
-            <div>
-                <label for="updatePhone">电话:</label>
-                <input type="text" id="updatePhone" name="phone"/>
-            </div>
-            <div>
-                <label for="updateType">管理员类型:</label>
-                <select id="updateType" name="type">
-                    <option value="2">学校管理员</option>
-                    <option value="4">审计管理员</option>
-                </select>
-            </div>
-            <div>
-                <button type="submit">保存</button>
-                <button type="button" onclick="closeUpdatePopup()">取消</button>
-            </div>
+                <input type="hidden" id="updateId" name="id"/>
+                <div>
+                    <label for="updateName">姓名:</label>
+                    <input type="text" id="updateName" name="name"/>
+                </div>
+                <div>
+                    <label for="updateUserName">登录名:</label>
+                    <input type="text" id="updateUserName" name="userName"/>
+                </div>
+                <div>
+                    <label for="updatePhone">电话:</label>
+                    <input type="text" id="updatePhone" name="phone"/>
+                </div>
+                <div>
+                    <label for="updateType">管理员类型:</label>
+                    <select id="updateType" name="type">
+                        <option value="2">学校管理员</option>
+                        <option value="4">审计管理员</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit">保存</button>
+                    <button type="button" onclick="closeUpdatePopup()">取消</button>
+                </div>
             </div>
         </form>
     </div>
