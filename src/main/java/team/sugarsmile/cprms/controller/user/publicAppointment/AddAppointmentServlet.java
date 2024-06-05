@@ -42,9 +42,8 @@ public class AddAppointmentServlet extends HttpServlet {
             String[] phones = request.getParameterValues("phones");
             String[] transportations = request.getParameterValues("transportations");
             String[] licensePlates = request.getParameterValues("licensePlates");
-            int licensePlateCount = 0;
             for (int i = 0; i < names.length; i++) {
-                PublicAppointment.PublicAppointmentBuilder builder = PublicAppointment.builder()
+                publicAppointmentService.addPublicAppointment(PublicAppointment.builder()
                         .createTime(new Timestamp(System.currentTimeMillis()))
                         .name(names[i])
                         .idCard(idCards[i])
@@ -52,15 +51,10 @@ public class AddAppointmentServlet extends HttpServlet {
                         .campus(campus)
                         .startTime(startTime)
                         .endTime(endTime)
-                        .unit(unit);
-                PublicAppointment.Transportation transportation = PublicAppointment.Transportation.getType(Integer.parseInt(transportations[i]));
-                builder = builder.transportation(transportation);
-                if (transportation == PublicAppointment.Transportation.DRIVING) {
-                    builder = builder.licensePlate(licensePlates[licensePlateCount++]);
-                } else {
-                    builder = builder.licensePlate("");
-                }
-                publicAppointmentService.addPublicAppointment(builder.build());
+                        .unit(unit)
+                        .transportation(PublicAppointment.Transportation.getType(Integer.parseInt(transportations[i])))
+                        .licensePlate(licensePlates[i])
+                        .build());
             }
         } catch (IllegalArgumentException | ParseException e) {
             be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());

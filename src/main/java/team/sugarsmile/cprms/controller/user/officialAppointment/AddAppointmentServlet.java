@@ -45,9 +45,8 @@ public class AddAppointmentServlet extends HttpServlet {
             String[] phones = request.getParameterValues("phones");
             String[] transportations = request.getParameterValues("transportations");
             String[] licensePlates = request.getParameterValues("licensePlates");
-            int licensePlateCount = 0;
             for (int i = 0; i < names.length; i++) {
-                OfficialAppointment.OfficialAppointmentBuilder builder = OfficialAppointment.builder()
+                officialAppointmentService.addOfficialAppointment(OfficialAppointment.builder()
                         .createTime(new Timestamp(System.currentTimeMillis()))
                         .name(names[i])
                         .idCard(idCards[i])
@@ -56,18 +55,13 @@ public class AddAppointmentServlet extends HttpServlet {
                         .startTime(startTime)
                         .endTime(endTime)
                         .unit(unit)
+                        .transportation(OfficialAppointment.Transportation.getType(Integer.parseInt(transportations[i])))
+                        .licensePlate(licensePlates[i])
                         .departmentId(departmentID)
                         .receptionist(receptionist)
                         .reason(reason)
-                        .status(OfficialAppointment.Status.UNREVIEWED);
-                OfficialAppointment.Transportation transportation = OfficialAppointment.Transportation.getType(Integer.parseInt(transportations[i]));
-                builder = builder.transportation(transportation);
-                if (transportation == OfficialAppointment.Transportation.DRIVING) {
-                    builder = builder.licensePlate(licensePlates[licensePlateCount++]);
-                } else {
-                    builder = builder.licensePlate("");
-                }
-                officialAppointmentService.addOfficialAppointment(builder.build());
+                        .status(OfficialAppointment.Status.UNREVIEWED)
+                        .build());
             }
         } catch (BizException e) {
             be = e;
