@@ -46,6 +46,8 @@ public class QueryAppointmentServlet extends HttpServlet {
             String receptionist = request.getParameter("receptionist");
             Integer status = parseIntegerOrNull(request.getParameter("status"));
             Integer departmentId = parseIntegerOrNull(request.getParameter("department"));
+            String countApplyDate = request.getParameter("countApplyDate");
+            String countAppointmentDate = request.getParameter("countAppointmentDate");
             List<Department> departmentList = departmentService.getAll();
             for (Department department : departmentList) {
                 departmentMap.put(department.getId(), department);
@@ -53,12 +55,12 @@ public class QueryAppointmentServlet extends HttpServlet {
             if (admin.getAdminType() == Admin.AdminType.DEPARTMENT) {
                 Department department = departmentMap.get(admin.getDepartmentID());
                 if (department.getBusiness()) {
-                    pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, departmentId, pageNum, pageSize);
+                    pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, departmentId, countApplyDate, countAppointmentDate, pageNum, pageSize);
                 } else {
-                    pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, department.getId(), pageNum, pageSize);
+                    pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, department.getId(), countApplyDate, countAppointmentDate, pageNum, pageSize);
                 }
             } else {
-                pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, departmentId, pageNum, pageSize);
+                pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, departmentId, countApplyDate, countAppointmentDate, pageNum, pageSize);
             }
             auditService.createAudit("查询公务预约", Audit.AuditType.QUERY, admin.getId());
         } catch (NumberFormatException e) {

@@ -60,6 +60,12 @@
 
                     <label for="idCard">身份证号:</label>
                     <input type="text" id="idCard" name="idCard">
+
+                    <label for="countApplyDate">申请月度:</label>
+                    <input type="month" id="countApplyDate" name="countApplyDate">
+
+                    <label for="countAppointmentDate">预约月度:</label>
+                    <input type="month" id="countAppointmentDate" name="countAppointmentDate">
                 </div>
                 <div class="row">
                     <button type="submit" class="query">查询</button>

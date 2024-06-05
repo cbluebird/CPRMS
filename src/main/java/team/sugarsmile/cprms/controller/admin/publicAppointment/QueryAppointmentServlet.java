@@ -43,7 +43,9 @@ public class QueryAppointmentServlet extends HttpServlet {
             String unit = request.getParameter("unit");
             String name = request.getParameter("name");
             String idCard = request.getParameter("idCard");
-            pagination = publicAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, pageNum, pageSize);
+            String countApplyDate = request.getParameter("countApplyDate");
+            String countAppointmentDate = request.getParameter("countAppointmentDate");
+            pagination = publicAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, countApplyDate, countAppointmentDate, pageNum, pageSize);
             List<Department> departmentList = departmentService.getAll();
             for (Department department : departmentList) {
                 departmentMap.put(department.getId(), department);

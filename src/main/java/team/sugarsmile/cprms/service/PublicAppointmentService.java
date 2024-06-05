@@ -89,14 +89,14 @@ public class PublicAppointmentService {
         return publicAppointmentDao.count(name, idCard, phone);
     }
 
-    public PaginationDto<PublicAppointment> searchAppointments(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, int pageNum, int pageSize) {
+    public PaginationDto<PublicAppointment> searchAppointments(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, String countApplyDate, String countAppointmentDate, int pageNum, int pageSize) {
         pageNum = pageNum <= 0 ? 1 : pageNum;
         pageSize = pageSize <= 0 ? 10 : pageSize;
         if (idCard != null && !idCard.isEmpty()) {
             idCard = SM4Util.encrypt(idCard);
         }
-        int total = publicAppointmentDao.countForSearch(applyDate, appointmentDate, campus, unit, name, idCard);
-        ArrayList<PublicAppointment> list = publicAppointmentDao.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, pageNum, pageSize);
+        int total = publicAppointmentDao.countForSearch(applyDate, appointmentDate, campus, unit, name, idCard, countApplyDate, countAppointmentDate);
+        ArrayList<PublicAppointment> list = publicAppointmentDao.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, countApplyDate, countAppointmentDate, pageNum, pageSize);
         for (PublicAppointment appointment : list) {
             decryptAndDesensitized(appointment);
         }

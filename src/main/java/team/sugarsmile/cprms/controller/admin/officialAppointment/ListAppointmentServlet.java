@@ -43,7 +43,7 @@ public class ListAppointmentServlet extends HttpServlet {
                 if (department.getBusiness()) {
                     pagination = officialAppointmentService.findOfficialAppointmentList(pageNum, pageSize);
                 } else {
-                    pagination = officialAppointmentService.searchAppointments(null, null, null, null, null, null, null, null, department.getId(), pageNum, pageSize);
+                    pagination = officialAppointmentService.searchAppointments(null, null, null, null, null, null, null, null, department.getId(), null, null, pageNum, pageSize);
                     departmentMap.clear();
                     departmentMap.put(department.getId(), department);
                 }

@@ -7,6 +7,7 @@ import team.sugarsmile.cprms.util.JDBCUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class OfficialAppointmentDao {
     public void insert(OfficialAppointment appointment) {
@@ -222,7 +223,7 @@ public class OfficialAppointmentDao {
         }
     }
 
-    public ArrayList<OfficialAppointment> searchAppointments(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, String receptionist, Integer status, Integer departmentId, int pageNum, int pageSize) {
+    public ArrayList<OfficialAppointment> searchAppointments(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, String receptionist, Integer status, Integer departmentId, String countApplyDateStr, String countAppointmentDateStr, int pageNum, int pageSize) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -256,6 +257,13 @@ public class OfficialAppointmentDao {
             if (departmentId != null) {
                 sql.append(" AND department_id = ?");
             }
+            if (countApplyDateStr != null && !countApplyDateStr.isEmpty()) {
+                sql.append(" AND (create_time >= ? AND create_time < ?)");
+            }
+
+            if (countAppointmentDateStr != null && !countAppointmentDateStr.isEmpty()) {
+                sql.append(" AND (start_time >= ? AND start_time < ?)");
+            }
             sql.append(" LIMIT ?, ?");
 
             stmt = conn.prepareStatement(sql.toString());
@@ -288,6 +296,28 @@ public class OfficialAppointmentDao {
             if (departmentId != null) {
                 stmt.setLong(index++, departmentId);
             }
+            if (countApplyDateStr != null && !countApplyDateStr.isEmpty()) {
+                Date startTime = Date.valueOf(countApplyDateStr + "-01");
+                stmt.setDate(index++, startTime);
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(startTime);
+                cal.add(Calendar.MONTH, 1);
+                Date endTime = new Date(cal.getTimeInMillis());
+
+                stmt.setDate(index++, endTime);
+            }
+            if (countAppointmentDateStr != null && !countAppointmentDateStr.isEmpty()) {
+                Date startTime = Date.valueOf(countAppointmentDateStr + "-01");
+                stmt.setDate(index++, startTime);
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(startTime);
+                cal.add(Calendar.MONTH, 1);
+                Date endTime = new Date(cal.getTimeInMillis());
+
+                stmt.setDate(index++, endTime);
+            }
             stmt.setInt(index++, (pageNum - 1) * pageSize);
             stmt.setInt(index, pageSize);
             rs = stmt.executeQuery();
@@ -299,7 +329,7 @@ public class OfficialAppointmentDao {
         }
     }
 
-    public int countForSearch(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, String receptionist, Integer status, Integer departmentId) {
+    public int countForSearch(String applyDate, String appointmentDate, Integer campus, String unit, String name, String idCard, String receptionist, Integer status, Integer departmentId, String countApplyDateStr, String countAppointmentDateStr) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -333,6 +363,13 @@ public class OfficialAppointmentDao {
             if (departmentId != null) {
                 sql.append(" AND department_id = ?");
             }
+            if (countApplyDateStr != null && !countApplyDateStr.isEmpty()) {
+                sql.append(" AND (create_time >= ? AND create_time < ?)");
+            }
+
+            if (countAppointmentDateStr != null && !countAppointmentDateStr.isEmpty()) {
+                sql.append(" AND (start_time >= ? AND start_time < ?)");
+            }
 
             stmt = conn.prepareStatement(sql.toString());
 
@@ -363,6 +400,29 @@ public class OfficialAppointmentDao {
             }
             if (departmentId != null) {
                 stmt.setInt(index, departmentId);
+            }
+            if (countApplyDateStr != null && !countApplyDateStr.isEmpty()) {
+                Date startTime = Date.valueOf(countApplyDateStr + "-01");
+                stmt.setDate(index++, startTime);
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(startTime);
+                cal.add(Calendar.MONTH, 1);
+                Date endTime = new Date(cal.getTimeInMillis());
+
+                stmt.setDate(index++, endTime);
+            }
+
+            if (countAppointmentDateStr != null && !countAppointmentDateStr.isEmpty()) {
+                Date startTime = Date.valueOf(countAppointmentDateStr + "-01");
+                stmt.setDate(index++, startTime);
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(startTime);
+                cal.add(Calendar.MONTH, 1);
+                Date endTime = new Date(cal.getTimeInMillis());
+
+                stmt.setDate(index++, endTime);
             }
 
             rs = stmt.executeQuery();

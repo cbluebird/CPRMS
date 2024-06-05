@@ -80,6 +80,12 @@
                         <option value="2">通过</option>
                         <option value="3">驳回</option>
                     </select>
+
+                    <label for="countApplyDate">申请月度:</label>
+                    <input type="month" id="countApplyDate" name="countApplyDate">
+
+                    <label for="countAppointmentDate">预约月度:</label>
+                    <input type="month" id="countAppointmentDate" name="countAppointmentDate">
                 </div>
                 <div class="row">
                     <button type="submit" class="query">查询</button>
