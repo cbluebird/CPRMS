@@ -92,7 +92,7 @@ public final class JedisUtil {
                 transaction.incr(loginKey);
             } else {
                 transaction.set(loginKey, "1");
-                transaction.expire(loginKey, 300); // 设置过期时间为5分钟（300秒）
+                transaction.expire(loginKey, 1800); // 设置过期时间为5分钟（300秒）
             }
             // 提交事务
             transaction.exec();

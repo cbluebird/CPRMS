@@ -60,7 +60,7 @@ public class AuditDao {
         }
     }
 
-    public ArrayList<Audit> findAll(int pageNum, int pageSize) {
+    public ArrayList<Audit> findByPage(int pageNum, int pageSize) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -71,6 +71,34 @@ public class AuditDao {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, (pageNum - 1) * pageSize);
             stmt.setInt(2, pageSize);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                auditList.add(Audit.builder()
+                        .id(rs.getInt("id"))
+                        .operate(rs.getString("operate"))
+                        .adminId(rs.getInt("admin_id"))
+                        .createTime(rs.getDate("create_time"))
+                        .type(Audit.AuditType.fromValue(rs.getInt("type")))
+                        .HMAC(rs.getString("hmac"))
+                        .build());
+            }
+            return auditList;
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt, rs);
+        }
+    }
+
+    public ArrayList<Audit> findAll() {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        ArrayList<Audit> auditList = new ArrayList<>();
+        try {
+            conn = JDBCUtil.getConnection();
+            String sql = "SELECT * FROM audit";
+            stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 auditList.add(Audit.builder()
@@ -168,6 +196,63 @@ public class AuditDao {
         }
         return auditList;
     }
+
+
+    public ArrayList<Audit> searchAll(String operate, Integer type, Integer adminID, String createDate) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        ArrayList<Audit> auditList = new ArrayList<>();
+        try {
+            conn = JDBCUtil.getConnection();
+            StringBuilder sql = new StringBuilder("SELECT * FROM audit WHERE 1=1");
+            if (createDate != null && !createDate.isEmpty()) {
+                sql.append(" AND DATE(create_time) = ?");
+            }
+            if (operate != null && !operate.isEmpty()) {
+                sql.append(" AND operate LIKE ?");
+            }
+            if (type != null) {
+                sql.append(" AND type = ?");
+            }
+            if (adminID != null) {
+                sql.append(" AND admin_id = ?");
+            }
+            stmt = conn.prepareStatement(sql.toString());
+
+            int index = 1;
+            if (createDate != null && !createDate.isEmpty()) {
+                stmt.setString(index++, createDate);
+            }
+            if (operate != null && !operate.isEmpty()) {
+                stmt.setString(index++, operate);
+            }
+            if (type != null) {
+                stmt.setInt(index++, type);
+            }
+            if (adminID != null) {
+                stmt.setInt(index++, adminID);
+            }
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                auditList.add(Audit.builder()
+                        .id(rs.getInt("id"))
+                        .operate(rs.getString("operate"))
+                        .adminId(rs.getInt("admin_id"))
+                        .createTime(rs.getDate("create_time"))
+                        .type(Audit.AuditType.fromValue(rs.getInt("type")))
+                        .HMAC(rs.getString("hmac"))
+                        .build());
+            }
+        } catch (SQLException e) {
+            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            JDBCUtil.close(conn, stmt, rs);
+        }
+        return auditList;
+    }
+
 
     public int countForSearch(String operate, Integer type, Integer adminID, String createDate) {
         Connection conn = null;
