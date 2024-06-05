@@ -30,4 +30,6 @@
     </c:if>
 
     <a href="${pageContext.request.contextPath}/admin/updatePassword.jsp">修改密码</a>
+
+    <a href="${pageContext.request.contextPath}/admin/logout">退出登录</a>
 </div>

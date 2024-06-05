@@ -18,7 +18,7 @@ public class RoleDao {
         ResultSet rs = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "SELECT path FROM role where admin_type = ?";
+            String sql = "SELECT path FROM role where admin_type = ? OR admin_type = 0";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, type.getValue());
             rs = stmt.executeQuery();
