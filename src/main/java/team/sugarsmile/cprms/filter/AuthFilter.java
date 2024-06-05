@@ -39,7 +39,7 @@ public class AuthFilter implements Filter {
                     throw new BizException(ErrorCode.ADMIN_NOT_LOGIN);
                 }
                 adminService.getAdminByID(admin.getId());
-                if (!url.endsWith("/updatePassword.jsp") && !url.endsWith("/password/update")) {
+                if (!url.endsWith("/updatePassword.jsp") && !url.endsWith("/password/update") && !url.endsWith("/logout")) {
                     Boolean updatePassword = (Boolean) request.getSession().getAttribute("updatePassword");
                     if (updatePassword != null && updatePassword) {
                         throw new BizException(ErrorCode.PASSWORD_NEED_UPDATE.getCode(), "管理员编号 " + admin.getId() + " 需要更新密码");
