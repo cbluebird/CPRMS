@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,7 +15,7 @@ public class Audit {
     private Integer id;
     private String operate;
     private Integer adminId;
-    private Date createTime;
+    private LocalDateTime createTime;
     private AuditType type;
     private String HMAC;
 

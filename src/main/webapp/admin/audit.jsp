@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <jsp:include page="sidebar.jsp"/>
 <jsp:useBean id="pagination" scope="request"
              type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.Audit>"/>
@@ -36,8 +37,8 @@
         <div class="search-container">
             <form action="${pageContext.request.contextPath}/admin/audit/query?pageNum=1&pageSize=10" method="get">
                 <div class="row">
-                    <label for="applyDate">创建日期:</label>
-                    <input type="date" id="applyDate" name="applyDate">
+                    <label for="operateDate">操作日期:</label>
+                    <input type="date" id="operateDate" name="operateDate">
 
                     <label for="type">操作类型:</label>
                     <select id="type" name="type">
@@ -55,9 +56,9 @@
                     <label for="admin_id">管理员ID:</label>
                     <input type="text" id="admin_id" name="admin_id">
 
-                    <label for="type">状态:</label>
+                    <label for="status">状态:</label>
                     <select id="status" name="status">
-                        <option value="">状态</option>
+                        <option value="">全部</option>
                         <option value="1">正确</option>
                         <option value="2">错误</option>
                     </select>
@@ -73,7 +74,7 @@
             <table>
                 <thead>
                 <tr>
-                    <th>创建日期</th>
+                    <th>操作时间</th>
                     <th>操作类型</th>
                     <th>操作</th>
                     <th>管理员ID</th>
@@ -83,7 +84,7 @@
                 <tbody>
                 <c:forEach var="audit" items="${pagination.list}">
                     <tr>
-                        <td><fmt:formatDate value="${audit.createTime}" pattern="yyyy-MM-dd"/></td>
+                        <td>${audit.createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${audit.type.value == 1}">登录</c:when>
