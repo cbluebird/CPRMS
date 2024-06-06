@@ -60,6 +60,7 @@ public class LoginServlet extends HttpServlet {
         } else {
             request.getSession().setAttribute("admin", admin);
             request.getSession().setAttribute("updatePassword", updatePassword);
+            JedisUtil.delLoginKey(username);
             response.sendRedirect(request.getContextPath() + "/admin/home.jsp");
         }
     }

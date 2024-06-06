@@ -92,7 +92,33 @@ public final class JedisUtil {
                 transaction.incr(loginKey);
             } else {
                 transaction.set(loginKey, "1");
-                transaction.expire(loginKey, 1800); // 设置过期时间为5分钟（300秒）
+            }
+            transaction.expire(loginKey, 1800);// 设置过期时间为30分钟
+            // 提交事务
+            transaction.exec();
+        } catch (Exception e) {
+            if (redis != null) {
+                redis.unwatch();
+            }
+            throw new SystemException(ErrorCode.REDIS_ERROR.getCode(), e.getMessage(), e);
+        } finally {
+            close(redis);
+        }
+    }
+
+    public static void delLoginKey(String username) {
+        Jedis redis = null;
+        try {
+            redis = JedisUtil.getJedis();
+            String loginKey = username + "_login_key";
+
+            // 使用Redis事务来保证操作的原子性
+            redis.watch(loginKey);
+            String currentValue = redis.get(loginKey);
+
+            Transaction transaction = redis.multi();
+            if (currentValue != null) {
+                transaction.del(loginKey);
             }
             // 提交事务
             transaction.exec();
