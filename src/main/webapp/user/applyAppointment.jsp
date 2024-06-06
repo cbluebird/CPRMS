@@ -42,12 +42,9 @@
         </select>
     </div>
     <div class="form-group">
-        <label>预约进校时间</label>
-        <div class="date-container">
-            <input type="date" name="startTime" id="startTime" value="${LocalDate.now()}" min="${LocalDate.now()}">
-            ——
-            <input type="date" name="endTime" id="endTime" value="${LocalDate.now()}">
-        </div>
+        <label for="appointmentTime">预约日期</label>
+        <input type="date" name="appointmentTime" id="appointmentTime" value="${LocalDate.now()}"
+               min="${LocalDate.now()}">
     </div>
     <div class="form-group">
         <label for="unit">所在单位</label>
@@ -133,16 +130,6 @@
         const visitorInfo = button.parentElement;
         visitorInfo.parentElement.removeChild(visitorInfo);
     }
-
-    const startTime = document.getElementById('startTime');
-    const endTime = document.getElementById('endTime');
-
-    startTime.addEventListener('change', function () {
-        endTime.setAttribute('min', startTime.value);
-        if (endTime.value < startTime.value) {
-            endTime.value = startTime.value;
-        }
-    });
 
     function validate() {
         const visitorInfos = document.querySelectorAll('.visitor-info');

@@ -15,18 +15,17 @@ public class PublicAppointmentDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "INSERT INTO public_appointment (name, id_card, phone, campus, create_time, start_time, end_time, unit, transportation, license_plate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO public_appointment (name, id_card, phone, campus, create_time, appointment_time, unit, transportation, license_plate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, appointment.getName());
             stmt.setString(2, appointment.getIdCard());
             stmt.setString(3, appointment.getPhone());
             stmt.setInt(4, appointment.getCampus().getValue());
-            stmt.setTimestamp(5, new Timestamp(appointment.getCreateTime().getTime()));
-            stmt.setTimestamp(6, new Timestamp(appointment.getStartTime().getTime()));
-            stmt.setTimestamp(7, new Timestamp(appointment.getEndTime().getTime()));
-            stmt.setString(8, appointment.getUnit());
-            stmt.setInt(9, appointment.getTransportation().getValue());
-            stmt.setString(10, appointment.getLicensePlate());
+            stmt.setDate(5, Date.valueOf(appointment.getCreateTime()));
+            stmt.setDate(6, Date.valueOf(appointment.getAppointmentTime()));
+            stmt.setString(7, appointment.getUnit());
+            stmt.setInt(8, appointment.getTransportation().getValue());
+            stmt.setString(9, appointment.getLicensePlate());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
@@ -52,9 +51,8 @@ public class PublicAppointmentDao {
                         .idCard(rs.getString("id_card"))
                         .phone(rs.getString("phone"))
                         .campus(PublicAppointment.Campus.getType(rs.getInt("campus")))
-                        .createTime(rs.getTimestamp("create_time"))
-                        .startTime(rs.getTimestamp("start_time"))
-                        .endTime(rs.getTimestamp("end_time"))
+                        .createTime(rs.getDate("create_time").toLocalDate())
+                        .appointmentTime(rs.getDate("appointment_time").toLocalDate())
                         .unit(rs.getString("unit"))
                         .transportation(PublicAppointment.Transportation.getType(rs.getInt("transportation")))
                         .licensePlate(rs.getString("license_plate"))
@@ -73,19 +71,18 @@ public class PublicAppointmentDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "UPDATE public_appointment SET name = ?, id_card = ?, phone = ?, campus = ?, create_time = ?, start_time = ?, end_time = ?, unit = ?, transportation = ?, license_plate = ? WHERE id = ?";
+            String sql = "UPDATE public_appointment SET name = ?, id_card = ?, phone = ?, campus = ?, create_time = ?, appointment_time = ?, unit = ?, transportation = ?, license_plate = ? WHERE id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, appointment.getName());
             stmt.setString(2, appointment.getIdCard());
             stmt.setString(3, appointment.getPhone());
             stmt.setInt(4, appointment.getCampus().getValue());
-            stmt.setTimestamp(5, new Timestamp(appointment.getCreateTime().getTime()));
-            stmt.setTimestamp(6, new Timestamp(appointment.getStartTime().getTime()));
-            stmt.setTimestamp(7, new Timestamp(appointment.getEndTime().getTime()));
-            stmt.setString(8, appointment.getUnit());
-            stmt.setInt(9, appointment.getTransportation().getValue());
-            stmt.setString(10, appointment.getLicensePlate());
-            stmt.setLong(11, appointment.getId());
+            stmt.setDate(5, Date.valueOf(appointment.getCreateTime()));
+            stmt.setDate(6, Date.valueOf(appointment.getAppointmentTime()));
+            stmt.setString(7, appointment.getUnit());
+            stmt.setInt(8, appointment.getTransportation().getValue());
+            stmt.setString(9, appointment.getLicensePlate());
+            stmt.setLong(10, appointment.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
@@ -205,7 +202,7 @@ public class PublicAppointmentDao {
                 sql.append(" AND create_time = ?");
             }
             if (appointmentDate != null && !appointmentDate.isEmpty()) {
-                sql.append(" AND start_time = ?");
+                sql.append(" AND appointment_time = ?");
             }
             if (campus != null) {
                 sql.append(" AND campus = ?");
@@ -225,7 +222,7 @@ public class PublicAppointmentDao {
             }
 
             if (countAppointmentDateStr != null && !countAppointmentDateStr.isEmpty()) {
-                sql.append(" AND (start_time >= ? AND start_time < ?)");
+                sql.append(" AND (appointment_time >= ? AND appointment_time < ?)");
             }
 
             sql.append(" LIMIT ?, ?");
@@ -298,7 +295,7 @@ public class PublicAppointmentDao {
                 sql.append(" AND create_time = ?");
             }
             if (appointmentDate != null && !appointmentDate.isEmpty()) {
-                sql.append(" AND start_time = ?");
+                sql.append(" AND appointment_time = ?");
             }
             if (campus != null) {
                 sql.append(" AND campus = ?");
@@ -317,7 +314,7 @@ public class PublicAppointmentDao {
             }
 
             if (countAppointmentDateStr != null && !countAppointmentDateStr.isEmpty()) {
-                sql.append(" AND (start_time >= ? AND start_time < ?)");
+                sql.append(" AND (appointment_time >= ? AND appointment_time < ?)");
             }
 
             stmt = conn.prepareStatement(sql.toString());
@@ -385,9 +382,8 @@ public class PublicAppointmentDao {
                     .idCard(rs.getString("id_card"))
                     .phone(rs.getString("phone"))
                     .campus(PublicAppointment.Campus.getType(rs.getInt("campus")))
-                    .startTime(rs.getTimestamp("start_time"))
-                    .endTime(rs.getTimestamp("end_time"))
-                    .createTime(rs.getTimestamp("create_time"))
+                    .appointmentTime(rs.getDate("appointment_time").toLocalDate())
+                    .createTime(rs.getDate("create_time").toLocalDate())
                     .unit(rs.getString("unit"))
                     .transportation(PublicAppointment.Transportation.getType(rs.getInt("transportation")))
                     .licensePlate(rs.getString("license_plate"))

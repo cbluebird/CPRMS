@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -15,9 +15,8 @@ public class PublicAppointment {
     private String idCard;
     private String phone;
     private Campus campus;
-    private Timestamp createTime;
-    private Timestamp startTime;
-    private Timestamp endTime;
+    private LocalDate createTime;
+    private LocalDate appointmentTime;
     private String unit;
     private Transportation transportation;
     private String licensePlate;

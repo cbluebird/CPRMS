@@ -138,8 +138,7 @@ public class OfficialAppointmentService {
         return PasscodeDto.builder()
                 .name(DesensitizedUtil.name(name))
                 .idCard(DesensitizedUtil.idCard(idCard))
-                .startTime(appointment.getStartTime().toLocalDateTime())
-                .endTime(appointment.getEndTime().toLocalDateTime().plusHours(23).plusMinutes(59).plusSeconds(59))
+                .appointmentTime(appointment.getAppointmentTime())
                 .createTime(LocalDateTime.now())
                 .build();
     }

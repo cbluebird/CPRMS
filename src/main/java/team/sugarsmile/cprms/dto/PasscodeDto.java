@@ -3,6 +3,7 @@ package team.sugarsmile.cprms.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -14,7 +15,6 @@ import java.time.LocalDateTime;
 public class PasscodeDto {
     private String name;
     private String idCard;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDate appointmentTime;
     private LocalDateTime createTime;
 }

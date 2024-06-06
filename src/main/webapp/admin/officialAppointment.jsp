@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <jsp:include page="sidebar.jsp"/>
 <jsp:useBean id="pagination" scope="request"
              type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.OfficialAppointment>"/>
@@ -102,7 +103,7 @@
                 <tr>
                     <th>申请日期</th>
                     <th>预约校区</th>
-                    <th>预约进校时间</th>
+                    <th>预约日期</th>
                     <th>所在单位</th>
                     <th>姓名</th>
                     <th>访问部门</th>
@@ -114,7 +115,7 @@
                 <tbody>
                 <c:forEach var="appointment" items="${pagination.list}">
                     <tr>
-                        <td><fmt:formatDate value="${appointment.createTime}" pattern="yyyy-MM-dd"/></td>
+                        <td>${appointment.createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${appointment.campus.value == 1}">朝晖</c:when>
@@ -122,11 +123,7 @@
                                 <c:when test="${appointment.campus.value == 3}">莫干山</c:when>
                             </c:choose>
                         </td>
-                        <td>
-                            <fmt:formatDate value="${appointment.startTime}" pattern="yyyy-MM-dd"/>
-                            -
-                            <fmt:formatDate value="${appointment.endTime}" pattern="yyyy-MM-dd"/>
-                        </td>
+                        <td>${appointment.appointmentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))}</td>
                         <td>${appointment.unit}</td>
                         <td>${appointment.name}</td>
                         <td>${departmentMap[appointment.departmentId].name}</td>
@@ -140,7 +137,7 @@
                         </td>
                         <td>
                             <button class="detail"
-                                    onclick="getAppointment('${appointment.id}', '${appointment.name}', '${appointment.idCard}', '${appointment.phone}', '${appointment.campus.value}', '${appointment.startTime}', '${appointment.endTime}', '${appointment.createTime}', '${appointment.unit}', '${appointment.transportation.value}', '${appointment.licensePlate}', '${departmentMap[appointment.departmentId].name}', '${appointment.receptionist}', '${appointment.reason}', '${appointment.status.value}')">
+                                    onclick="getAppointment('${appointment.id}', '${appointment.name}', '${appointment.idCard}', '${appointment.phone}', '${appointment.campus.value}', '${appointment.appointmentTime}', '${appointment.createTime}', '${appointment.unit}', '${appointment.transportation.value}', '${appointment.licensePlate}', '${departmentMap[appointment.departmentId].name}', '${appointment.receptionist}', '${appointment.reason}', '${appointment.status.value}')">
                                 查看详情
                             </button>
                             <c:choose>
@@ -197,8 +194,8 @@
                 <span id="getCampus"></span>
             </div>
             <div>
-                <label>预约进校时间:</label>
-                <span id="getStartTime"></span> - <span id="getEndTime"></span>
+                <label>预约日期:</label>
+                <span id="getAppointmentTime"></span>
             </div>
             <div>
                 <label>所在单位:</label>
@@ -280,14 +277,13 @@
         window.location.href = "${pageContext.request.contextPath}/admin/appointment/official/review?id=" + id + "&status=" + status;
     }
 
-    function getAppointment(id, name, idCard, phone, campus, startTime, endTime, createTime, unit, transportation, licensePlate, departmentId, receptionist, reason, status) {
+    function getAppointment(id, name, idCard, phone, campus, appointmentTime, createTime, unit, transportation, licensePlate, departmentId, receptionist, reason, status) {
         document.getElementById("getID").innerText = id;
         document.getElementById("getName").innerText = name;
         document.getElementById("getIDCard").innerText = idCard;
         document.getElementById("getPhone").innerText = phone;
         document.getElementById("getCampus").innerText = campus === '1' ? '朝晖' : campus === '2' ? '屏峰' : '莫干山';
-        document.getElementById("getStartTime").innerText = new Date(startTime).toISOString().split('T')[0];
-        document.getElementById("getEndTime").innerText = new Date(endTime).toISOString().split('T')[0];
+        document.getElementById("getAppointmentTime").innerText = new Date(appointmentTime).toISOString().split('T')[0];
         document.getElementById("getCreateTime").innerText = new Date(createTime).toISOString().split('T')[0];
         document.getElementById("getUnit").innerText = unit;
         document.getElementById("getTransportation").innerText = transportation === '1' ? '步行' : '自驾';

@@ -11,9 +11,8 @@ import team.sugarsmile.cprms.model.PublicAppointment;
 import team.sugarsmile.cprms.service.PublicAppointmentService;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 /**
  * @author XiMo
@@ -33,9 +32,7 @@ public class AddAppointmentServlet extends HttpServlet {
         BizException be = null;
         try {
             PublicAppointment.Campus campus = PublicAppointment.Campus.getType(Integer.parseInt(request.getParameter("campus")));
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Timestamp startTime = new Timestamp(dateFormat.parse(request.getParameter("startTime")).getTime());
-            Timestamp endTime = new Timestamp(dateFormat.parse(request.getParameter("endTime")).getTime());
+            LocalDate appointmentTime = LocalDate.parse(request.getParameter("appointmentTime"));
             String unit = request.getParameter("unit");
             String[] names = request.getParameterValues("names");
             String[] idCards = request.getParameterValues("idCards");
@@ -44,19 +41,18 @@ public class AddAppointmentServlet extends HttpServlet {
             String[] licensePlates = request.getParameterValues("licensePlates");
             for (int i = 0; i < names.length; i++) {
                 publicAppointmentService.addPublicAppointment(PublicAppointment.builder()
-                        .createTime(new Timestamp(System.currentTimeMillis()))
+                        .createTime(LocalDate.now())
                         .name(names[i])
                         .idCard(idCards[i])
                         .phone(phones[i])
                         .campus(campus)
-                        .startTime(startTime)
-                        .endTime(endTime)
+                        .appointmentTime(appointmentTime)
                         .unit(unit)
                         .transportation(PublicAppointment.Transportation.getType(Integer.parseInt(transportations[i])))
                         .licensePlate(licensePlates[i])
                         .build());
             }
-        } catch (IllegalArgumentException | ParseException e) {
+        } catch (IllegalArgumentException | DateTimeParseException e) {
             be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
         }
         if (be != null) {

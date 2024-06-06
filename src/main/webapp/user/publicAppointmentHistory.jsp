@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <jsp:include page="sidebar.jsp"/>
 <jsp:useBean id="pagination" scope="request"
              type="team.sugarsmile.cprms.dto.PaginationDto<team.sugarsmile.cprms.model.PublicAppointment>"/>
@@ -40,14 +41,16 @@
                 <tr>
                     <th>申请日期</th>
                     <th>预约校区</th>
-                    <th>预约时间</th>
+                    <th>预约日期</th>
                     <th>通行码</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="appointment" items="${pagination.list}">
                     <tr>
-                        <td><fmt:formatDate value="${appointment.createTime}" pattern="yyyy-MM-dd"/></td>
+                        <td>
+                                ${appointment.createTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))}
+                        </td>
                         <td>
                             <c:choose>
                                 <c:when test="${appointment.campus.value == 1}">朝晖</c:when>
@@ -56,9 +59,7 @@
                             </c:choose>
                         </td>
                         <td>
-                            <fmt:formatDate value="${appointment.startTime}" pattern="yyyy-MM-dd"/>
-                            -
-                            <fmt:formatDate value="${appointment.endTime}" pattern="yyyy-MM-dd"/>
+                                ${appointment.appointmentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))}
                         </td>
                         <td>
                             <button class="button" id="passcode-button" onclick="getPasscode('${appointment.id}')">

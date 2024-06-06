@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * @author XiMo
@@ -59,7 +59,7 @@ public class GenPasscodeServlet extends HttpServlet {
                 }
             }
             int color = 0x900090;
-            if (LocalDateTime.now().isBefore(passcode.getStartTime()) || LocalDateTime.now().isAfter(passcode.getEndTime())) {
+            if (!LocalDate.now().equals(passcode.getAppointmentTime())) {
                 color = 0x808080;
             }
             bufferedImage = QRCodeUtil.genQRCode(passcode.toString(), color, 200, 200);

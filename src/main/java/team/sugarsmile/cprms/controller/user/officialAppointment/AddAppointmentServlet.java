@@ -11,9 +11,8 @@ import team.sugarsmile.cprms.model.OfficialAppointment;
 import team.sugarsmile.cprms.service.OfficialAppointmentService;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 /**
  * @author XiMo
@@ -33,9 +32,7 @@ public class AddAppointmentServlet extends HttpServlet {
         BizException be = null;
         try {
             OfficialAppointment.Campus campus = OfficialAppointment.Campus.getType(Integer.parseInt(request.getParameter("campus")));
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Timestamp startTime = new Timestamp(dateFormat.parse(request.getParameter("startTime")).getTime());
-            Timestamp endTime = new Timestamp(dateFormat.parse(request.getParameter("endTime")).getTime());
+            LocalDate appointmentTime = LocalDate.parse(request.getParameter("appointmentTime"));
             String unit = request.getParameter("unit");
             int departmentID = Integer.parseInt(request.getParameter("departmentID"));
             String receptionist = request.getParameter("receptionist");
@@ -47,13 +44,12 @@ public class AddAppointmentServlet extends HttpServlet {
             String[] licensePlates = request.getParameterValues("licensePlates");
             for (int i = 0; i < names.length; i++) {
                 officialAppointmentService.addOfficialAppointment(OfficialAppointment.builder()
-                        .createTime(new Timestamp(System.currentTimeMillis()))
+                        .createTime(LocalDate.now())
                         .name(names[i])
                         .idCard(idCards[i])
                         .phone(phones[i])
                         .campus(campus)
-                        .startTime(startTime)
-                        .endTime(endTime)
+                        .appointmentTime(appointmentTime)
                         .unit(unit)
                         .transportation(OfficialAppointment.Transportation.getType(Integer.parseInt(transportations[i])))
                         .licensePlate(licensePlates[i])
@@ -65,7 +61,7 @@ public class AddAppointmentServlet extends HttpServlet {
             }
         } catch (BizException e) {
             be = e;
-        } catch (IllegalArgumentException | ParseException e) {
+        } catch (IllegalArgumentException | DateTimeParseException e) {
             be = new BizException(ErrorCode.PARAM_ERROR.getCode(), e.getMessage());
         }
         if (be != null) {
