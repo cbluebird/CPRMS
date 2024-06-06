@@ -40,7 +40,7 @@ public class ListAppointmentServlet extends HttpServlet {
             }
             if (admin.getAdminType() == Admin.AdminType.DEPARTMENT) {
                 Department department = departmentMap.get(admin.getDepartmentID());
-                if (department.getBusiness()) {
+                if (department.getOfficial()) {
                     pagination = officialAppointmentService.findOfficialAppointmentList(pageNum, pageSize);
                 } else {
                     pagination = officialAppointmentService.searchAppointments(null, null, null, null, null, null, null, null, department.getId(), null, null, pageNum, pageSize);

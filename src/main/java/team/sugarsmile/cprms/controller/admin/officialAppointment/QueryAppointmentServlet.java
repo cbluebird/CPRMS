@@ -54,7 +54,7 @@ public class QueryAppointmentServlet extends HttpServlet {
             }
             if (admin.getAdminType() == Admin.AdminType.DEPARTMENT) {
                 Department department = departmentMap.get(admin.getDepartmentID());
-                if (department.getBusiness()) {
+                if (department.getOfficial()) {
                     pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, departmentId, countApplyDate, countAppointmentDate, pageNum, pageSize);
                 } else {
                     pagination = officialAppointmentService.searchAppointments(applyDate, appointmentDate, campus, unit, name, idCard, receptionist, status, department.getId(), countApplyDate, countAppointmentDate, pageNum, pageSize);

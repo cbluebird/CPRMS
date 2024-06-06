@@ -30,15 +30,15 @@ public class DepartmentService {
         return departmentDao.getAll();
     }
 
-    public void addDepartment(Department.Type type, String name, Boolean social, Boolean business) {
+    public void addDepartment(Department.DepartmentType type, String name, Boolean social, Boolean official) {
         if (departmentDao.findByName(name) != null) {
             throw new BizException(ErrorCode.DEPARTMENT_ALREADY_EXIST.getCode(), "部门 " + name + " 已存在");
         }
         departmentDao.insert(Department.builder()
-                .type(type)
+                .departmentType(type)
                 .name(name)
                 .social(social)
-                .business(business)
+                .official(official)
                 .build());
     }
 
@@ -49,7 +49,7 @@ public class DepartmentService {
         departmentDao.delete(id);
     }
 
-    public void updateDepartmentNameAndType(int id, Department.Type type, String name, Boolean social, Boolean business) {
+    public void updateDepartmentNameAndType(int id, Department.DepartmentType type, String name, Boolean social, Boolean official) {
         if (departmentDao.findById(id) == null) {
             throw new BizException(ErrorCode.DEPARTMENT_NOT_EXIST.getCode(), "部门编号 " + id + " 不存在");
         }
@@ -59,10 +59,10 @@ public class DepartmentService {
         }
         departmentDao.updateNameAndType(Department.builder()
                 .id(id)
-                .type(type)
+                .departmentType(type)
                 .name(name)
                 .social(social)
-                .business(business)
+                .official(official)
                 .build());
     }
 }

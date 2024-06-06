@@ -21,12 +21,12 @@ public class DepartmentDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "INSERT INTO department (type, name, public, business) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO department (department_type, name, public, official) VALUES (?, ?, ?, ?)";
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, department.getType().getValue());
+            stmt.setInt(1, department.getDepartmentType().getValue());
             stmt.setString(2, department.getName());
             stmt.setBoolean(3, department.getSocial());
-            stmt.setBoolean(4, department.getBusiness());
+            stmt.setBoolean(4, department.getOfficial());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
@@ -56,13 +56,13 @@ public class DepartmentDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "UPDATE department SET type = ?, name = ?, public = ?, business = ? WHERE id = ?";
+            String sql = "UPDATE department SET department_type = ?, name = ?, public = ?, official = ? WHERE id = ?";
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, department.getType().getValue());
+            stmt.setInt(1, department.getDepartmentType().getValue());
             stmt.setString(2, department.getName());
             stmt.setLong(5, department.getId());
             stmt.setBoolean(3, department.getSocial());
-            stmt.setBoolean(4, department.getBusiness());
+            stmt.setBoolean(4, department.getOfficial());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
@@ -85,10 +85,10 @@ public class DepartmentDao {
             if (rs.next()) {
                 return Department.builder()
                         .id(rs.getInt("id"))
-                        .type(Department.Type.getType(rs.getInt("type")))
+                        .departmentType(Department.DepartmentType.getType(rs.getInt("department_type")))
                         .name(rs.getString("name"))
                         .social(rs.getBoolean("public"))
-                        .business(rs.getBoolean("business"))
+                        .official(rs.getBoolean("official"))
                         .build();
             }
             return null;
@@ -112,10 +112,10 @@ public class DepartmentDao {
             if (rs.next()) {
                 return Department.builder()
                         .id(rs.getInt("id"))
-                        .type(Department.Type.getType(rs.getInt("type")))
+                        .departmentType(Department.DepartmentType.getType(rs.getInt("department_type")))
                         .name(rs.getString("name"))
                         .social(rs.getBoolean("public"))
-                        .business(rs.getBoolean("business"))
+                        .official(rs.getBoolean("official"))
                         .build();
             }
             return null;
@@ -141,10 +141,10 @@ public class DepartmentDao {
             while (rs.next()) {
                 departmentList.add(Department.builder()
                         .id(rs.getInt("id"))
-                        .type(Department.Type.getType(rs.getInt("type")))
+                        .departmentType(Department.DepartmentType.getType(rs.getInt("department_type")))
                         .name(rs.getString("name"))
                         .social(rs.getBoolean("public"))
-                        .business(rs.getBoolean("business"))
+                        .official(rs.getBoolean("official"))
                         .build());
             }
             return departmentList;
@@ -168,10 +168,10 @@ public class DepartmentDao {
             while (rs.next()) {
                 departmentList.add(Department.builder()
                         .id(rs.getInt("id"))
-                        .type(Department.Type.getType(rs.getInt("type")))
+                        .departmentType(Department.DepartmentType.getType(rs.getInt("department_type")))
                         .name(rs.getString("name"))
                         .social(rs.getBoolean("public"))
-                        .business(rs.getBoolean("business"))
+                        .official(rs.getBoolean("official"))
                         .build());
             }
             return departmentList;

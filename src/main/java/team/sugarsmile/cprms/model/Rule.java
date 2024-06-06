@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Role {
+public class Rule {
     private Integer id;
     private Admin.AdminType type;
     private String path;

@@ -7,13 +7,13 @@ import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
 import team.sugarsmile.cprms.service.AdminService;
-import team.sugarsmile.cprms.service.RoleService;
+import team.sugarsmile.cprms.service.RuleService;
 
 import java.io.IOException;
 import java.util.Objects;
 
 public class AuthFilter implements Filter {
-    private final RoleService roleService = new RoleService();
+    private final RuleService ruleService = new RuleService();
     private final AdminService adminService = new AdminService();
 
     @Override
@@ -46,7 +46,7 @@ public class AuthFilter implements Filter {
                     }
                 }
                 if (!url.endsWith(".jsp")) {
-                    roleService.checkPermission(url, admin);
+                    ruleService.checkPermission(url, admin);
                 }
             }
         } catch (BizException e) {

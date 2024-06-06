@@ -13,22 +13,22 @@ import lombok.Getter;
 @Builder
 public class Department {
     Integer id;
-    Type type;
+    DepartmentType departmentType;
     String name;
     Boolean social;
-    Boolean business;
+    Boolean official;
 
     @AllArgsConstructor
     @Getter
-    public enum Type {
+    public enum DepartmentType {
         ADMINISTRATION(1),
         DIRECT(2),
         COLLEGE(3);
 
         private final Integer value;
 
-        public static Type getType(Integer value) {
-            for (Type v : Type.values()) {
+        public static DepartmentType getType(Integer value) {
+            for (DepartmentType v : DepartmentType.values()) {
                 if (value.equals(v.getValue())) {
                     return v;
                 }

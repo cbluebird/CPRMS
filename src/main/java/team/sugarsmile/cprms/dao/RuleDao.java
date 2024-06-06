@@ -11,22 +11,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class RoleDao {
-    public ArrayList<String> getRoleByType(Admin.AdminType type) {
+public class RuleDao {
+    public ArrayList<String> getRuleByType(Admin.AdminType type) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "SELECT path FROM role where admin_type = ? OR admin_type = 0";
+            String sql = "SELECT path FROM rule where admin_type = ? OR admin_type = 0";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, type.getValue());
             rs = stmt.executeQuery();
-            ArrayList<String> roleList = new ArrayList<String>();
+            ArrayList<String> ruleList = new ArrayList<String>();
             while (rs.next()) {
-                roleList.add(rs.getString("path"));
+                ruleList.add(rs.getString("path"));
             }
-            return roleList;
+            return ruleList;
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
         } finally {

@@ -1,10 +1,10 @@
 CREATE TABLE department
 (
-    id       BIGINT PRIMARY KEY AUTO_INCREMENT,
-    type     TINYINT            NOT NULL COMMENT '部门类型 1:行政部门 2:直属部门 3:学院',
-    name     VARCHAR(20) UNIQUE NOT NULL COMMENT '部门名称',
-    public   BOOLEAN            NOT NULL,
-    business BOOLEAN            NOT NULL
+    id              BIGINT PRIMARY KEY AUTO_INCREMENT,
+    department_type TINYINT            NOT NULL COMMENT '部门类型 1:行政部门 2:直属部门 3:学院',
+    name            VARCHAR(20) UNIQUE NOT NULL COMMENT '部门名称',
+    public          BOOLEAN            NOT NULL,
+    official        BOOLEAN            NOT NULL
 );
 
 CREATE TABLE admin
@@ -19,11 +19,11 @@ CREATE TABLE admin
     date          DATE               NOT NULL COMMENT '密码更新时间'
 );
 
-CREATE TABLE role
+CREATE TABLE rule
 (
     id         BIGINT PRIMARY KEY AUTO_INCREMENT,
     admin_type TINYINT     NOT NULL COMMENT '管理员类型 1:系统管理员 2:学校管理员 3:部门管理员 4:审计管理员',
-    path       VARCHAR(64) NOT NULL COMMENT '规则名称'
+    path       VARCHAR(50) NOT NULL COMMENT '规则名称'
 );
 
 CREATE TABLE public_appointment

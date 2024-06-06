@@ -1,6 +1,6 @@
 package team.sugarsmile.cprms.service;
 
-import team.sugarsmile.cprms.dao.RoleDao;
+import team.sugarsmile.cprms.dao.RuleDao;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RoleService {
-    private final RoleDao roleDao = new RoleDao();
+public class RuleService {
+    private final RuleDao ruleDao = new RuleDao();
 
     public void checkPermission(String url, Admin admin) {
-        ArrayList<String> role = roleDao.getRoleByType(admin.getAdminType());
+        ArrayList<String> rule = ruleDao.getRuleByType(admin.getAdminType());
         boolean flag = false;
-        for (String r : role) {
+        for (String r : rule) {
             String reg = URLMatcherUtil.convertPatternToRegex(r);
             Pattern pattern = Pattern.compile(reg);
             Matcher matcher = pattern.matcher(url);

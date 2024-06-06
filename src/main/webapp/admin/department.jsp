@@ -49,13 +49,13 @@
                         <td>${department.id}</td>
                         <td>
                             <c:choose>
-                                <c:when test="${department.type.value eq 1}">
+                                <c:when test="${department.departmentType.value eq 1}">
                                     行政部门
                                 </c:when>
-                                <c:when test="${department.type.value eq 2}">
+                                <c:when test="${department.departmentType.value eq 2}">
                                     直属部门
                                 </c:when>
-                                <c:when test="${department.type.value eq 3}">
+                                <c:when test="${department.departmentType.value eq 3}">
                                     学院
                                 </c:when>
                             </c:choose>
@@ -73,7 +73,7 @@
                         </td>
                         <td>
                             <c:choose>
-                                <c:when test="${department.business}">
+                                <c:when test="${department.official}">
                                     所有部门
                                 </c:when>
                                 <c:otherwise>
@@ -83,7 +83,7 @@
                         </td>
                         <td>
                             <button class="modify"
-                                    onclick="updateDepartment('${department.id}','${department.type.value}','${department.name}','${department.social}','${department.business}')">
+                                    onclick="updateDepartment('${department.id}','${department.departmentType.value}','${department.name}','${department.social}','${department.official}')">
                                 修改
                             </button>
                             <button class="delete" onclick="deleteDepartment('${department.id}')">删除</button>
@@ -135,8 +135,8 @@
                 </select>
             </div>
             <div>
-                <label for="addBusiness">公务预约管理权限:</label>
-                <select id="addBusiness" name="business">
+                <label for="addOfficial">公务预约管理权限:</label>
+                <select id="addOfficial" name="official">
                     <option value="false">仅本部门</option>
                     <option value="true">所有部门</option>
                 </select>
@@ -172,8 +172,8 @@
                 </select>
             </div>
             <div>
-                <label for="updateBusiness">公务预约管理权限:</label>
-                <select id="updateBusiness" name="business">
+                <label for="updateOfficial">公务预约管理权限:</label>
+                <select id="updateOfficial" name="official">
                     <option value="false">仅本部门</option>
                     <option value="true">所有部门</option>
                 </select>
@@ -208,12 +208,12 @@
         window.location.href = "${pageContext.request.contextPath}/admin/department/list?pageNum=" + currPage + "&pageSize=10";
     }
 
-    function updateDepartment(id, type, name, social, business) {
+    function updateDepartment(id, type, name, social, official) {
         document.getElementById("updateId").value = id;
         document.getElementById("updateType").value = type;
         document.getElementById("updateName").value = name;
         document.getElementById("updateSocial").value = social;
-        document.getElementById("updateBusiness").value = business;
+        document.getElementById("updateOfficial").value = official;
 
         showUpdatePopup();
     }

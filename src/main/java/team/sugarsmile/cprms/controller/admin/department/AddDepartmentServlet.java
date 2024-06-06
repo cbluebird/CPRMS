@@ -36,14 +36,14 @@ public class AddDepartmentServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             Admin admin = (Admin) session.getAttribute("admin");
-            Department.Type type = Department.Type.getType(Integer.parseInt(request.getParameter("type")));
+            Department.DepartmentType type = Department.DepartmentType.getType(Integer.parseInt(request.getParameter("type")));
             String name = request.getParameter("name");
             Boolean social = Boolean.parseBoolean(request.getParameter("social"));
-            Boolean business = Boolean.parseBoolean(request.getParameter("business"));
+            Boolean official = Boolean.parseBoolean(request.getParameter("official"));
             if (name.isEmpty()) {
                 throw new BizException(ErrorCode.PARAM_ERROR.getCode(), "参数不能为空");
             }
-            departmentService.addDepartment(type, name, social, business);
+            departmentService.addDepartment(type, name, social, official);
             auditService.createAudit("添加部门", Audit.AuditType.ADD, admin.getId());
         } catch (BizException e) {
             be = e;
