@@ -40,7 +40,7 @@ public class ListAuditServlet extends HttpServlet {
         }
         if (be != null) {
             request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
-            response.sendRedirect(request.getContextPath() + "/admin/audit/list?pageNum=1&pageSize=10");
+            response.sendRedirect(request.getContextPath() + "/admin/audit/query?pageNum=1&pageSize=10");
             throw be;
         } else {
             request.setAttribute("pagination", pagination);

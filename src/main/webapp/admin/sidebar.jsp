@@ -18,15 +18,15 @@
     </c:if>
 
     <c:if test="${admin.adminType.value eq 2 || admin.adminType.value eq 3}">
-        <a href="${pageContext.request.contextPath}/admin/appointment/public/list?pageNum=1&pageSize=10">社会公众预约管理</a>
+        <a href="${pageContext.request.contextPath}/admin/appointment/public/query?pageNum=1&pageSize=10">社会公众预约管理</a>
     </c:if>
 
     <c:if test="${admin.adminType.value eq 2 || admin.adminType.value eq 3}">
-        <a href="${pageContext.request.contextPath}/admin/appointment/official/list?pageNum=1&pageSize=10">公务预约管理</a>
+        <a href="${pageContext.request.contextPath}/admin/appointment/official/query?pageNum=1&pageSize=10">公务预约管理</a>
     </c:if>
 
     <c:if test="${admin.adminType.value eq 4}">
-        <a href="${pageContext.request.contextPath}/admin/audit/list?pageNum=1&pageSize=10">审计管理</a>
+        <a href="${pageContext.request.contextPath}/admin/audit/query?pageNum=1&pageSize=10">审计管理</a>
     </c:if>
 
     <a href="${pageContext.request.contextPath}/admin/updatePassword.jsp">修改密码</a>

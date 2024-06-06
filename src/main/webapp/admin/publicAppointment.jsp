@@ -44,28 +44,29 @@
                     <input type="date" id="appointmentDate" name="appointmentDate">
 
                     <label for="countApplyDate">申请月度:</label>
-                    <input type="month" id="countApplyDate" name="countApplyDate">
+                    <input type="month" id="countApplyDate" name="countApplyDate" value="${param.countApplyDate}">
 
                     <label for="countAppointmentDate">预约月度:</label>
-                    <input type="month" id="countAppointmentDate" name="countAppointmentDate">
+                    <input type="month" id="countAppointmentDate" name="countAppointmentDate"
+                           value="${param.countAppointmentDate}">
 
                     <label for="campus">预约校区:</label>
                     <select id="campus" name="campus">
                         <option value="">全部</option>
-                        <option value="1">朝晖校区</option>
-                        <option value="2">屏峰校区</option>
-                        <option value="3">莫干山校区</option>
+                        <option value="1" <c:if test="${param.campus == '1'}">selected</c:if>>朝晖校区</option>
+                        <option value="2" <c:if test="${param.campus == '2'}">selected</c:if>>屏峰校区</option>
+                        <option value="3" <c:if test="${param.campus == '3'}">selected</c:if>>莫干山校区</option>
                     </select>
                 </div>
                 <div class="row">
                     <label for="unit">所在单位:</label>
-                    <input type="text" id="unit" name="unit">
+                    <input type="text" id="unit" name="unit" value="${param.unit}">
 
                     <label for="name">预约人姓名:</label>
-                    <input type="text" id="name" name="name">
+                    <input type="text" id="name" name="name" value="${param.name}">
 
                     <label for="idCard">身份证号:</label>
-                    <input type="text" id="idCard" name="idCard">
+                    <input type="text" id="idCard" name="idCard" value="${param.idCard}">
                 </div>
                 <div class="row">
                     <button type="submit" class="query">查询</button>
@@ -189,7 +190,7 @@
             return;
         }
         currPage++;
-        window.location.href = "${pageContext.request.contextPath}/admin/appointment/public/query?pageNum=" + currPage + "&pageSize=10";
+        updatePageParams()
     }
 
     function loadPreviousPage() {
@@ -198,7 +199,14 @@
             return;
         }
         currPage--;
-        window.location.href = "${pageContext.request.contextPath}/admin/appointment/public/query?pageNum=" + currPage + "&pageSize=10";
+        updatePageParams()
+    }
+
+    function updatePageParams() {
+        const params = new URLSearchParams(window.location.search);
+        params.set('pageNum', currPage);
+        params.set('pageSize', ${pagination.pageSize});
+        window.location.search = params.toString();
     }
 
     function getAppointment(id, name, idCard, phone, campus, startTime, endTime, createTime, unit, transportation, licensePlate) {

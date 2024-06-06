@@ -70,7 +70,7 @@ public class QueryAppointmentServlet extends HttpServlet {
         }
         if (be != null) {
             request.getSession().setAttribute("error", ErrorCode.getByCode(be.getCode()).getMessage());
-            response.sendRedirect(request.getContextPath() + "/admin/appointment/official/list?pageNum=1&pageSize=10");
+            response.sendRedirect(request.getContextPath() + "/admin/appointment/official/query?pageNum=1&pageSize=10");
             throw be;
         } else {
             request.setAttribute("pagination", pagination);

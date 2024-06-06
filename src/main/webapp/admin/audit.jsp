@@ -37,30 +37,30 @@
         <div class="search-container">
             <form action="${pageContext.request.contextPath}/admin/audit/query?pageNum=1&pageSize=10" method="get">
                 <div class="row">
-                    <label for="operateDate">操作日期:</label>
-                    <input type="date" id="operateDate" name="operateDate">
+                    <label for="applyDate">操作时间:</label>
+                    <input type="date" id="applyDate" name="applyDate" value="${param.applyDate}">
 
                     <label for="type">操作类型:</label>
                     <select id="type" name="type">
                         <option value="">全部</option>
-                        <option value="1">登录</option>
-                        <option value="2">添加</option>
-                        <option value="3">删除</option>
-                        <option value="4">更新</option>
-                        <option value="5">查询</option>
+                        <option value="1" <c:if test="${param.type == '1'}">selected</c:if>>登录</option>
+                        <option value="2" <c:if test="${param.type == '2'}">selected</c:if>>添加</option>
+                        <option value="3" <c:if test="${param.type == '3'}">selected</c:if>>删除</option>
+                        <option value="4" <c:if test="${param.type == '4'}">selected</c:if>>更新</option>
+                        <option value="5" <c:if test="${param.type == '5'}">selected</c:if>>查询</option>
                     </select>
 
                     <label for="operate">操作:</label>
-                    <input type="text" id="operate" name="operate">
+                    <input type="text" id="operate" name="operate" value="${param.operate}">
 
                     <label for="admin_id">管理员ID:</label>
-                    <input type="text" id="admin_id" name="admin_id">
+                    <input type="text" id="admin_id" name="admin_id" value="${param.admin_id}">
 
                     <label for="status">状态:</label>
                     <select id="status" name="status">
-                        <option value="">全部</option>
-                        <option value="1">正确</option>
-                        <option value="2">错误</option>
+                        <option value="">状态</option>
+                        <option value="1" <c:if test="${param.status == '1'}">selected</c:if>>正确</option>
+                        <option value="2" <c:if test="${param.status == '2'}">selected</c:if>>错误</option>
                     </select>
                 </div>
                 <div class="row">
@@ -129,7 +129,7 @@
             return;
         }
         currPage++;
-        window.location.href = "${pageContext.request.contextPath}/admin/audit/query?pageNum=" + currPage + "&pageSize=10";
+        updatePageParams()
     }
 
     function loadPreviousPage() {
@@ -138,8 +138,16 @@
             return;
         }
         currPage--;
-        window.location.href = "${pageContext.request.contextPath}/admin/audit/query?pageNum=" + currPage + "&pageSize=10";
+        updatePageParams()
     }
+
+    function updatePageParams() {
+        const params = new URLSearchParams(window.location.search);
+        params.set('pageNum', currPage);
+        params.set('pageSize', ${pagination.pageSize});
+        window.location.search = params.toString();
+    }
+
 </script>
 </body>
 </html>

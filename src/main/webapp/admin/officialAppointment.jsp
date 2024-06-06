@@ -38,53 +38,55 @@
                   method="get">
                 <div class="row">
                     <label for="applyDate">申请日期:</label>
-                    <input type="date" id="applyDate" name="applyDate">
+                    <input type="date" id="applyDate" name="applyDate" value="${param.applyDate}">
 
                     <label for="appointmentDate">预约日期:</label>
-                    <input type="date" id="appointmentDate" name="appointmentDate">
+                    <input type="date" id="appointmentDate" name="appointmentDate" value="${param.appointmentDate}">
 
                     <label for="countApplyDate">申请月度:</label>
-                    <input type="month" id="countApplyDate" name="countApplyDate">
+                    <input type="month" id="countApplyDate" name="countApplyDate" value="${param.countApplyDate}">
 
                     <label for="countAppointmentDate">预约月度:</label>
-                    <input type="month" id="countAppointmentDate" name="countAppointmentDate">
+                    <input type="month" id="countAppointmentDate" name="countAppointmentDate"
+                           value="${param.countAppointmentDate}">
 
                     <label for="campus">预约校区:</label>
                     <select id="campus" name="campus">
                         <option value="">全部</option>
-                        <option value="1">朝晖校区</option>
-                        <option value="2">屏峰校区</option>
-                        <option value="3">莫干山校区</option>
+                        <option value="1" <c:if test="${param.campus == '1'}">selected</c:if>>朝晖校区</option>
+                        <option value="2" <c:if test="${param.campus == '2'}">selected</c:if>>屏峰校区</option>
+                        <option value="3" <c:if test="${param.campus == '3'}">selected</c:if>>莫干山校区</option>
                     </select>
                 </div>
                 <div class="row">
                     <label for="unit">所在单位:</label>
-                    <input type="text" id="unit" name="unit">
+                    <input type="text" id="unit" name="unit" value="${param.unit}">
 
                     <label for="name">预约人姓名:</label>
-                    <input type="text" id="name" name="name">
+                    <input type="text" id="name" name="name" value="${param.name}">
 
                     <label for="idCard">身份证号:</label>
-                    <input type="text" id="idCard" name="idCard">
+                    <input type="text" id="idCard" name="idCard" value="${param.idCard}">
                 </div>
                 <div class="row">
                     <label for="department">访问部门:</label>
                     <select id="department" name="department">
                         <option value="">请选择</option>
                         <c:forEach items="${departmentMap}" var="entry">
-                            <option value="${entry.key}">${entry.value.name}</option>
+                            <option value="${entry.key}"
+                                    <c:if test="${param.department == entry.key}">selected</c:if>>${entry.value.name}</option>
                         </c:forEach>
                     </select>
 
                     <label for="receptionist">访问接待人:</label>
-                    <input type="text" id="receptionist" name="receptionist">
+                    <input type="text" id="receptionist" name="receptionist" value="${param.receptionist}">
 
                     <label for="status">审核状态:</label>
                     <select id="status" name="status">
                         <option value="">全部</option>
-                        <option value="1">未审核</option>
-                        <option value="2">通过</option>
-                        <option value="3">驳回</option>
+                        <option value="1" <c:if test="${param.status == '1'}">selected</c:if>>未审核</option>
+                        <option value="2" <c:if test="${param.status == '2'}">selected</c:if>>通过</option>
+                        <option value="3" <c:if test="${param.status == '3'}">selected</c:if>>驳回</option>
                     </select>
                 </div>
                 <div class="row">
@@ -255,7 +257,7 @@
             return;
         }
         currPage++;
-        window.location.href = "${pageContext.request.contextPath}/admin/appointment/official/query?pageNum=" + currPage + "&pageSize=10";
+        updatePageParams();
     }
 
     function loadPreviousPage() {
@@ -264,7 +266,14 @@
             return;
         }
         currPage--;
-        window.location.href = "${pageContext.request.contextPath}/admin/appointment/official/query?pageNum=" + currPage + "&pageSize=10";
+        updatePageParams();
+    }
+
+    function updatePageParams() {
+        const params = new URLSearchParams(window.location.search);
+        params.set('pageNum', currPage);
+        params.set('pageSize', ${pagination.pageSize});
+        window.location.search = params.toString();
     }
 
     function reviewAppointment(id, status) {

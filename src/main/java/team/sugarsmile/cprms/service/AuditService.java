@@ -16,9 +16,9 @@ public class AuditService {
                 .adminId(adminID)
                 .type(type)
                 .operate(operate)
-                .createTime(LocalDateTime.now())
+                .createTime(LocalDateTime.now().withNano(0))
                 .build();
-        audit.setHMAC(HMACSM3Util.generateHMACSM3(adminID.toString() + type.toString() + audit.getCreateTime().toString()));
+        audit.setHMAC(HMACSM3Util.generateHMACSM3(adminID.toString() + type.toString() + audit.getCreateTime().toString() + audit.getType().toString()));
         auditDao.insert(audit);
     }
 
@@ -32,7 +32,7 @@ public class AuditService {
 
         ArrayList<Audit> list = auditDao.findByPage(pageNum, pageSize);
         for (Audit a : list) {
-            if (HMACSM3Util.verifyHMACSM3(a.getAdminId().toString() + a.getType().toString() + a.getCreateTime().toString(), a.getHMAC())) {
+            if (HMACSM3Util.verifyHMACSM3(a.getAdminId().toString() + a.getType().toString() + a.getCreateTime().toString() + a.getType().toString(), a.getHMAC())) {
                 a.setHMAC("正确");
             } else {
                 a.setHMAC("错误");
@@ -50,7 +50,7 @@ public class AuditService {
     public ArrayList<Audit> findAll() {
         ArrayList<Audit> list = auditDao.findAll();
         for (Audit a : list) {
-            if (HMACSM3Util.verifyHMACSM3(a.getAdminId().toString() + a.getType().toString() + a.getCreateTime().toString(), a.getHMAC())) {
+            if (HMACSM3Util.verifyHMACSM3(a.getAdminId().toString() + a.getType().toString() + a.getCreateTime().toString() + a.getType().toString(), a.getHMAC())) {
                 a.setHMAC("正确");
             } else {
                 a.setHMAC("错误");
@@ -73,7 +73,7 @@ public class AuditService {
         int total = auditDao.countForSearch(operate, type, adminID, operateDate);
         ArrayList<Audit> list = auditDao.searchAudit(operate, type, adminID, operateDate, pageNum, pageSize);
         for (Audit a : list) {
-            if (HMACSM3Util.verifyHMACSM3(a.getAdminId().toString() + a.getType().toString() + a.getCreateTime().toString(), a.getHMAC())) {
+            if (HMACSM3Util.verifyHMACSM3(a.getAdminId().toString() + a.getType().toString() + a.getCreateTime().toString() + a.getType().toString(), a.getHMAC())) {
                 a.setHMAC("正确");
             } else {
                 a.setHMAC("错误");
@@ -94,14 +94,14 @@ public class AuditService {
         ArrayList<Audit> searchList = new ArrayList<>();
         if (status == 1) {
             for (Audit a : list) {
-                if (HMACSM3Util.verifyHMACSM3(a.getAdminId().toString() + a.getType().toString() + a.getCreateTime().toString(), a.getHMAC())) {
+                if (HMACSM3Util.verifyHMACSM3(a.getAdminId().toString() + a.getType().toString() + a.getCreateTime().toString() + a.getType().toString(), a.getHMAC())) {
                     a.setHMAC("正确");
                     searchList.add(a);
                 }
             }
         } else {
             for (Audit a : list) {
-                if (!HMACSM3Util.verifyHMACSM3(a.getAdminId().toString() + a.getType().toString() + a.getCreateTime().toString(), a.getHMAC())) {
+                if (!HMACSM3Util.verifyHMACSM3(a.getAdminId().toString() + a.getType().toString() + a.getCreateTime().toString() + a.getType().toString(), a.getHMAC())) {
                     a.setHMAC("错误");
                     searchList.add(a);
                 }
