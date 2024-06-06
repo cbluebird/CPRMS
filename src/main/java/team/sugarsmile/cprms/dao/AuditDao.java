@@ -29,34 +29,6 @@ public class AuditDao {
         }
     }
 
-    public Audit findById(Long id) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM audit WHERE id = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setLong(1, id);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                return Audit.builder()
-                        .id(rs.getInt("id"))
-                        .operate(rs.getString("operate"))
-                        .adminId(rs.getInt("admin_id"))
-                        .createTime(rs.getTimestamp("create_time").toLocalDateTime())
-                        .type(Audit.AuditType.fromValue(rs.getInt("type")))
-                        .HMAC(rs.getString("hmac"))
-                        .build();
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
-        } finally {
-            JDBCUtil.close(conn, stmt, rs);
-        }
-    }
-
     public ArrayList<Audit> findByPage(int pageNum, int pageSize) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -68,34 +40,6 @@ public class AuditDao {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, (pageNum - 1) * pageSize);
             stmt.setInt(2, pageSize);
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                auditList.add(Audit.builder()
-                        .id(rs.getInt("id"))
-                        .operate(rs.getString("operate"))
-                        .adminId(rs.getInt("admin_id"))
-                        .createTime(rs.getTimestamp("create_time").toLocalDateTime())
-                        .type(Audit.AuditType.fromValue(rs.getInt("type")))
-                        .HMAC(rs.getString("hmac"))
-                        .build());
-            }
-            return auditList;
-        } catch (SQLException e) {
-            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
-        } finally {
-            JDBCUtil.close(conn, stmt, rs);
-        }
-    }
-
-    public ArrayList<Audit> findAll() {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        ArrayList<Audit> auditList = new ArrayList<>();
-        try {
-            conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM audit";
-            stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 auditList.add(Audit.builder()
@@ -298,40 +242,4 @@ public class AuditDao {
         }
     }
 
-    public void update(Audit audit) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        try {
-            conn = JDBCUtil.getConnection();
-            String sql = "UPDATE audit SET operate = ?, admin_id = ?, create_time = ?, type = ?,hmac = ? WHERE id = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, audit.getOperate());
-            stmt.setLong(2, audit.getAdminId());
-            stmt.setTimestamp(3, Timestamp.valueOf(audit.getCreateTime()));
-            stmt.setInt(4, audit.getType().getValue());
-            stmt.setString(5, audit.getHMAC());
-            stmt.setLong(6, audit.getId());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
-        } finally {
-            JDBCUtil.close(conn, stmt);
-        }
-    }
-
-    public void delete(Long id) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        try {
-            conn = JDBCUtil.getConnection();
-            String sql = "DELETE FROM audit WHERE id = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setLong(1, id);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
-        } finally {
-            JDBCUtil.close(conn, stmt);
-        }
-    }
 }

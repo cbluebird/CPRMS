@@ -22,10 +22,6 @@ public class AuditService {
         auditDao.insert(audit);
     }
 
-    public Audit getAuditById(Long id) {
-        return auditDao.findById(id);
-    }
-
     public PaginationDto<Audit> findAuditList(int pageNum, int pageSize) {
         pageNum = pageNum <= 0 ? 1 : pageNum;
         pageSize = pageSize <= 0 ? 10 : pageSize;
@@ -45,26 +41,6 @@ public class AuditService {
                 .total(auditDao.count())
                 .list(list)
                 .build();
-    }
-
-    public ArrayList<Audit> findAll() {
-        ArrayList<Audit> list = auditDao.findAll();
-        for (Audit a : list) {
-            if (HMACSM3Util.verifyHMACSM3(a.getAdminId().toString() + a.getType().toString() + a.getCreateTime().toString() + a.getType().toString(), a.getHMAC())) {
-                a.setHMAC("正确");
-            } else {
-                a.setHMAC("错误");
-            }
-        }
-        return list;
-    }
-
-    public void updateAudit(Audit audit) {
-        auditDao.update(audit);
-    }
-
-    public void deleteAudit(Long id) {
-        auditDao.delete(id);
     }
 
     public PaginationDto<Audit> searchAudit(String operate, Integer type, Integer adminID, String operateDate, int pageNum, int pageSize) {

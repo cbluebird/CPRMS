@@ -26,7 +26,7 @@ public class QueryAuditServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BizException be = null;
         PaginationDto<Audit> pagination = null;
-        HashMap<Integer, Department> departmentMap = new HashMap<Integer, Department>();
+        HashMap<Integer, Department> departmentMap = new HashMap<>();
         try {
             int pageNum = parseIntegerOrDefault(request.getParameter("pageNum"), 1);
             int pageSize = parseIntegerOrDefault(request.getParameter("pageSize"), 10);

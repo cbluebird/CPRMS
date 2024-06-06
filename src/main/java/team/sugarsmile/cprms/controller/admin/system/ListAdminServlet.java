@@ -23,7 +23,7 @@ public class ListAdminServlet extends HttpServlet {
     protected void doGet(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException, ServletException {
         BizException be = null;
         PaginationDto<Admin> pagination = null;
-        HashMap<Integer, Department> departmentMap = new HashMap<Integer, Department>();
+        HashMap<Integer, Department> departmentMap = new HashMap<>();
         try {
             int pageNum = Integer.parseInt(request.getParameter("pageNum"));
             int pageSize = Integer.parseInt(request.getParameter("pageSize"));

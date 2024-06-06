@@ -30,7 +30,7 @@ public class ListAppointmentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BizException be = null;
         PaginationDto<OfficialAppointment> pagination = null;
-        HashMap<Integer, Department> departmentMap = new HashMap<Integer, Department>();
+        HashMap<Integer, Department> departmentMap = new HashMap<>();
         try {
             String name = (String) request.getSession().getAttribute("name");
             String idCard = (String) request.getSession().getAttribute("idCard");

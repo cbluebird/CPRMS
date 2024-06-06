@@ -26,9 +26,4 @@ public class CharacterFilter implements Filter {
 
         filterChain.doFilter(servletRequest, servletResponse);
     }
-
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
-    }
 }

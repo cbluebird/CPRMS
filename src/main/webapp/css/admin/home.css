@@ -41,16 +41,6 @@ h2 {
     font-size: 1em;
 }
 
-.sidebar a.active {
-    background-color: #007BFF;
-    color: white;
-}
-
-.sidebar a:hover:not(.active) {
-    background-color: #555;
-    color: white;
-}
-
 .content {
     margin-left: 200px;
     padding: 16px;
@@ -70,19 +60,6 @@ h2 {
     margin-top: 20px;
     padding: 20px;
     text-align: center;
-}
-
-.footer {
-    text-align: center;
-    padding: 15px;
-    background-color: #343a40;
-    color: white;
-    border-top: 2px solid #007BFF;
-    width: calc(100% - 200px);
-    margin-left: 200px;
-    position: fixed;
-    bottom: 0;
-    box-sizing: border-box;
 }
 
 button {
@@ -114,10 +91,6 @@ button:hover {
         margin-left: 0;
     }
 
-    .footer {
-        width: 100%;
-        margin-left: 0;
-    }
 }
 
 @media screen and (max-width: 400px) {

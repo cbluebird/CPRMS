@@ -26,7 +26,7 @@ public class ListAuditServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BizException be = null;
         PaginationDto<Audit> pagination = null;
-        HashMap<Integer, Department> departmentMap = new HashMap<Integer, Department>();
+        HashMap<Integer, Department> departmentMap = new HashMap<>();
         try {
             int pageNum = Integer.parseInt(request.getParameter("pageNum"));
             int pageSize = Integer.parseInt(request.getParameter("pageSize"));

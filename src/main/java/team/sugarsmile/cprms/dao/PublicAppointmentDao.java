@@ -66,47 +66,6 @@ public class PublicAppointmentDao {
         }
     }
 
-    public void update(PublicAppointment appointment) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        try {
-            conn = JDBCUtil.getConnection();
-            String sql = "UPDATE public_appointment SET name = ?, id_card = ?, phone = ?, campus = ?, create_time = ?, appointment_time = ?, unit = ?, transportation = ?, license_plate = ? WHERE id = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, appointment.getName());
-            stmt.setString(2, appointment.getIdCard());
-            stmt.setString(3, appointment.getPhone());
-            stmt.setInt(4, appointment.getCampus().getValue());
-            stmt.setDate(5, Date.valueOf(appointment.getCreateTime()));
-            stmt.setDate(6, Date.valueOf(appointment.getAppointmentTime()));
-            stmt.setString(7, appointment.getUnit());
-            stmt.setInt(8, appointment.getTransportation().getValue());
-            stmt.setString(9, appointment.getLicensePlate());
-            stmt.setLong(10, appointment.getId());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
-        } finally {
-            JDBCUtil.close(conn, stmt);
-        }
-    }
-
-    public void delete(long id) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        try {
-            conn = JDBCUtil.getConnection();
-            String sql = "DELETE FROM public_appointment WHERE id = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setLong(1, id);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
-        } finally {
-            JDBCUtil.close(conn, stmt);
-        }
-    }
-
     public ArrayList<PublicAppointment> findByPage(int pageNum, int pageSize) {
         Connection conn = null;
         PreparedStatement stmt = null;

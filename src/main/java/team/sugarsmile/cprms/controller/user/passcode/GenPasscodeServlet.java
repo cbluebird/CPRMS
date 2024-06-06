@@ -51,12 +51,8 @@ public class GenPasscodeServlet extends HttpServlet {
             }
             PasscodeDto passcode = null;
             switch (type) {
-                case "public" -> {
-                    passcode = publicAppointmentService.getPasscode(id, name, idCard, phone);
-                }
-                case "official" -> {
-                    passcode = officialAppointmentService.getPasscode(id, name, idCard, phone);
-                }
+                case "public" -> passcode = publicAppointmentService.getPasscode(id, name, idCard, phone);
+                case "official" -> passcode = officialAppointmentService.getPasscode(id, name, idCard, phone);
             }
             int color = 0x900090;
             if (!LocalDate.now().equals(passcode.getAppointmentTime())) {

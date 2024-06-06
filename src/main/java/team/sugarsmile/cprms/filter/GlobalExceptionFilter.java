@@ -30,9 +30,4 @@ public class GlobalExceptionFilter implements Filter {
             ((HttpServletResponse) servletResponse).sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/500.jsp");
         }
     }
-
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
-    }
 }

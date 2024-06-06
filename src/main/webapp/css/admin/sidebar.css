@@ -24,12 +24,3 @@ body {
     font-size: 1em;
 }
 
-.sidebar a.active {
-    background-color: #007BFF;
-    color: white;
-}
-
-.sidebar a:hover:not(.active) {
-    background-color: #555;
-    color: white;
-}

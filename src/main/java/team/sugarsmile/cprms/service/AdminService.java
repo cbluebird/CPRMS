@@ -93,21 +93,6 @@ public class AdminService {
         adminDao.updateAdminInfo(admin);
     }
 
-    public PaginationDto<Admin> findAdminList(int pageNum, int pageSize) {
-        pageNum = pageNum <= 0 ? 1 : pageNum;
-        pageSize = pageSize <= 0 ? 10 : pageSize;
-        ArrayList<Admin> list = adminDao.findByPage(pageNum, pageSize);
-        for (Admin admin : list) {
-            decrypt(admin);
-        }
-        return PaginationDto.<Admin>builder()
-                .pageNum(pageNum)
-                .pageSize(pageSize)
-                .total(adminDao.count())
-                .list(list)
-                .build();
-    }
-
     public PaginationDto<Admin> findAdminListByType(int pageNum, int pageSize, Admin.AdminType type) {
         pageNum = pageNum <= 0 ? 1 : pageNum;
         pageSize = pageSize <= 0 ? 10 : pageSize;

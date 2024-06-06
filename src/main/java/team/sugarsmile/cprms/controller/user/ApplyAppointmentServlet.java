@@ -22,7 +22,7 @@ public class ApplyAppointmentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HashMap<Integer, Department> departmentMap = new HashMap<Integer, Department>();
+        HashMap<Integer, Department> departmentMap = new HashMap<>();
         String type = request.getParameter("type");
         if (!"public".equals(type) && !"official".equals(type)) {
             type = "public";

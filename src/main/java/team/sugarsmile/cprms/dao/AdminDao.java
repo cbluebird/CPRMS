@@ -143,38 +143,6 @@ public class AdminDao {
 
     }
 
-    public ArrayList<Admin> findByPage(int pageNum, int pageSize) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM admin LIMIT ?, ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, (pageNum - 1) * pageSize);
-            stmt.setInt(2, pageSize);
-            rs = stmt.executeQuery();
-            ArrayList<Admin> adminList = new ArrayList<>();
-            while (rs.next()) {
-                adminList.add(Admin.builder()
-                        .id(rs.getInt("id"))
-                        .adminType(Admin.AdminType.getType(rs.getInt("admin_type")))
-                        .name(rs.getString("name"))
-                        .phone(rs.getString("phone"))
-                        .password(rs.getString("password"))
-                        .departmentID(rs.getInt("department_id"))
-                        .userName(rs.getString("user_name"))
-                        .passwordUpdateTime(rs.getDate("password_update_time").toLocalDate())
-                        .build());
-            }
-            return adminList;
-        } catch (SQLException e) {
-            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
-        } finally {
-            JDBCUtil.close(conn, stmt, rs);
-        }
-    }
-
     public ArrayList<Admin> findByPageAndType(int pageNum, int pageSize, Admin.AdminType type) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -233,26 +201,6 @@ public class AdminDao {
                         .build());
             }
             return adminList;
-        } catch (SQLException e) {
-            throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
-        } finally {
-            JDBCUtil.close(conn, stmt, rs);
-        }
-    }
-
-    public int count() {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = JDBCUtil.getConnection();
-            String sql = "SELECT COUNT(*) FROM admin";
-            stmt = conn.prepareStatement(sql);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-            return 0;
         } catch (SQLException e) {
             throw new SystemException(ErrorCode.DB_ERROR.getCode(), e.getMessage(), e);
         } finally {

@@ -137,7 +137,7 @@ public class DepartmentDao {
             stmt.setInt(1, (pageNum - 1) * pageSize);
             stmt.setInt(2, pageSize);
             rs = stmt.executeQuery();
-            ArrayList<Department> departmentList = new ArrayList<Department>();
+            ArrayList<Department> departmentList = new ArrayList<>();
             while (rs.next()) {
                 departmentList.add(Department.builder()
                         .id(rs.getInt("id"))
@@ -164,7 +164,7 @@ public class DepartmentDao {
             String sql = "SELECT * FROM department ";
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
-            ArrayList<Department> departmentList = new ArrayList<Department>();
+            ArrayList<Department> departmentList = new ArrayList<>();
             while (rs.next()) {
                 departmentList.add(Department.builder()
                         .id(rs.getInt("id"))

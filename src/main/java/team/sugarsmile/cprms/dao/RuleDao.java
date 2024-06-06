@@ -22,7 +22,7 @@ public class RuleDao {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, type.getValue());
             rs = stmt.executeQuery();
-            ArrayList<String> ruleList = new ArrayList<String>();
+            ArrayList<String> ruleList = new ArrayList<>();
             while (rs.next()) {
                 ruleList.add(rs.getString("path"));
             }

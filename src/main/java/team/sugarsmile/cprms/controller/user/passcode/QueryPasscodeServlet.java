@@ -45,12 +45,8 @@ public class QueryPasscodeServlet extends HttpServlet {
                 throw new BizException(ErrorCode.PARAM_ERROR.getCode(), "参数id为空或有误");
             }
             switch (type) {
-                case "public" -> {
-                    passcode = publicAppointmentService.getPasscode(id, name, idCard, phone);
-                }
-                case "official" -> {
-                    passcode = officialAppointmentService.getPasscode(id, name, idCard, phone);
-                }
+                case "public" -> passcode = publicAppointmentService.getPasscode(id, name, idCard, phone);
+                case "official" -> passcode = officialAppointmentService.getPasscode(id, name, idCard, phone);
             }
         } catch (BizException e) {
             be = e;

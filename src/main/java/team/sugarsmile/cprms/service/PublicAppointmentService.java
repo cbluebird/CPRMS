@@ -29,21 +29,6 @@ public class PublicAppointmentService {
         return appointment;
     }
 
-    public void updatePublicAppointment(PublicAppointment appointment) {
-        if (publicAppointmentDao.findById(appointment.getId()) == null) {
-            throw new BizException(ErrorCode.APPOINTMENT_NOT_EXIST.getCode(), "预约编号 " + appointment.getId() + " 不存在");
-        }
-        encrypt(appointment);
-        publicAppointmentDao.update(appointment);
-    }
-
-    public void deletePublicAppointment(long id) {
-        if (publicAppointmentDao.findById(id) == null) {
-            throw new BizException(ErrorCode.APPOINTMENT_NOT_EXIST.getCode(), "预约编号 " + id + " 不存在");
-        }
-        publicAppointmentDao.delete(id);
-    }
-
     public PaginationDto<PublicAppointment> findPublicAppointmentList(int pageNum, int pageSize) {
         pageNum = pageNum <= 0 ? 1 : pageNum;
         pageSize = pageSize <= 0 ? 10 : pageSize;
