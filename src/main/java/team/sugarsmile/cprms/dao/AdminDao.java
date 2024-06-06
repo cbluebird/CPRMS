@@ -6,6 +6,7 @@ import team.sugarsmile.cprms.model.Admin;
 import team.sugarsmile.cprms.util.JDBCUtil;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class AdminDao {
@@ -15,7 +16,7 @@ public class AdminDao {
         Date date = new Date(new java.util.Date().getTime());
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "INSERT INTO admin (admin_type, name, phone, password, department_id, date, user_name) VALUES (?, ? ,? ,?, ?, ?, ?)";
+            String sql = "INSERT INTO admin (admin_type, name, phone, password, department_id, password_update_time, user_name) VALUES (?, ? ,? ,?, ?, ?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, admin.getAdminType().getValue());
             stmt.setString(2, admin.getName());
@@ -50,7 +51,7 @@ public class AdminDao {
                         .phone(rs.getString("phone"))
                         .password(rs.getString("password"))
                         .departmentID(rs.getInt("department_id"))
-                        .date(rs.getDate("date"))
+                        .passwordUpdateTime(rs.getDate("password_update_time").toLocalDate())
                         .userName(rs.getString("user_name"))
                         .build();
             }
@@ -81,7 +82,7 @@ public class AdminDao {
                         .password(rs.getString("password"))
                         .departmentID(rs.getInt("department_id"))
                         .userName(rs.getString("user_name"))
-                        .date(rs.getDate("date"))
+                        .passwordUpdateTime(rs.getDate("password_update_time").toLocalDate())
                         .build();
             }
             return null;
@@ -112,7 +113,7 @@ public class AdminDao {
                         .password(rs.getString("password"))
                         .departmentID(rs.getInt("department_id"))
                         .userName(rs.getString("user_name"))
-                        .date(rs.getDate("date"))
+                        .passwordUpdateTime(rs.getDate("password_update_time").toLocalDate())
                         .build();
             }
             return null;
@@ -128,10 +129,10 @@ public class AdminDao {
         PreparedStatement stmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "UPDATE admin SET password = ?, date = ? WHERE id = ?";
+            String sql = "UPDATE admin SET password = ?, password_update_time = ? WHERE id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, password);
-            stmt.setDate(2, new Date(System.currentTimeMillis()));
+            stmt.setDate(2, Date.valueOf(LocalDate.now()));
             stmt.setLong(3, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -163,7 +164,7 @@ public class AdminDao {
                         .password(rs.getString("password"))
                         .departmentID(rs.getInt("department_id"))
                         .userName(rs.getString("user_name"))
-                        .date(rs.getDate("date"))
+                        .passwordUpdateTime(rs.getDate("password_update_time").toLocalDate())
                         .build());
             }
             return adminList;
@@ -180,7 +181,7 @@ public class AdminDao {
         ResultSet rs = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM admin where admin_type= ? LIMIT ?, ?";
+            String sql = "SELECT * FROM admin where admin_type = ? LIMIT ?, ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, type.getValue());
             stmt.setInt(2, (pageNum - 1) * pageSize);
@@ -196,7 +197,7 @@ public class AdminDao {
                         .password(rs.getString("password"))
                         .departmentID(rs.getInt("department_id"))
                         .userName(rs.getString("user_name"))
-                        .date(rs.getDate("date"))
+                        .passwordUpdateTime(rs.getDate("password_update_time").toLocalDate())
                         .build());
             }
             return adminList;
@@ -213,7 +214,7 @@ public class AdminDao {
         ResultSet rs = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM admin where admin_type= 2||admin_type=4 LIMIT ?, ?";
+            String sql = "SELECT * FROM admin where admin_type = 2 OR admin_type = 4 LIMIT ?, ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, (pageNum - 1) * pageSize);
             stmt.setInt(2, pageSize);
@@ -228,7 +229,7 @@ public class AdminDao {
                         .password(rs.getString("password"))
                         .departmentID(rs.getInt("department_id"))
                         .userName(rs.getString("user_name"))
-                        .date(rs.getDate("date"))
+                        .passwordUpdateTime(rs.getDate("password_update_time").toLocalDate())
                         .build());
             }
             return adminList;
@@ -265,7 +266,7 @@ public class AdminDao {
         ResultSet rs = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "SELECT COUNT(*) FROM admin where admin_type=2 || admin_type=4";
+            String sql = "SELECT COUNT(*) FROM admin where admin_type = 2 OR admin_type = 4";
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             if (rs.next()) {
@@ -285,7 +286,7 @@ public class AdminDao {
         ResultSet rs = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "SELECT COUNT(*) FROM admin where admin_type= ?";
+            String sql = "SELECT COUNT(*) FROM admin where admin_type = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, type.getValue());
             rs = stmt.executeQuery();

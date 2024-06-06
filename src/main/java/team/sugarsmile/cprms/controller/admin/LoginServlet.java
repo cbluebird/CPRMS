@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
             admin = adminService.checkAdminByPassword(username, password);
             request.getSession().setAttribute("admin", admin);
             String phone = admin.getPhone();
-            if (admin.getPassword().equals(SM3Util.encrypt("zjut" + phone.substring(phone.length() - 6))) || LocalDate.now().minusDays(90).isAfter(admin.getDate().toLocalDate())) {
+            if (admin.getPassword().equals(SM3Util.encrypt("zjut" + phone.substring(phone.length() - 6))) || LocalDate.now().minusDays(90).isAfter(admin.getPasswordUpdateTime())) {
                 updatePassword = true;
             }
             auditService.createAudit("管理员登录", Audit.AuditType.LOGIN, admin.getId());

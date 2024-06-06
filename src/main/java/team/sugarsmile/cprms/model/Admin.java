@@ -5,19 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @Builder
 public class Admin {
     private Integer id;
+    private AdminType adminType;
+    private String userName;
+    private String password;
+    private LocalDate passwordUpdateTime;
     private String name;
     private String phone;
-    private String password;
-    private AdminType adminType;
     private Integer departmentID;
-    private Date date;
-    private String userName;
 
     @AllArgsConstructor
     @Getter
