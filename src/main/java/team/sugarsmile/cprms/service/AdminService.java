@@ -5,7 +5,6 @@ import team.sugarsmile.cprms.dto.PaginationDto;
 import team.sugarsmile.cprms.exception.BizException;
 import team.sugarsmile.cprms.exception.ErrorCode;
 import team.sugarsmile.cprms.model.Admin;
-import team.sugarsmile.cprms.util.DesensitizedUtil;
 import team.sugarsmile.cprms.util.SM3Util;
 import team.sugarsmile.cprms.util.SM4Util;
 
@@ -16,11 +15,7 @@ public class AdminService {
 
     public void addAdmin(Admin.AdminType type, String phone, String name, String userName, Integer departmentID) {
         if (adminDao.findByUserName(userName) != null) {
-            throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户： " + userName + " 已存在");
-        }
-
-        if (adminDao.findByUserPhone(phone) != null) {
-            throw new BizException(ErrorCode.ADMIN_ALREADY_EXIST.getCode(), "用户手机： " + phone + " 已存在");
+            throw new BizException(ErrorCode.ADMIN_USERNAME_ALREADY_EXIST.getCode(), "登录名 " + userName + " 已存在");
         }
 
         String defaultPassword = "zjut" + phone.substring(phone.length() - 6);
@@ -33,6 +28,10 @@ public class AdminService {
                 .userName(userName)
                 .build();
         encrypt(admin);
+
+        if (adminDao.findByPhone(admin.getPhone()) != null) {
+            throw new BizException(ErrorCode.ADMIN_PHONE_ALREADY_EXIST.getCode(), "联系电话 " + phone + " 已存在");
+        }
 
         adminDao.insert(admin);
     }
@@ -71,6 +70,11 @@ public class AdminService {
             throw new BizException(ErrorCode.ADMIN_NOT_EXIST.getCode(), "用户编号 " + id + " 不存在");
         }
 
+        Admin a = adminDao.findByUserName(userName);
+        if (a != null && !a.getId().equals(id)) {
+            throw new BizException(ErrorCode.ADMIN_USERNAME_ALREADY_EXIST.getCode(), "登录名 " + userName + " 已存在");
+        }
+
         Admin admin = Admin.builder()
                 .id(id)
                 .adminType(type)
@@ -81,6 +85,11 @@ public class AdminService {
                 .build();
         encrypt(admin);
 
+        a = adminDao.findByPhone(admin.getPhone());
+        if (a != null && !a.getId().equals(id)) {
+            throw new BizException(ErrorCode.ADMIN_PHONE_ALREADY_EXIST.getCode(), "联系电话 " + phone + " 已存在");
+        }
+
         adminDao.updateAdminInfo(admin);
     }
 
@@ -89,7 +98,7 @@ public class AdminService {
         pageSize = pageSize <= 0 ? 10 : pageSize;
         ArrayList<Admin> list = adminDao.findByPage(pageNum, pageSize);
         for (Admin admin : list) {
-            decryptAndDesensitized(admin);
+            decrypt(admin);
         }
         return PaginationDto.<Admin>builder()
                 .pageNum(pageNum)
@@ -104,7 +113,7 @@ public class AdminService {
         pageSize = pageSize <= 0 ? 10 : pageSize;
         ArrayList<Admin> list = adminDao.findByPageAndType(pageNum, pageSize, type);
         for (Admin admin : list) {
-            decryptAndDesensitized(admin);
+            decrypt(admin);
         }
         return PaginationDto.<Admin>builder()
                 .pageNum(pageNum)
@@ -119,7 +128,7 @@ public class AdminService {
         pageSize = pageSize <= 0 ? 10 : pageSize;
         ArrayList<Admin> list = adminDao.findAuditAndSchoolAdminList(pageNum, pageSize);
         for (Admin admin : list) {
-            decryptAndDesensitized(admin);
+            decrypt(admin);
         }
         return PaginationDto.<Admin>builder()
                 .pageNum(pageNum)
@@ -151,9 +160,5 @@ public class AdminService {
 
     private void decrypt(Admin admin) {
         admin.setPhone(SM4Util.decrypt(admin.getPhone()));
-    }
-
-    private void decryptAndDesensitized(Admin admin) {
-        admin.setPhone(DesensitizedUtil.phone(SM4Util.decrypt(admin.getPhone())));
     }
 }

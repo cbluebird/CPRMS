@@ -15,7 +15,7 @@ public enum ErrorCode {
     DEPARTMENT_ALREADY_EXIST(20101, "部门已存在"),
     DEPARTMENT_NOT_EXIST(20102, "部门不存在"),
 
-    ADMIN_ALREADY_EXIST(20201, "管理员已存在"),
+    ADMIN_USERNAME_ALREADY_EXIST(20201, "该登录名已存在"),
     ADMIN_NOT_EXIST(20202, "管理员不存在"),
     ADMIN_LOGIN_ERROR(20203, "管理员登录时密码错误"),
     PASSWORD_ERROR_TO_MANY(20204, "密码错误次数过多，请五分钟后再试"),
@@ -23,6 +23,7 @@ public enum ErrorCode {
     ADMIN_NOT_LOGIN(200206, "管理员未登录"),
     PERMISSION_DENIED(200207, "没有操作权限"),
     PASSWORD_UPDATE_SAME(200208, "更新后的密码与更新前相同"),
+    ADMIN_PHONE_ALREADY_EXIST(20209, "该联系电话已存在"),
 
     APPOINTMENT_NOT_EXIST(20301, "预约不存在"),
     APPOINTMENT_HISTORY_NOT_EXIST(20302, "暂无历史预约记录"),

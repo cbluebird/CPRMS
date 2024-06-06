@@ -94,7 +94,7 @@ public class AdminDao {
     }
 
 
-    public Admin findByUserPhone(String phone) {
+    public Admin findByPhone(String phone) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
