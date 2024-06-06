@@ -339,7 +339,7 @@ public class PublicAppointmentDao {
                 stmt.setString(index++, name);
             }
             if (idCard != null && !idCard.isEmpty()) {
-                stmt.setString(index, idCard);
+                stmt.setString(index++, idCard);
             }
             if (countApplyDateStr != null && !countApplyDateStr.isEmpty()) {
                 Date startTime = Date.valueOf(countApplyDateStr + "-01");
@@ -362,7 +362,7 @@ public class PublicAppointmentDao {
                 cal.add(Calendar.MONTH, 1);
                 Date endTime = new Date(cal.getTimeInMillis());
 
-                stmt.setDate(index++, endTime);
+                stmt.setDate(index, endTime);
             }
             rs = stmt.executeQuery();
             if (rs.next()) {

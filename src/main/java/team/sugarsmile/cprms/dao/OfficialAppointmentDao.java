@@ -399,7 +399,7 @@ public class OfficialAppointmentDao {
                 stmt.setInt(index++, status);
             }
             if (departmentId != null) {
-                stmt.setInt(index, departmentId);
+                stmt.setInt(index++, departmentId);
             }
             if (countApplyDateStr != null && !countApplyDateStr.isEmpty()) {
                 Date startTime = Date.valueOf(countApplyDateStr + "-01");
@@ -422,7 +422,7 @@ public class OfficialAppointmentDao {
                 cal.add(Calendar.MONTH, 1);
                 Date endTime = new Date(cal.getTimeInMillis());
 
-                stmt.setDate(index++, endTime);
+                stmt.setDate(index, endTime);
             }
 
             rs = stmt.executeQuery();
