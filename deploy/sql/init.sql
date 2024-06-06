@@ -1,12 +1,3 @@
-CREATE TABLE department
-(
-    id              BIGINT PRIMARY KEY AUTO_INCREMENT,
-    department_type TINYINT            NOT NULL COMMENT '部门类型 1:行政部门 2:直属部门 3:学院',
-    name            VARCHAR(20) UNIQUE NOT NULL COMMENT '部门名称',
-    public          BOOLEAN            NOT NULL,
-    official        BOOLEAN            NOT NULL
-);
-
 CREATE TABLE admin
 (
     id                   BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -24,6 +15,25 @@ CREATE TABLE rule
     id         BIGINT PRIMARY KEY AUTO_INCREMENT,
     admin_type TINYINT     NOT NULL COMMENT '管理员类型 1:系统管理员 2:学校管理员 3:部门管理员 4:审计管理员',
     path       VARCHAR(50) NOT NULL COMMENT '规则名称'
+);
+
+CREATE TABLE audit
+(
+    id          BIGINT PRIMARY KEY AUTO_INCREMENT,
+    operate     VARCHAR(64) NOT NULL COMMENT '操作',
+    admin_id    BIGINT      NOT NULL COMMENT '管理员id',
+    type        TINYINT     NOT NULL COMMENT '操作类型 1:登录 2:添加 3:删除 4:更新 5:查询',
+    hmac        VARCHAR(64) NOT NULL COMMENT '验证数值',
+    create_time DATETIME    NOT NULL COMMENT '创建时间'
+);
+
+CREATE TABLE department
+(
+    id              BIGINT PRIMARY KEY AUTO_INCREMENT,
+    department_type TINYINT            NOT NULL COMMENT '部门类型 1:行政部门 2:直属部门 3:学院',
+    name            VARCHAR(20) UNIQUE NOT NULL COMMENT '部门名称',
+    public          BOOLEAN            NOT NULL,
+    official        BOOLEAN            NOT NULL
 );
 
 CREATE TABLE public_appointment
@@ -60,12 +70,24 @@ CREATE TABLE official_appointment
     status         TINYINT      NOT NULL COMMENT '审核状态 1:未审核 2:通过 3:驳回'
 );
 
-CREATE TABLE audit
-(
-    id          BIGINT PRIMARY KEY AUTO_INCREMENT,
-    operate     VARCHAR(64) NOT NULL COMMENT '操作',
-    admin_id    BIGINT      NOT NULL COMMENT '管理员id',
-    type        TINYINT     NOT NULL COMMENT '操作类型 1:登录 2:添加 3:删除 4:更新 5:查询',
-    hmac        VARCHAR(64) NOT NULL COMMENT '验证数值',
-    create_time DATETIME    NOT NULL COMMENT '创建时间'
-);
+INSERT INTO admin (id, admin_type, user_name, password, password_update_time, name, phone, department_id)
+VALUES (1, 1, 'system', '680a5e34bd67b053d49479e0c3b265ec5627c18db254141ad7e6aaec9ffb1fee', '2024-01-01', '系统管理员',
+        'fe22b597d8e0b4384e539f64ab9b3725', 0);
+
+INSERT INTO rule (id, admin_type, path)
+VALUES (1, 0, '/admin/password/update');
+INSERT INTO rule (id, admin_type, path)
+VALUES (2, 0, '/admin/logout');
+INSERT INTO rule (id, admin_type, path)
+VALUES (3, 1, '/admin/system/*');
+INSERT INTO rule (id, admin_type, path)
+VALUES (4, 2, '/admin/department/*');
+INSERT INTO rule (id, admin_type, path)
+VALUES (5, 2, '/admin/departmentAdmin/*');
+INSERT INTO rule (id, admin_type, path)
+VALUES (6, 2, '/admin/appointment/*');
+INSERT INTO rule (id, admin_type, path)
+VALUES (7, 3, '/admin/appointment/*');
+INSERT INTO rule (id, admin_type, path)
+VALUES (8, 4, '/admin/audit/*');
+
