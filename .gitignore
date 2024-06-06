@@ -38,5 +38,10 @@ build/
 ### Mac OS ###
 .DS_Store
 
+### log ###
+logs/
+
+### config ###
 druid.properties
 jedis.properties
+sm4.properties
