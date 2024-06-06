@@ -71,6 +71,80 @@ services:
       - '--redis.addr=redis://redis:6379'
       - '--redis.password='
 
+  es:
+    image: elasticsearch:7.17.21
+    container_name: es
+    environment:
+      - TZ=Asia/Shanghai
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - discovery.type=single-node
+    volumes:
+      - ./custom/data/elasticsearch/data:/usr/share/elasticsearch/data
+      - ./custom/data/elasticsearch/plugins:/usr/share/elasticsearch/plugins
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - java-web
+
+  kibana:
+    image: kibana:7.17.21
+    container_name: kibana
+    environment:
+      - TZ=Asia/Shanghai
+      - ELASTICSEARCH_HOSTS=http://es:9200
+    volumes:
+      - ./deploy/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - "5601:5601"
+    depends_on:
+      - es
+    networks:
+      - java-web
+
+  logstash:
+    image: logstash:7.17.21
+    container_name: logstash
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./deploy/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./deploy/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml
+    ports:
+      - "5044:5044"
+    depends_on:
+      - es
+    networks:
+      - java-web
+
+  kafka:
+    image: bitnami/kafka
+    container_name: kafka
+    environment:
+      - TZ=Asia/Shanghai
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+    ports:
+      - "9092:9092"
+    networks:
+      - java-web
+
+  filebeat:
+    image: elastic/filebeat:7.17.21
+    container_name: filebeat
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./deploy/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./logs:/usr/share/filebeat/logs
+    command: filebeat -e -strict.perms=false
+    networks:
+      - java-web
+
 networks:
   java-web:
     driver: bridge
