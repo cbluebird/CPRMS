@@ -38,10 +38,10 @@
                   method="get">
                 <div class="row">
                     <label for="applyDate">申请日期:</label>
-                    <input type="date" id="applyDate" name="applyDate">
+                    <input type="date" id="applyDate" name="applyDate" value="${param.applyDate}">
 
                     <label for="appointmentDate">预约日期:</label>
-                    <input type="date" id="appointmentDate" name="appointmentDate">
+                    <input type="date" id="appointmentDate" name="appointmentDate" value="${param.appointmentDate}">
 
                     <label for="countApplyDate">申请月度:</label>
                     <input type="month" id="countApplyDate" name="countApplyDate" value="${param.countApplyDate}">
